@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Portfolio Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e9ffec;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ── Leaf background ── */
+        .leaf-left, .leaf-right {
+            position: fixed;
+            bottom: 0;
+            width: 340px;
+            height: 600px;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .leaf-left  { left: -60px; }
+        .leaf-right { right: -60px; transform: scaleX(-1); }
+
+        /* ── Card ── */
+        .card {
+            position: relative;
+            z-index: 1;
+            background-color: #ffffff;
+            border: none;
+            border-radius: 16px;
+            padding: 2.2rem 2rem;
+            width: 100%;
+            max-width: 400px;
+            border-top: 5px solid #a8e63d;
+        }
+
+        h2 {
+            color: #0d1a0f;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 0.2rem;
+        }
+        .subtitle {
+            color: #5a7a5e;
+            font-size: 0.875rem;
+            margin-bottom: 1.6rem;
+        }
+        label {
+            color: #3d5c42;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .form-control {
+            background-color: #f4fef0;
+            border: 1.5px solid #c8f07a;
+            color: #0d1a0f;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        .form-control:focus {
+            background-color: #f4fef0;
+            border-color: #a8e63d;
+            color: #0d1a0f;
+            box-shadow: 0 0 0 3px rgba(168, 230, 61, 0.2);
+        }
+        .form-control::placeholder { color: #aac4ae; }
+
+        .btn-primary {
+            background-color: #a8e63d;
+            border: none;
+            border-radius: 8px;
+            padding: 0.65rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #0d1a0f;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #8fd42a;
+            color: #0d1a0f;
+        }
+
+        .divider {
+            border-top: 1px solid #e8f5e0;
+            margin: 1.3rem 0 1rem;
+        }
+        .signup-link {
+            text-align: center;
+            color: #7a9a7e;
+            font-size: 0.875rem;
+        }
+        .signup-link a {
+            color: #4a9e20;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .signup-link a:hover { text-decoration: underline; }
+
+        .alert-success { background-color: #f4fef0; color: #2d6b15; border-color: #a8e63d; }
+        .alert-error, .alert-danger { background-color: #fff3f3; color: #8b1a1a; border-color: #f5a0a0; }
+        .alert { border-radius: 8px; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Left leaf SVG -->
+    <svg class="leaf-left" viewBox="0 0 340 600" xmlns="http://www.w3.org/2000/svg">
+        <path d="M180 600 C155 550 110 490 90 420 C70 350 85 280 130 220 C165 172 215 148 245 125 C232 185 218 245 228 300 C238 355 260 400 268 445 C276 490 255 548 240 600 Z" fill="#1a3d1f" opacity="0.85"/>
+        <path d="M180 600 C186 562 194 525 188 490 C182 455 170 422 176 390 C182 358 200 332 204 305 C198 328 193 352 196 376 C199 402 207 424 204 450 C201 477 190 538 180 600 Z" fill="#2d6b35" opacity="0.6"/>
+        <!-- veins -->
+        <path d="M195 600 C188 555 168 508 158 462 C150 424 155 385 170 348" fill="none" stroke="#5ab84a" stroke-width="1.2" opacity="0.4"/>
+        <path d="M163 470 C145 452 128 441 115 424" fill="none" stroke="#5ab84a" stroke-width="1" opacity="0.3"/>
+        <path d="M155 420 C138 403 122 395 110 378" fill="none" stroke="#5ab84a" stroke-width="1" opacity="0.3"/>
+        <path d="M148 372 C132 356 118 348 108 333" fill="none" stroke="#5ab84a" stroke-width="1" opacity="0.3"/>
+    </svg>
+
+    <!-- Right leaf SVG (mirrored via CSS scaleX) -->
+    <svg class="leaf-right" viewBox="0 0 340 600" xmlns="http://www.w3.org/2000/svg">
+        <path d="M180 600 C155 550 110 490 90 420 C70 350 85 280 130 220 C165 172 215 148 245 125 C232 185 218 245 228 300 C238 355 260 400 268 445 C276 490 255 548 240 600 Z" fill="#1a3d1f" opacity="0.85"/>
+        <path d="M180 600 C186 562 194 525 188 490 C182 455 170 422 176 390 C182 358 200 332 204 305 C198 328 193 352 196 376 C199 402 207 424 204 450 C201 477 190 538 180 600 Z" fill="#2d6b35" opacity="0.6"/>
+        <path d="M195 600 C188 555 168 508 158 462 C150 424 155 385 170 348" fill="none" stroke="#5ab84a" stroke-width="1.2" opacity="0.4"/>
+        <path d="M163 470 C145 452 128 441 115 424" fill="none" stroke="#5ab84a" stroke-width="1" opacity="0.3"/>
+        <path d="M155 420 C138 403 122 395 110 378" fill="none" stroke="#5ab84a" stroke-width="1" opacity="0.3"/>
+        <path d="M148 372 C132 356 118 348 108 333" fill="none" stroke="#5ab84a" stroke-width="1" opacity="0.3"/>
+    </svg>
+
+    <div class="card">
+        <h2 style="text-align: center; font-weight: bold; font-style: italic; font-size: 40px; color:#8fd42a">Gruppe-8</h2>
+        <p class="subtitle">Log in to your portfolio</p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_username">Username</label>
+                <input type="text" name="username" id="id_username" class="form-control" placeholder="Enter your username" autofocus>
+            </div>
+            <div class="mb-3">
+                <label for="id_password">Password</label>
+                <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter your password">
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Log In</button>
+        </form>
+
+        <div class="divider"></div>
+        <div class="signup-link">
+            Don't have an account? <a href="/users/signup/">Sign up</a>
+        </div>
+    </div>
+
+</body>
+</html>

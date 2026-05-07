@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stocks | Portfolio Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #e9ffed; color: #ffffff; }
+        .navbar { background-color: #1a3d1f; border-bottom: 2px solid #a8e63d; padding: 1rem 2rem; }
+        .navbar-brand { color: #a8e63d; font-weight: 700; }
+        .nav-link { color: #ffffff !important; }
+        .nav-link:hover { color: #a8e63d !important; }
+        .page-header { margin: 2rem 0 1.5rem; }
+        .page-header h2 { color: #a8e63d; font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; }
+        thead th { color: #a8e63d; border-bottom: 2px solid #2d6b35; padding: 0.8rem; font-size: 0.85rem; text-transform: uppercase; }
+        tbody td { padding: 1rem 0.8rem; border-bottom: 1px solid #1a3d1f; color: #ffffff; font-size: 0.9rem; }
+        tbody tr:hover { background-color: #1a3d1f; }
+        .gain { color: #4ade80; font-weight: 600; }
+        .loss { color: #f87171; font-weight: 600; }
+        .btn-add { background-color: #a8e63d; color: #0d1a0f; border: none; border-radius: 8px; padding: 0.5rem 1.2rem; font-weight: 700; text-decoration: none; }
+        .btn-add:hover { background-color: #8fd42a; color: #0d1a0f; }
+        .btn-edit { background-color: transparent; border: 1px solid #a8e63d; color: #a8e63d; border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; text-decoration: none; }
+        .btn-edit:hover { background-color: #a8e63d; color: #0d1a0f; }
+        .btn-sell-sm { background-color: transparent; border: 1px solid #fb923c; color: #fb923c; border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; text-decoration: none; }
+        .btn-sell-sm:hover { background-color: #fb923c; color: #ffffff; }
+        .btn-delete { background-color: transparent; border: 1px solid #f87171; color: #f87171; border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; }
+        .btn-delete:hover { background-color: #f87171; color: #ffffff; }
+        .empty { color: #6b7280; text-align: center; padding: 3rem; }
+        .ticker-badge { background-color: #2d6b35; color: #a8e63d; padding: 0.2rem 0.6rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem; }
+        .sold-badge { background-color: #3d1a1a; color: #f87171; padding: 0.2rem 0.6rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem; }
+        .section-title { color: #6b7280; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin: 2rem 0 1rem; border-bottom: 1px solid #2d6b35; padding-bottom: 0.5rem; }
+        .history-dropdown {
+            margin-top: 2rem;
+            border: 1px solid #2d6b35;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .history-dropdown summary {
+            background-color: #464646;
+            color: #6b7280;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            user-select: none;
+        }
+        .history-dropdown summary:hover { color: #a8e63d; }
+        .history-dropdown summary::before { content: '▶'; font-size: 0.7rem; transition: transform 0.2s; }
+        .history-dropdown[open] summary::before { transform: rotate(90deg); }
+        .history-count {
+            background-color: #2d6b35;
+            color: #a8e63d;
+            border-radius: 20px;
+            padding: 0.1rem 0.6rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .history-content { padding: 1rem; background-color: #0a130b; }
+        .history-card {
+            background-color: #111a12;
+            border: 1px solid #1a3d1f;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.75;
+            filter: grayscale(30%);
+        }
+        .history-card h5 { color: #9ca3af; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <span class="navbar-brand">Portfolio Tracker</span>
+        <div class="ms-auto d-flex gap-3">
+            <a href="/dashboard/" class="nav-link">Dashboard</a>
+            <a href="/portfolio/assets/" class="nav-link">Assets</a>
+            <a href="/portfolio/cash/" class="nav-link">Cash</a>
+            <a href="/users/logout/" class="nav-link">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header d-flex justify-content-between align-items-center">
+            <h2>My Stocks</h2>
+            <a href="/portfolio/stocks/add/" class="btn-add">+ Add Stock</a>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% if stock_data %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Company</th>
+                    <th>Shares</th>
+                    <th>Bought At</th>
+                    <th>Current Price</th>
+                    <th>Current Value</th>
+                    <th>Gain / Loss</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in stock_data %}
+                <tr>
+                    <td><span class="ticker-badge">{{ item.stock.ticker }}</span></td>
+                    <td>{{ item.stock.company_name }}</td>
+                    <td>{{ item.stock.shares }}</td>
+                    <td>${{ item.stock.purchase_price }}</td>
+                    <td>{% if item.current_price %}${{ item.current_price|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                    <td>{% if item.current_value %}${{ item.current_value|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                    <td>
+                        {% if item.gain_loss != None %}
+                            {% if item.gain_loss >= 0 %}
+                                <span class="gain">▲ ${{ item.gain_loss|floatformat:2 }} ({{ item.gain_loss_percent|floatformat:1 }}%)</span>
+                            {% else %}
+                                <span class="loss">▼ ${{ item.gain_loss|floatformat:2 }} ({{ item.gain_loss_percent|floatformat:1 }}%)</span>
+                            {% endif %}
+                        {% else %}
+                            <span style="color:#6b7280">Unavailable</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <a href="/portfolio/stocks/edit/{{ item.stock.pk }}/" class="btn-edit">Edit</a>
+                            <a href="/portfolio/stocks/sell/{{ item.stock.pk }}/" class="btn-sell-sm">Sell</a>
+                            <form method="POST" action="/portfolio/stocks/delete/{{ item.stock.pk }}/" style="margin:0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-delete" onclick="return confirm('Delete {{ item.stock.ticker }}? This cannot be undone.')">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="empty">
+                <p>No active stocks. Add your first stock to get started.</p>
+            </div>
+        {% endif %}
+
+       {% if sold_stocks %}
+        <details class="history-dropdown">
+            <summary>
+                History — Sold Stocks
+                <span class="history-count">{{ sold_stocks|length }}</span>
+            </summary>
+            <div class="history-content">
+                <table style="width:100%; border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th style="color:#6b7280; padding:0.8rem; font-size:0.8rem; text-transform:uppercase; border-bottom:1px solid #1a3d1f;">Ticker</th>
+                            <th style="color:#6b7280; padding:0.8rem; font-size:0.8rem; text-transform:uppercase; border-bottom:1px solid #1a3d1f;">Company</th>
+                            <th style="color:#6b7280; padding:0.8rem; font-size:0.8rem; text-transform:uppercase; border-bottom:1px solid #1a3d1f;">Shares</th>
+                            <th style="color:#6b7280; padding:0.8rem; font-size:0.8rem; text-transform:uppercase; border-bottom:1px solid #1a3d1f;">Bought At</th>
+                            <th style="color:#6b7280; padding:0.8rem; font-size:0.8rem; text-transform:uppercase; border-bottom:1px solid #1a3d1f;">Sold At</th>
+                            <th style="color:#6b7280; padding:0.8rem; font-size:0.8rem; text-transform:uppercase; border-bottom:1px solid #1a3d1f;">Sale Date</th>
+                            <th style="color:#6b7280; padding:0.8rem; font-size:0.8rem; text-transform:uppercase; border-bottom:1px solid #1a3d1f;">Profit / Loss</th>
+                            <th style="color:#6b7280; padding:0.8rem; font-size:0.8rem; text-transform:uppercase; border-bottom:1px solid #1a3d1f;">Cash</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody style="opacity:0.7; filter:grayscale(30%);">
+                        {% for stock in sold_stocks %}
+                        <tr>
+                            <td style="padding:0.8rem; border-bottom:1px solid #1a3d1f;"><span class="sold-badge">{{ stock.ticker }}</span></td>
+                            <td style="padding:0.8rem; border-bottom:1px solid #1a3d1f; color:#9ca3af;">{{ stock.company_name }}</td>
+                            <td style="padding:0.8rem; border-bottom:1px solid #1a3d1f; color:#9ca3af;">{{ stock.shares }}</td>
+                            <td style="padding:0.8rem; border-bottom:1px solid #1a3d1f; color:#9ca3af;">${{ stock.purchase_price }}</td>
+                            <td style="padding:0.8rem; border-bottom:1px solid #1a3d1f; color:#9ca3af;">${{ stock.sale_price }}</td>
+                            <td style="padding:0.8rem; border-bottom:1px solid #1a3d1f; color:#9ca3af;">{{ stock.sale_date }}</td>
+                            <td style="padding:0.8rem; border-bottom:1px solid #1a3d1f;">
+                                {% if stock.profit_loss >= 0 %}
+                                    <span class="gain">▲ ${{ stock.profit_loss|floatformat:2 }}</span>
+                                {% else %}
+                                    <span class="loss">▼ ${{ stock.profit_loss|floatformat:2 }}</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding:0.8rem; border-bottom:1px solid #1a3d1f; color:#9ca3af;">
+                                {% if stock.sale_converted_to_cash %}✅{% else %}—{% endif %}
+                            </td>
+                            <td style="padding:0.8rem; border-bottom:1px solid #1a3d1f;">
+                                <form method="POST" action="/portfolio/stocks/delete/{{ stock.pk }}/" style="margin:0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-delete" onclick="return confirm('Delete this record permanently?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </details>
+        {% endif %}
+    </div>
+</body>
+</html>

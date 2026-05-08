@@ -15,7 +15,7 @@ def convert_currency(amount, from_currency, target_currency='USD'):
         response = requests.get(url, timeout=10)
         data = response.json()
 
-        if response.status_status == 200 and data.get('result') == 'success':
+        if response.status_code == 200 and data.get('result') == 'success':
             conversion_rate = data.get('conversion_rate')
             return amount * conversion_rate
 

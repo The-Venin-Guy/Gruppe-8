@@ -6,6 +6,7 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
+EXCHANGE_RATE_API_KEY = os.getenv('EXCHANGE_RATE_API_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -77,6 +78,9 @@ TIME_ZONE = 'Africa/Lagos'
 USE_I18N = True
 USE_TZ = True
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static", 
+]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/users/login/'

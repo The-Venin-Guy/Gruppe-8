@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,158 +8,115 @@
     <title>Dashboard | GRUPPE-8</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <style>
-        body {
-            background-color: #f9f9f9;
-            color: #ffffff;
-            min-height: 100vh;
-        }
-        .navbar {
-            background-color: #1a3d1f;
-            border-bottom: 2px solid #a8e63d;
-            padding: 1rem 2rem;
-        }
-        .navbar-brand {
-            color: #a8e63d;
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-        .nav-link {
-            color: #ffffff !important;
-            font-size: 0.9rem;
-        }
-        .nav-link:hover { color: #a8e63d !important; }
-        .welcome-card {
-            background-color: #1a3d1f;
-            border: 2px solid #2d6b35;
-            border-top: 4px solid #a8e63d;
-            border-radius: 16px;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-        .welcome-card h2 {
-            color: #a8e63d;
-            font-weight: 700;
-        }
-        .welcome-card h3 {
-            color: #a8e63d;
-            font-weight: 300;
-        }
-        .welcome-card p {
-            color: #9ca3af;
-        }
-        .stat-card {
-            background-color: #1a3d1f;
-            border: 1px solid #2d6b35;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-        .stat-card h5 {
-            color: #9ca3af;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .stat-card h2 {
-            color: #a8e63d;
-            font-weight: 700;
-            font-size: 2rem;
-        }
-        .btn-logout {
-            background-color: transparent;
-            border: 1px solid #a8e63d;
-            color: #a8e63d;
-            border-radius: 8px;
-            padding: 0.4rem 1rem;
-            font-size: 0.85rem;
-        }
-        .btn-logout:hover {
-            background-color: #a8e63d;
-            color: #0d1a0f;
-        }
-        .value-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .eye-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: #6c757d; /* Muted gray color */
-            padding: 0;
-            display: flex;
-            align-items: center;
-        }
-
-        .eye-btn:hover {
-            color: #000;
-        }
-
-        #networth-amount {
-            margin: 0;
-            font-weight: bold;
-            min-width: 120px; 
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
 </head>
 <body>
 
-    <nav class="navbar">
-        <span class="navbar-brand">GRUPPE-8 | DASHBOARD</span>
-        <div class="ms-auto d-flex align-items-center gap-3">
-            <span class="nav-link">{{ user.username }}</span>
-            <a href="/users/logout/" class="btn-logout">Logout</a>
+    <!-- NAVBAR -->
+    <nav class="g8-navbar">
+        <div class="g8-navbar__inner">
+            <a href="/" class="g8-brand">
+                <div class="g8-brand__mark">G8</div>
+                <span class="g8-brand__name">GRUPPE<em>-8</em></span>
+            </a>
+            <div class="g8-nav-actions">
+                <div class="g8-user-pill">
+                    <div class="g8-user-avatar">{{ user.username|slice:":2" }}</div>
+                    <span class="g8-user-name">{{ user.username }}</span>
+                </div>
+                <a href="/users/logout/" class="btn-g8 btn-g8--gold">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="welcome-card">
-            <h2>Welcome back, {{ user.username }} 👋</h2>
-            <p>Net Worth</p>
-            <div class="value-wrapper">
+    <!-- MAIN -->
+    <main class="g8-main">
 
-                <button id="toggle-visibility" class="eye-btn">
+        <h1 class="g8-hero__title">
+            Welcome back, {{ user.username }}&nbsp;
+            <span class="wave-emoji">👋</span>
+        </h1>
+
+        <!-- WELCOME HERO -->
+        <div class="g8-card g8-card--sheen g8-hero anim-fadeUp">
+            <p class="g8-hero__eyebrow">Portfolio Overview</p>
+            
+            <p class="g8-hero__label">Total Net Worth</p>
+            <div class="g8-hero__value-row">
+                <button id="toggle-visibility" class="btn-g8 btn-g8--icon" aria-label="Toggle visibility">
                     <i id="eye-icon" class="bi bi-eye"></i>
                 </button>
-                <h3 id="networth-amount" data-value="{{net_worth|floatformat:2}}">****</h3>
+                <span id="networth-amount"
+                    class="g8-hero__amount"
+                    data-value="₦{{ net_worth|floatformat:2|intcomma }}"
+                >
+                    ••••••
+                </span>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <a href="/portfolio/assets/" class="nav-link">
-                <div class="stat-card">
-                    <h5>Total Assets</h5>
-                    <h2>{{total_assets|floatformat:2}}</h2>
+        <!-- STAT CARDS -->
+        <div class="g8-grid-3">
+
+            <a 
+                href="/portfolio/assets/"
+                class="g8-card g8-card--interactive g8-stat-card anim-fadeUp anim-delay-1"
+            >
+                <div class="g8-stat-card__icon icon--green">
+                    <i class="bi bi-briefcase-fill"></i>
                 </div>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="/portfolio/stocks/" class="nav-link">
-                <div class="stat-card">
-                    <h5>Stocks Value</h5>
-                    <h2>{{total_stock|floatformat:2}}</h2>
+                <p class="g8-stat-card__label">Total Assets</p>
+                <p class="g8-stat-card__value mono">
+                    ₦{{ total_assets|floatformat:2|intcomma }}
+                </p>
+                <i class="bi bi-arrow-right g8-stat-card__arrow"></i>
+            </a>
+
+            <a href="/portfolio/stocks/"
+               class="g8-card g8-card--interactive g8-stat-card anim-fadeUp anim-delay-2">
+                <div class="g8-stat-card__icon icon--blue">
+                    <i class="bi bi-graph-up-arrow"></i>
                 </div>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="/portfolio/cash/" class="nav-link">
-                <div class="stat-card">
-                    <h5>Cash</h5>
-                    <h2>{{total_cash|floatformat:2}}</h2>
+                <p class="g8-stat-card__label">Stocks Value</p>
+                <p class="g8-stat-card__value mono">
+                    ₦{{ total_stock|floatformat:2|intcomma }}
+                </p>
+
+                <i class="bi bi-arrow-right g8-stat-card__arrow"></i>
+            </a>
+
+            <a href="/portfolio/cash/"
+               class="g8-card g8-card--interactive g8-stat-card anim-fadeUp anim-delay-3">
+                <div class="g8-stat-card__icon icon--indigo">
+                    <i class="bi bi-wallet2"></i>
                 </div>
-                </a>
-            </div>
+                <p class="g8-stat-card__label">Cash</p>
+                <p class="g8-stat-card__value mono">
+                    ₦{{ total_cash|floatformat:2|intcomma }}
+                </p>
+                <i class="bi bi-arrow-right g8-stat-card__arrow"></i>
+            </a>
+
         </div>
-    </div>
+
+    </main>
+
+    <script src="{% static 'dashboard/js/toggle.js' %}"></script>
+    <script>
+        const toggleBtn = document.getElementById('toggle-visibility');
+        const eyeIcon   = document.getElementById('eye-icon');
+        const amountEl  = document.getElementById('networth-amount');
+        const rawValue  = amountEl.dataset.value;
+        let   visible   = false;
+
+        toggleBtn.addEventListener('click', () => {
+            visible = !visible;
+            amountEl.textContent = visible ? rawValue : '••••••';
+            eyeIcon.className    = visible ? 'bi bi-eye-slash' : 'bi bi-eye';
+        });
+    </script>
 
 </body>
-
-<script src="{% static 'dashboard/js/toggle.js' %}"></script>
-
 </html>

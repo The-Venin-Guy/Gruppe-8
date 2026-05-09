@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'users',
     'dashboard',
     'portfolio',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

@@ -10,6 +10,8 @@ import json
 from news.utils import fetch_financial_news, get_ai_recommendations
 from django.core.cache import cache
 import markdown
+from portfolio.models import Asset, Stock, CashAccount, PortfolioSnapshot
+from datetime import date
 
 @login_required
 def dashboard_view(request):
@@ -43,7 +45,45 @@ def dashboard_view(request):
 
     net_worth = total_assets + total_cash + total_stock
 
+    #portfolio snapshot. update or create will create a list of objects everyday
+    PortfolioSnapshot.objects.update_or_create(
+        user=request.user,
+        date=date.today(),
+        currency=display_currency,
+        defaults={
+            'net_worth': net_worth,
+            'total_assets': total_assets,
+            'total_stocks': total_stock,
+            'total_cash': total_cash,
+        }
+    )
 
+    snapshots = PortfolioSnapshot.objects.filter(user=request.user, currency=display_currency)
+    if snapshots.count() > 1:
+        snap_dates = [str(s.date) for s in snapshots]
+        snap_values = [float(s.net_worth) for s in snapshots]
+
+        line_fig = go.Figure()
+        line_fig.add_trace(go.Scatter(
+            x=snap_dates,
+            y=snap_values,
+            mode='lines',
+            fill='tozeroy',
+            name='Net Worth',
+            line=dict(color='#a8e63d', width=2),
+            fillcolor='rgba(168, 230, 61, 0.1)'
+        ))
+        line_fig.update_layout(
+            paper_bgcolor='#1b1e20',
+            plot_bgcolor='#1b1e20',
+            font=dict(color='#ffffff'),
+            margin=dict(l=40, r=20, t=30, b=40),
+            xaxis=dict(gridcolor='#2c3034'),
+            yaxis=dict(gridcolor='#2c3034'),
+        )
+        portfolio_line_json = json.dumps(line_fig, cls=plotly.utils.PlotlyJSONEncoder)
+    else:
+        portfolio_line_json = None
 
     fig = go.Figure(data=[go.Pie(
         labels=['Assets', 'Stocks', 'Cash'],
@@ -76,6 +116,7 @@ def dashboard_view(request):
         'display_currency': display_currency,
         'currency_symbol' : currency_symbol,
         'graph_json': graph_json,
+        'portfolio_line_json': portfolio_line_json,
         'news_articles': news_articles,
         'ai_recommendation': ai_recommendation
     })

@@ -204,12 +204,35 @@
         <!-- 3. Visualizations Row (Expandable) -->
         <div class="row g-4 mb-5">
             <div class="col-md-4">
+                {% if graph_json %}
                 <div class="premium-card" style="height: 100%;">
                     <p class="stat-label mb-3">Asset Allocation</p>
                     <div id="my-pie-chart"></div>
                 </div>
+                {% else %}
+                <div class="premium-card" style="height: 100%;">
+                    <p class="stat-label mb-3">Asset Allocation</p>
+                    <p style="color:var(--text-muted);">Asset Pie Chart will appear after your second visit to the dashboard.</p>
+                </div>
+                {% endif %}
             </div>
-            <!-- Add other charts here using col-md-4 -->
+            <div class="col-md-8">
+                {% if portfolio_line_json %}
+                <div class="card mt-4">
+                    <p class="stat-label mb-3">Portfolio Value Over Time</p>
+                    <div id="portfolio-line"></div>
+                </div>
+                <script>
+                    var lineData = JSON.parse('{{ portfolio_line_json|escapejs }}');
+                    Plotly.newPlot('portfolio-line', lineData.data, lineData.layout);
+                </script>
+                {% else %}
+
+                <div class="card mt-4" style="text-align:center; padding:2rem;">
+                    <p style="color:var(--text-muted);">Portfolio trend will appear after your second visit to the dashboard.</p>
+                </div>
+                {% endif %}
+            </div>
         </div>
 
         <!-- 4. Insights & News Row -->

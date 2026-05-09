@@ -93,3 +93,18 @@ class CashAccount(models.Model):
     def __str__(self):
         return f"{self.account_name} - {self.balance} {self.currency} ({self.user.username})"
     
+class PortfolioSnapshot(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    net_worth = models.DecimalField(max_digits=15, decimal_places=2)
+    total_assets = models.DecimalField(max_digits=15, decimal_places=2)
+    total_stocks = models.DecimalField(max_digits=15, decimal_places=2)
+    total_cash = models.DecimalField(max_digits=15, decimal_places=2)
+    currency = models.CharField(max_length=3, default='USD')
+
+    class Meta:
+        unique_together = ['user', 'date', 'currency']
+        ordering = ['date']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date} - {self.net_worth}"

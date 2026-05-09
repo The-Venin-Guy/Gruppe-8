@@ -11,8 +11,6 @@ class Asset(models.Model):
     CURRENCY_CHOICES = [
         ('USD', 'US Dollar'),
         ('NGN', 'Nigerian Naira'),
-        ('EUR', 'Euro'),
-        ('GBP', 'British Pound'),
     ]
     STATUS_CHOICES = [
         ('active', 'Active'),
@@ -83,8 +81,6 @@ class CashAccount(models.Model):
     CURRENCY_CHOICES = [
         ('USD', 'US Dollar'),
         ('NGN', 'Nigerian Naira'),
-        ('EUR', 'Euro'),
-        ('GBP', 'British Pound'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)

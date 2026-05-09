@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from portfolio.models import Asset, Stock, CashAccount
 import yfinance as yf
 from decimal import Decimal
+from portfolio.utils import convert_currency
 
 @login_required
 def dashboard_view(request):

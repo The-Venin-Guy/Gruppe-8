@@ -818,3 +818,242 @@ img { max-width: 100%; display: block; }
 
 .g8-history__rows { opacity: 0.75; }
 .g8-history__rows tr:hover { opacity: 1; }
+
+
+/* stock form*/
+
+/* ─── AUTH / FORM BODY ───────────────────────────────────────── */
+/* Centers a single card on the full viewport */
+.g8-auth-body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+/* ─── FORM SHELL (the centered card) ─────────────────────────── */
+.g8-form-shell {
+    width: 100%;
+    max-width: 480px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 2.25rem 2rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.g8-form-shell__head {
+    margin-bottom: 1.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.g8-form-shell__eyebrow {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+}
+
+.g8-form-shell__title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin: 0;
+}
+
+.g8-form-shell__back {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    font-size: 0.80rem;
+    color: var(--text-muted);
+    transition: color var(--transition);
+    text-decoration: none;
+}
+.g8-form-shell__back:hover { color: var(--gold); }
+
+/* ─── FORM LAYOUT ────────────────────────────────────────────── */
+.g8-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.g8-form__submit {
+    width: 100%;
+    justify-content: center;
+    padding: 0.7rem;
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+}
+
+/* Two-column row */
+.g8-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.9rem;
+}
+
+/* ─── FIELD ──────────────────────────────────────────────────── */
+.g8-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.g8-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    color: var(--text-secondary);
+}
+
+.g8-field__hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* ─── INPUT ──────────────────────────────────────────────────── */
+.g8-input-wrap {
+    position: relative;
+}
+
+.g8-input-icon {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    pointer-events: none;
+    line-height: 1;
+}
+
+/* text variant ($ sign) */
+.g8-input-icon--text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.80rem;
+    font-style: normal;
+}
+
+.g8-input {
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    padding: 0.6rem 0.85rem;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.g8-input--icon {
+    padding-left: 2.1rem;
+}
+
+.g8-input::placeholder {
+    color: var(--text-muted);
+}
+
+.g8-input:focus {
+    border-color: var(--gold-dark);
+    box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.12);
+    background: var(--bg-elevated);
+}
+
+/* Django auto-rendered inputs inherit g8-input via JS,
+   but this ensures select also looks right */
+.g8-input-wrap select.g8-input {
+    cursor: pointer;
+}
+
+/* Date input calendar icon tint (best-effort) */
+.g8-input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5) sepia(1) saturate(2) hue-rotate(5deg);
+    opacity: 0.5;
+    cursor: pointer;
+}
+.g8-input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 0.9;
+}
+
+/* ─── AUTOCOMPLETE DROPDOWN ──────────────────────────────────── */
+.g8-autocomplete {
+    position: relative;
+}
+
+.g8-autocomplete__dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    z-index: 300;
+    max-height: 220px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+}
+
+.g8-autocomplete__dropdown--open {
+    display: block;
+    animation: g8-fadeIn 0.15s ease both;
+}
+
+.g8-autocomplete__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background var(--transition);
+}
+.g8-autocomplete__item:last-child { border-bottom: none; }
+.g8-autocomplete__item:hover { background: rgba(201,169,110,0.07); }
+
+.g8-autocomplete__name {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60%;
+}
+
+.g8-autocomplete__hint {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    padding: 0.7rem 1rem;
+    margin: 0;
+}
+
+/* Scrollbar inside dropdown */
+.g8-autocomplete__dropdown::-webkit-scrollbar { width: 4px; }
+.g8-autocomplete__dropdown::-webkit-scrollbar-track { background: transparent; }
+.g8-autocomplete__dropdown::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+    .g8-form-shell { padding: 1.75rem 1.25rem 1.5rem; border-radius: var(--radius-lg); }
+    .g8-field-row  { grid-template-columns: 1fr; }
+}

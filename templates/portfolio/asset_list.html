@@ -4,276 +4,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assets | Portfolio Tracker</title>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Assets | GRUPPE-8</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <style>
-        :root {
-            --bg-dark: #121415;
-            --card-bg: #1b1e20;
-            --accent-green: #a8e63d;
-            --border-subtle: #2c3034;
-            --text-muted: #8a8d91;
-            --text-bright: #ffffff;
-            --danger-red: #f87171;
-            --warning-orange: #fb923c;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-bright);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-        }
-
-        /* Navbar Styling */
-        .navbar {
-            background-color: rgba(18, 20, 21, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 0.75rem 2rem;
-        }
-        .navbar-brand {
-            color: var(--text-bright);
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .nav-link { 
-            color: var(--text-muted) !important; 
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-        .nav-link:hover { color: var(--accent-green) !important; }
-
-        /* Header */
-        .page-header { margin: 3rem 0 2rem; }
-        .page-header h2 { font-weight: 700; font-size: 1.75rem; }
-
-        /* Asset Cards */
-        .asset-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.25rem;
-            position: relative;
-            transition: border-color 0.2s;
-        }
-        .asset-card:hover { border-color: var(--border-subtle); }
-        
-        .accent-bar {
-            position: absolute; left: 0; top: 20%; bottom: 20%; width: 4px; 
-            background: var(--accent-green); border-radius: 0 4px 4px 0;
-        }
-
-        .badge-type {
-            background-color: rgba(168, 230, 61, 0.1);
-            color: var(--accent-green);
-            padding: 0.25rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .asset-name { font-weight: 600; font-size: 1.1rem; margin-top: 0.75rem; }
-        .asset-meta { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.25rem; }
-
-        .value-large { font-weight: 700; font-size: 1.25rem; color: var(--text-bright); }
-        .gain { color: var(--accent-green); font-size: 0.85rem; font-weight: 600; }
-        .loss { color: var(--danger-red); font-size: 0.85rem; font-weight: 600; }
-
-        /* Buttons */
-        .btn-add {
-            background-color: var(--accent-green);
-            color: #121415;
-            border: none;
-            border-radius: 8px;
-            padding: 0.6rem 1.25rem;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
-        }
-        .btn-add:hover { opacity: 0.9; color: #121415; }
-
-        .btn-action {
-            background: transparent;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-muted);
-            border-radius: 6px;
-            padding: 0.35rem 0.8rem;
-            font-size: 0.8rem;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        .btn-action:hover { border-color: var(--text-bright); color: var(--text-bright); }
-        .btn-sell:hover { border-color: var(--warning-orange); color: var(--warning-orange); }
-        .btn-delete:hover { border-color: var(--danger-red); color: var(--danger-red); }
-
-        /* History Section */
-        .history-dropdown {
-            margin-top: 3rem;
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.02);
-        }
-        .history-dropdown summary {
-            padding: 1.25rem;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            list-style: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .history-count {
-            background: var(--border-subtle);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-        }
-        .history-content { padding: 0 1.25rem 1.25rem; }
-        .history-card {
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-top: 0.75rem;
-            opacity: 0.8;
-        }
-        .badge-sold { color: var(--danger-red); border: 1px solid var(--danger-red); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
 </head>
 <body>
 
-    <nav class="navbar sticky-top">
-        <div class="container-fluid">
-            <span class="navbar-brand">GRUPPE-8</span>
-            <div class="ms-auto d-flex gap-4">
-                <a href="/dashboard/" class="nav-link">Dashboard</a>
-                <a href="/portfolio/stocks/" class="nav-link">Stocks</a>
-                <a href="/portfolio/cash/" class="nav-link">Cash</a>
-                <a href="/users/logout/" class="nav-link text-danger">Logout</a>
+    <!-- NAVBAR -->
+    <nav class="g8-navbar">
+        <div class="g8-navbar__inner">
+            <a href="/" class="g8-brand">
+                <div class="g8-brand__mark">G8</div>
+                <span class="g8-brand__name">GRUPPE<em>-8</em></span>
+            </a>
+            <div class="g8-nav-actions">
+                <a href="/dashboard/"        class="btn-g8 btn-g8--ghost">Dashboard</a>
+                <div class="g8-user-pill">
+                    <div class="g8-user-avatar">{{ user.username|slice:":2" }}</div>
+                    <span class="g8-user-name">{{ user.username }}</span>
+                </div>
+                <a href="/users/logout/" class="btn-g8 btn-g8--gold">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="page-header d-flex justify-content-between align-items-center">
-            <div>
-                <h2>My Assets</h2>
-                <p class="text-muted mb-0">Manage and track your physical and alternative investments.</p>
+    <!-- MAIN -->
+    <main class="g8-main">
+
+        <!-- PAGE HEADER -->
+        <div class="g8-page-header anim-fadeUp">
+            <div class="g8-page-header__left">
+                <h1 class="g8-page-header__title">My Assets</h1>
+                <p class="g8-page-header__sub">Manage and track your physical and alternative investments.</p>
             </div>
-            <a href="/portfolio/assets/add/" class="btn-add"><i class="bi bi-plus-lg me-2"></i>Add Asset</a>
+            <a href="/portfolio/assets/add/" class="btn-g8 btn-g8--gold">
+                <i class="bi bi-plus-lg"></i> Add Asset
+            </a>
         </div>
 
+        <!-- FLASH MESSAGES -->
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-dark border-success text-success py-2" style="background: rgba(168, 230, 61, 0.05);">
-                    <i class="bi bi-check-circle me-2"></i>{{ message }}
-                </div>
+            <div class="g8-alert g8-alert--success anim-fadeIn">
+                <i class="bi bi-check-circle"></i>
+                <span>{{ message }}</span>
+            </div>
             {% endfor %}
         {% endif %}
 
+        <!-- ACTIVE ASSETS -->
         {% if assets %}
-            {% for asset in assets %}
-            <div class="asset-card">
-                <div class="accent-bar"></div>
-                <div class="d-flex justify-content-between align-items-start">
-                    <div class="flex-grow-1">
-                        <span class="badge-type">{{ asset.get_asset_type_display }}</span>
-                        <h5 class="asset-name">{{ asset.name }}</h5>
-                        
-                        <div class="row mt-3">
-                            <div class="col-sm-4">
-                                <p class="asset-meta">Purchase Value</p>
-                                <p class="fw-bold mb-0">{{ asset.currency }} {{ asset.purchase_value }}</p>
-                                <small class="text-muted">{{ asset.purchase_date }}</small>
-                            </div>
-                            <div class="col-sm-4">
-                                <p class="asset-meta">Current Value</p>
-                                <p class="value-large mb-0">{{ asset.currency }} {{ asset.current_value }}</p>
-                            </div>
-                            <div class="col-sm-4">
-                                <p class="asset-meta">Performance</p>
-                                {% if asset.appreciation >= 0 %}
-                                    <p class="gain mb-0">▲ {{ asset.currency }} {{ asset.appreciation|floatformat:2 }}</p>
-                                    <small class="gain">{{ asset.appreciation_percent|floatformat:1 }}%</small>
-                                {% else %}
-                                    <p class="loss mb-0">▼ {{ asset.currency }} {{ asset.appreciation|floatformat:2 }}</p>
-                                    <small class="loss">{{ asset.appreciation_percent|floatformat:1 }}%</small>
-                                {% endif %}
-                            </div>
+            <div class="g8-asset-list">
+                {% for asset in assets %}
+                <div class="g8-asset-card g8-card anim-fadeUp anim-delay-{{ forloop.counter }}">
+
+                    <!-- Top row: type badge + actions -->
+                    <div class="g8-asset-card__header">
+                        <span class="g8-badge g8-badge--gold">{{ asset.get_asset_type_display }}</span>
+                        <div class="g8-table__actions">
+                            <a href="/portfolio/assets/edit/{{ asset.pk }}/"
+                               class="btn-g8 btn-g8--ghost btn-g8--xs">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                            <a href="/portfolio/assets/sell/{{ asset.pk }}/"
+                               class="btn-g8 btn-g8--xs btn-g8--amber">
+                                <i class="bi bi-cash-coin"></i> Sell
+                            </a>
+                            <form method="POST" action="/portfolio/assets/delete/{{ asset.pk }}/">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="btn-g8 btn-g8--xs btn-g8--danger"
+                                        onclick="return confirm('Confirm deletion?')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
                         </div>
                     </div>
-                    
-                    <div class="d-flex gap-2 flex-wrap justify-content-end ms-3">
-                        <a href="/portfolio/assets/edit/{{ asset.pk }}/" class="btn-action">Edit</a>
-                        <a href="/portfolio/assets/sell/{{ asset.pk }}/" class="btn-action btn-sell">Sell</a>
-                        <form method="POST" action="/portfolio/assets/delete/{{ asset.pk }}/" style="margin:0">
-                            {% csrf_token %}
-                            <button type="submit" class="btn-action btn-delete" onclick="return confirm('Confirm deletion?')">Delete</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        {% else %}
-            <div class="py-5 text-center border border-dashed rounded-3" style="border-color: var(--border-subtle) !important;">
-                <i class="bi bi-safe2 fs-1 text-muted"></i>
-                <p class="text-muted mt-3">No active assets. Add your first investment to start tracking.</p>
-            </div>
-        {% endif %}
 
-        {% if sold_assets %}
-        <details class="history-dropdown">
-            <summary>
-                <i class="bi bi-clock-history"></i> History — Sold Assets
-                <span class="history-count">{{ sold_assets|length }}</span>
-            </summary>
-            <div class="history-content">
-                {% for asset in sold_assets %}
-                <div class="history-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="badge-sold">Sold</span>
-                            <span class="ms-2 text-muted small text-uppercase fw-bold">{{ asset.get_asset_type_display }}</span>
-                            <h6 class="mt-2 mb-1 fw-bold">{{ asset.name }}</h6>
-                            <p class="small text-muted mb-0">
-                                Bought for {{ asset.currency }} {{ asset.purchase_value }} 
-                                <i class="bi bi-arrow-right mx-2"></i> 
-                                Sold for <span class="text-white">{{ asset.currency }} {{ asset.sale_price }}</span>
+                    <!-- Asset name -->
+                    <h2 class="g8-asset-card__name">{{ asset.name }}</h2>
+
+                    <!-- Stats row -->
+                    <div class="g8-asset-card__stats">
+
+                        <div class="g8-asset-stat">
+                            <p class="g8-asset-stat__label">Purchase Value</p>
+                            <p class="g8-asset-stat__value mono">
+                                <span class="g8-asset-stat__currency">{{ asset.currency }}</span>{{ asset.purchase_value }}
+                            </p>
+                            <p class="g8-asset-stat__sub">{{ asset.purchase_date }}</p>
+                        </div>
+
+                        <div class="g8-asset-stat__divider"></div>
+
+                        <div class="g8-asset-stat">
+                            <p class="g8-asset-stat__label">Current Value</p>
+                            <p class="g8-asset-stat__value g8-asset-stat__value--primary mono">
+                                <span class="g8-asset-stat__currency">{{ asset.currency }}</span>{{ asset.current_value }}
                             </p>
                         </div>
-                        <div class="text-end">
-                            {% if asset.profit_loss >= 0 %}
-                                <span class="gain">Profit: +{{ asset.currency }}{{ asset.profit_loss|floatformat:2 }}</span>
+
+                        <div class="g8-asset-stat__divider"></div>
+
+                        <div class="g8-asset-stat">
+                            <p class="g8-asset-stat__label">Performance</p>
+                            {% if asset.appreciation >= 0 %}
+                                <div class="g8-pnl g8-pnl--up">
+                                    <span><i class="bi bi-arrow-up-right"></i> {{ asset.currency }} {{ asset.appreciation|floatformat:2 }}</span>
+                                    <span class="g8-pnl__pct">+{{ asset.appreciation_percent|floatformat:1 }}%</span>
+                                </div>
                             {% else %}
-                                <span class="loss">Loss: {{ asset.currency }}{{ asset.profit_loss|floatformat:2 }}</span>
+                                <div class="g8-pnl g8-pnl--down">
+                                    <span><i class="bi bi-arrow-down-right"></i> {{ asset.currency }} {{ asset.appreciation|floatformat:2 }}</span>
+                                    <span class="g8-pnl__pct">{{ asset.appreciation_percent|floatformat:1 }}%</span>
+                                </div>
                             {% endif %}
-                            <div class="mt-2">
-                                <form method="POST" action="/portfolio/assets/delete/{{ asset.pk }}/" style="margin:0">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn-action btn-delete py-1 px-2" style="font-size: 0.7rem;">Clear Record</button>
-                                </form>
-                            </div>
                         </div>
+
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+        <!-- EMPTY STATE -->
+        <div class="g8-empty anim-fadeUp anim-delay-1">
+            <div class="g8-empty__icon icon--amber">
+                <i class="bi bi-safe2"></i>
+            </div>
+            <p class="g8-empty__title">No active assets</p>
+            <p class="g8-empty__sub">Add your first investment to start tracking real estate, vehicles, collectibles and more.</p>
+            <a href="/portfolio/assets/add/" class="btn-g8 btn-g8--gold">
+                <i class="bi bi-plus-lg"></i> Add your first asset
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- SOLD ASSETS HISTORY -->
+        {% if sold_assets %}
+        <details class="g8-history anim-fadeUp">
+            <summary class="g8-history__summary">
+                <span class="g8-history__label">
+                    <i class="bi bi-clock-history"></i> History — Sold Assets
+                </span>
+                <span class="g8-badge g8-badge--amber">{{ sold_assets|length }}</span>
+                <i class="bi bi-chevron-down g8-history__chevron"></i>
+            </summary>
+
+            <div class="g8-history__body">
+                {% for asset in sold_assets %}
+                <div class="g8-history-asset">
+                    <div class="g8-history-asset__left">
+                        <div class="g8-history-asset__tags">
+                            <span class="g8-badge g8-badge--red">Sold</span>
+                            <span class="g8-badge g8-badge--amber">{{ asset.get_asset_type_display }}</span>
+                        </div>
+                        <p class="g8-history-asset__name">{{ asset.name }}</p>
+                        <p class="g8-history-asset__trail">
+                            <span class="g8-history-asset__bought">{{ asset.currency }} {{ asset.purchase_value }}</span>
+                            <i class="bi bi-arrow-right"></i>
+                            <span class="g8-history-asset__sold">{{ asset.currency }} {{ asset.sale_price }}</span>
+                        </p>
+                    </div>
+                    <div class="g8-history-asset__right">
+                        {% if asset.profit_loss >= 0 %}
+                            <div class="g8-pnl g8-pnl--up" style="align-items:flex-end;">
+                                <span><i class="bi bi-arrow-up-right"></i> +{{ asset.currency }}{{ asset.profit_loss|floatformat:2 }}</span>
+                            </div>
+                        {% else %}
+                            <div class="g8-pnl g8-pnl--down" style="align-items:flex-end;">
+                                <span><i class="bi bi-arrow-down-right"></i> {{ asset.currency }}{{ asset.profit_loss|floatformat:2 }}</span>
+                            </div>
+                        {% endif %}
+                        <form method="POST" action="/portfolio/assets/delete/{{ asset.pk }}/" style="margin-top:0.6rem;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-g8 btn-g8--xs btn-g8--danger">
+                                <i class="bi bi-x-lg"></i> Clear
+                            </button>
+                        </form>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </details>
         {% endif %}
-    </div>
+
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('.g8-history').forEach(el => {
+            el.addEventListener('toggle', () => {
+                el.querySelector('.g8-history__chevron')
+                  .style.transform = el.open ? 'rotate(180deg)' : 'rotate(0deg)';
+            });
+        });
+    </script>
+
 </body>
 </html>

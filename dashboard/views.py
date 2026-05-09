@@ -85,11 +85,14 @@ def dashboard_view(request):
     else:
         portfolio_line_json = None
 
-    fig = go.Figure(data=[go.Pie(
-        labels=['Assets', 'Stocks', 'Cash'],
-        values=[total_assets, total_stock, total_cash]
-    )])
-    graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    if any([total_assets, total_stock, total_cash]):
+        fig = go.Figure(data=[go.Pie(
+            labels=['Assets', 'Stocks', 'Cash'],
+            values=[total_assets, total_stock, total_cash]
+        )])
+        graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    else:
+        graph_json=None
 
     cache_key = f'news_ai_{request.user.id}'
     cached_data = cache.get(cache_key)

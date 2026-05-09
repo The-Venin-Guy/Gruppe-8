@@ -212,13 +212,13 @@
                 {% else %}
                 <div class="premium-card" style="height: 100%;">
                     <p class="stat-label mb-3">Asset Allocation</p>
-                    <p style="color:var(--text-muted);">Asset Pie Chart will appear after your second visit to the dashboard.</p>
+                    <p >Asset Pie Chart will appear after your second visit to the dashboard.</p>
                 </div>
                 {% endif %}
             </div>
             <div class="col-md-8">
                 {% if portfolio_line_json %}
-                <div class="card mt-4">
+                <div class="card mt-0">
                     <p class="stat-label mb-3">Portfolio Value Over Time</p>
                     <div id="portfolio-line"></div>
                 </div>
@@ -228,7 +228,7 @@
                 </script>
                 {% else %}
 
-                <div class="card mt-4" style="text-align:center; padding:2rem;">
+                <div class="card mt-0" style="text-align:center; padding:2rem;">
                     <p style="color:var(--text-muted);">Portfolio trend will appear after your second visit to the dashboard.</p>
                 </div>
                 {% endif %}

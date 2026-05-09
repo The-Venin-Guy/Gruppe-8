@@ -35,7 +35,7 @@ def get_ai_recommendations(articles):
 
     client = Groq(api_key=settings.GROQ_API_KEY)
 
-    top5 = articles[:5]
+    top5 = articles[:10]
     content_block = "\n\n".join([
         f"Title: {a['title']}\nSummary: {a['description']}"
         for a in top5

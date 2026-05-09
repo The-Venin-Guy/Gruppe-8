@@ -63,7 +63,6 @@
         <a href="{{ back_url }}" class="back-link">← Cancel</a>
     </div>
 
-    {% if is_stock %}
     <script>
         const checkbox = document.getElementById('id_convert_to_cash');
         const cashSection = document.getElementById('cashSection');
@@ -71,6 +70,5 @@
             cashSection.style.display = this.checked ? 'block' : 'none';
         });
     </script>
-    {% endif %}
 </body>
 </html>

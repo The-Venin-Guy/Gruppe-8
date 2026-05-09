@@ -92,3 +92,4 @@ class CashAccount(models.Model):
 
     def __str__(self):
         return f"{self.account_name} - {self.balance} {self.currency} ({self.user.username})"
+    

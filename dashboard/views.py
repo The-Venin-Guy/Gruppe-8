@@ -8,6 +8,8 @@ import plotly.graph_objects as go
 import plotly.utils
 import json
 from news.utils import fetch_financial_news, get_ai_recommendations
+from django.core.cache import cache
+import markdown
 
 @login_required
 def dashboard_view(request):
@@ -49,8 +51,21 @@ def dashboard_view(request):
     )])
     graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    news_articles = fetch_financial_news()
-    ai_recommendation = get_ai_recommendations(news_articles)
+    cache_key = f'news_ai_{request.user.id}'
+    cached_data = cache.get(cache_key)
+
+    if cached_data:
+        news_articles = cached_data['news_articles']
+        ai_recommendation = cached_data['ai_recommendation']
+    else:
+        news_articles = fetch_financial_news()
+        ai_recommendation = get_ai_recommendations(news_articles)
+        cache.set(cache_key, {
+            'news_articles': news_articles,
+            'ai_recommendation': ai_recommendation,
+        }, timeout=86400)  # 86400 seconds = 24 hours
+
+    ai_recommendation = markdown.markdown(ai_recommendation)
 
     return render(request, 'dashboard/dashboard.html', {
         'user': request.user,

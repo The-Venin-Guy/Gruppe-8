@@ -3,42 +3,98 @@
 {% block title %}Sign Up | GRUPPE-8{% endblock %}
 
 {% block auth_header %}
-    <p class="subtitle">Create your investment profile</p>
+<div class="g8-auth-heading">
+    <h2 class="g8-auth-heading__title">Create your account</h2>
+    <p class="g8-auth-heading__sub">Build and track your investment portfolio</p>
+</div>
 {% endblock %}
 
 {% block content %}
-<form method="POST">
+<form method="POST" class="g8-auth-card__body">
     {% csrf_token %}
-    
-    <div class="mb-3">
-        <label for="id_username">Username</label>
-        <input type="text" name="username" id="id_username" 
-               class="form-control" placeholder="Choose a username" 
-               required autofocus>
+
+    <div class="g8-field">
+        <label class="g8-label" for="id_username">Username</label>
+        <div class="g8-input-wrap">
+            <i class="bi bi-person g8-input-icon"></i>
+            <input type="text" name="username" id="id_username"
+                   class="g8-input g8-input--icon"
+                   placeholder="Choose a username"
+                   required autofocus autocomplete="username">
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label for="id_password1">Password</label>
-        <input type="password" name="password1" id="id_password1" 
-               class="form-control" placeholder="Create a password" 
-               required>
-        <!-- Customizing the hint to fit the dark theme -->
-        <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem; line-height: 1.4;">
-            <i class="bi bi-info-circle me-1"></i> Min 8 characters. Avoid common words or entirely numeric passwords.
+    <div class="g8-field">
+        <label class="g8-label" for="id_password1">Password</label>
+        <div class="g8-input-wrap">
+            <i class="bi bi-lock g8-input-icon"></i>
+            <input type="password" name="password1" id="id_password1"
+                   class="g8-input g8-input--icon g8-input--has-reveal"
+                   placeholder="Create a password"
+                   required autocomplete="new-password">
+            <button type="button" class="g8-input-reveal" aria-label="Toggle password" data-target="id_password1">
+                <i class="bi bi-eye"></i>
+            </button>
+        </div>
+        <p class="g8-field__hint">
+            <i class="bi bi-info-circle"></i>
+            Min 8 characters. Avoid common words or entirely numeric passwords.
         </p>
+        <div class="g8-strength"><div class="g8-strength__fill"></div></div>
     </div>
 
-    <div class="mb-3">
-        <label for="id_password2">Confirm Password</label>
-        <input type="password" name="password2" id="id_password2" 
-               class="form-control" placeholder="Repeat your password" 
-               required>
+    <div class="g8-field">
+        <label class="g8-label" for="id_password2">Confirm Password</label>
+        <div class="g8-input-wrap">
+            <i class="bi bi-lock-fill g8-input-icon"></i>
+            <input type="password" name="password2" id="id_password2"
+                   class="g8-input g8-input--icon g8-input--has-reveal"
+                   placeholder="Repeat your password"
+                   required autocomplete="new-password">
+            <button type="button" class="g8-input-reveal" aria-label="Toggle password" data-target="id_password2">
+                <i class="bi bi-eye"></i>
+            </button>
+        </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create Account</button>
+    <button type="submit" class="btn-g8 btn-g8--gold">
+        <i class="bi bi-person-plus"></i> Create Account
+    </button>
 </form>
 {% endblock %}
 
 {% block auth_footer %}
+<p class="g8-auth-footer-text">
     Already have an account? <a href="/users/login/">Log in</a>
+</p>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    /* Password strength indicator */
+    const pwd     = document.getElementById('id_password1');
+    const bar     = document.querySelector('.g8-strength__fill');
+    const barWrap = document.querySelector('.g8-strength');
+
+    if (pwd && bar) {
+        pwd.addEventListener('input', () => {
+            const v = pwd.value;
+            let score = 0;
+            if (v.length >= 8)                         score++;
+            if (/[A-Z]/.test(v))                       score++;
+            if (/[0-9]/.test(v))                       score++;
+            if (/[^A-Za-z0-9]/.test(v))                score++;
+
+            const pct   = (score / 4) * 100;
+            const color = score <= 1 ? 'var(--red)'
+                        : score === 2 ? 'var(--amber)'
+                        : score === 3 ? 'var(--blue)'
+                        : 'var(--green)';
+
+            bar.style.width     = pct + '%';
+            bar.style.background = color;
+            barWrap.style.display = v.length ? 'block' : 'none';
+        });
+    }
+</script>
 {% endblock %}

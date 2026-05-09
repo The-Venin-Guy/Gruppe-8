@@ -142,29 +142,29 @@ def stock_list(request):
             'gain_loss_percent': gain_loss_percent,
         })
 
-        if stock:
-            fig = go.Figure(data=[go.Pie(
-                labels=[stock.ticker for stock in active_stocks],
-                values=[float(stock.purchase_price) * float(stock.shares) for stock in active_stocks],
-                hole=0.4,
-                marker=dict(colors=['#a8e63d', '#3498db', '#f1c40f', '#e74c3c', '#9b59b6'])
-            )])
-            fig.update_layout(
-                paper_bgcolor='#1b1e20',
-                plot_bgcolor='#1b1e20',
-                font=dict(color='#ffffff'),
-                margin=dict(l=20, r=20, t=30, b=20),
-                showlegend=True,
-                legend=dict(font=dict(color='#ffffff'))
-            )
-            stock_pie_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-        else:
-            stock_pie_json = None
+    if active_stocks:
+        fig = go.Figure(data=[go.Pie(
+            labels=[stock.ticker for stock in active_stocks],
+            values=[float(stock.purchase_price) * float(stock.shares) for stock in active_stocks],
+            hole=0.4,
+            marker=dict(colors=['#a8e63d', '#3498db', '#f1c40f', '#e74c3c', '#9b59b6'])
+        )])
+        fig.update_layout(
+            paper_bgcolor='#1b1e20',
+            plot_bgcolor='#1b1e20',
+            font=dict(color='#ffffff'),
+            margin=dict(l=20, r=20, t=30, b=20),
+            showlegend=True,
+            legend=dict(font=dict(color='#ffffff'))
+        )
+        stock_pie_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    else:
+        stock_pie_json = None
 
     return render(request, 'portfolio/stock_list.html', {
         'stock_data': stock_data,
         'sold_stocks': sold_stocks,
-        'stock_pie_json': stock_pie_json
+        'stock_pie_json': stock_pie_json,
     })
 
 @login_required

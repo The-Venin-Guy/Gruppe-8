@@ -88,6 +88,6 @@ LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/users/login/'
 
-AXES_FAILURE_LIMIT = 5
+AXES_FAILURE_LIMIT = 50        # higher limit for development
 AXES_COOLOFF_TIME = 1
-AXES_LOCKOUT_TEMPLATE = None
+AXES_LOCKOUT_PARAMETERS = [['username'], ['ip_address']]

@@ -19,4 +19,5 @@ urlpatterns = [
     path('cash/edit/<int:pk>/', views.cash_edit, name='cash_edit'),
     path('cash/delete/<int:pk>/', views.cash_delete, name='cash_delete'),
     path('ticker-search/', views.ticker_search, name='ticker_search'),
+    path('stocks/<int:pk>/', views.stock_detail, name='stock_detail'),
 ]

@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     
     <style>
         :root {
@@ -26,7 +27,6 @@
             min-height: 100vh;
         }
 
-        /* Navbar Redesign */
         .navbar {
             background-color: rgba(18, 20, 21, 0.8);
             backdrop-filter: blur(10px);
@@ -44,7 +44,6 @@
             font-weight: 500;
         }
 
-        /* Card Redesign */
         .premium-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-subtle);
@@ -60,7 +59,6 @@
             transform: translateY(-3px);
         }
 
-        /* The signature vertical accent bar */
         .accent-bar {
             position: absolute; 
             left: 0; 
@@ -96,7 +94,6 @@
             margin: 0;
         }
 
-        /* Eye Toggle Button */
         .eye-btn {
             background: none;
             border: none;
@@ -125,6 +122,17 @@
             align-items: center;
             gap: 15px;
         }
+
+        .period-btn { background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted); border-radius: 6px; padding: 0.3rem 0.8rem; font-size: 0.8rem; text-decoration: none; transition: 0.2s; }
+        .period-btn:hover, .period-btn.active { border-color: var(--accent-green); color: var(--accent-green); }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -140,16 +148,21 @@
     </nav>
 
     <div class="container">
+        <!-- 1. Header Section -->
         <div class="welcome-section">
             <div class="row align-items-end">
                 <div class="col-md-8">
                     <h2 class="mb-1">Welcome back, {{ user.username }} 👋</h2>
-                    <p class="text-muted">Here is what's happening with your portfolio today.</p>
+                    <p>Here is what's happening with your portfolio today.</p>
                 </div>
                 <div class="col-md-4 text-md-end">
                     <p class="stat-label mb-1">Total Net Worth</p>
+                    <div class="d-flex gap-2 mb-4">
+                        <a href="?currency=USD" class="period-btn {% if display_currency == 'USD' %}active{% endif %}">$ USD</a>
+                        <a href="?currency=NGN" class="period-btn {% if display_currency == 'NGN' %}active{% endif %}">₦ NGN</a>
+                    </div>
                     <div class="value-wrapper justify-content-md-end">
-                        <h3 class="sensitive-value mb-0 fw-bold" data-value="{{net_worth|floatformat:2}}" style="color: var(--accent-green);">****</h3>
+                        <h3 class="sensitive-value mb-0 fw-bold" data-value="{{ currency_symbol }}{{net_worth|floatformat:2}}" style="color: var(--accent-green);">****</h3>
                         <button id="toggle-visibility" class="eye-btn">
                             <i id="eye-icon" class="bi bi-eye"></i>
                         </button>
@@ -158,40 +171,98 @@
             </div>
         </div>
 
-        <div class="row g-4">
+        <!-- 2. KPI Section -->
+        <div class="row g-4 mb-5">
             <div class="col-md-4">
                 <a href="/portfolio/assets/" class="premium-card">
                     <div class="accent-bar"></div>
                     <p class="stat-label">Total Assets</p>
-                    <h2 class="stat-value sensitive-value" data-value="{{total_assets|floatformat:2}}">****</h2>
+                    <h2 class="stat-value sensitive-value" data-value="{{ currency_symbol }}{{total_assets|floatformat:2}}">****</h2>
                     <div class="mt-2" style="font-size: 0.8rem; color: var(--accent-green);">
                         <i class="bi bi-arrow-up"></i> Live Tracking
                     </div>
                 </a>
             </div>
-
             <div class="col-md-4">
                 <a href="/portfolio/stocks/" class="premium-card">
-                    <div class="accent-bar" style="background: #3498db;"></div> <p class="stat-label">Stocks Value</p>
-                    <h2 class="stat-value sensitive-value" data-value="{{total_stock|floatformat:2}}">****</h2>
-                    <div class="mt-2" style="font-size: 0.8rem; color: var(--text-muted);">
-                        Market Portfolio
-                    </div>
+                    <div class="accent-bar" style="background: #3498db;"></div> 
+                    <p class="stat-label">Stocks Value</p>
+                    <h2 class="stat-value sensitive-value" data-value="{{ currency_symbol }}{{total_stock|floatformat:2}}">****</h2>
+                    <div class="mt-2" style="font-size: 0.8rem; color: var(--text-muted);"> Market Portfolio </div>
                 </a>
             </div>
-
             <div class="col-md-4">
                 <a href="/portfolio/cash/" class="premium-card">
-                    <div class="accent-bar" style="background: #f1c40f;"></div> <p class="stat-label">Available Cash</p>
-                    <h2 class="stat-value sensitive-value" data-value="{{total_cash|floatformat:2}}">****</h2>
-                    <div class="mt-2" style="font-size: 0.8rem; color: var(--text-muted);">
-                        Liquid Assets
-                    </div>
+                    <div class="accent-bar" style="background: #f1c40f;"></div> 
+                    <p class="stat-label">Available Cash</p>
+                    <h2 class="stat-value sensitive-value" data-value="{{ currency_symbol }}{{total_cash|floatformat:2}}">****</h2>
+                    <div class="mt-2" style="font-size: 0.8rem; color: var(--text-muted);"> Liquid Assets </div>
                 </a>
+            </div>
+        </div>
+
+        <!-- 3. Visualizations Row (Expandable) -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="premium-card" style="height: 100%;">
+                    <p class="stat-label mb-3">Asset Allocation</p>
+                    <div id="my-pie-chart"></div>
+                </div>
+            </div>
+            <!-- Add other charts here using col-md-4 -->
+        </div>
+
+        <!-- 4. Insights & News Row -->
+        <div class="row g-4">
+            <!-- AI Recommendation Column -->
+            <div class="col-lg-4">
+                <p class="stat-label">Market Intelligence</p>
+                <div class="card" style="border-left: 4px solid var(--accent-green); height: auto;">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span style="background: var(--accent-green); color: #121415; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">AI ANALYSIS</span>
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">Live Update</span>
+                    </div>
+                    <p style="color: #fff; font-size: 0.9rem; line-height: 1.6; white-space: pre-line;">{{ ai_recommendation }}</p>
+                </div>
+            </div>
+
+            <!-- News Feed Column -->
+            <div class="col-lg-8">
+                <p class="stat-label">Today's Financial News</p>
+                <div class="row g-3">
+                    {% for article in news_articles %}
+                    <div class="col-md-6">
+                        <a href="{{ article.url }}" target="_blank" style="text-decoration:none;">
+                            <div class="premium-card" style="height:100%;">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span style="background:#2c3034; color:var(--text-muted); padding:0.2rem 0.6rem; border-radius:4px; font-size:0.7rem;">{{ article.source }}</span>
+                                    <span style="color:var(--text-muted); font-size:0.7rem;">{{ article.publishedAt|slice:":10" }}</span>
+                                </div>
+                                <p style="color:#fff; font-size:0.875rem; font-weight:600; margin-bottom:0.5rem; line-height:1.4;">{{ article.title }}</p>
+                                <p style="color:var(--text-muted); font-size:0.8rem; line-height:1.4;">{{ article.description|truncatechars:100 }}</p>
+                                <div class="mt-2" style="color:var(--accent-green); font-size:0.75rem;">Read more →</div>
+                            </div>
+                        </a>
+                    </div>
+                    {% empty %}
+                    <div class="col-12">
+                        <p style="color:var(--text-muted); text-align:center;">No news available at this time.</p>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
 
     <script src="{% static 'dashboard/js/toggle.js' %}"></script>
+    <script>
+        var graphData = JSON.parse('{{ graph_json|escapejs }}');
+        // Ensure the chart fits within its new card container
+        graphData.layout.autosize = true;
+        graphData.layout.margin = {l: 20, r: 20, b: 20, t: 20};
+        graphData.layout.paper_bgcolor = 'rgba(0,0,0,0)';
+        graphData.layout.plot_bgcolor = 'rgba(0,0,0,0)';
+        Plotly.newPlot('my-pie-chart', graphData.data, graphData.layout, {responsive: true});
+    </script>
 </body>
 </html>

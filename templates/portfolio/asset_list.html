@@ -233,6 +233,18 @@
             </div>
         {% endif %}
 
+        {% if asset_pie_json %}
+            <div class="card mt-4">
+                <p class="stat-label mb-3">Asset Breakdown</p>
+                <div id="asset-pie"></div>
+            </div>
+            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+            <script>
+                var assetPie = JSON.parse('{{ asset_pie_json|escapejs }}');
+                Plotly.newPlot('asset-pie', assetPie.data, assetPie.layout);
+            </script>
+        {% endif %}
+
         {% if sold_assets %}
         <details class="history-dropdown">
             <summary>

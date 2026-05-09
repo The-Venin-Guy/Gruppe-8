@@ -38,14 +38,23 @@
                 {{ form.sale_date }}
             </div>
 
-            {% if is_stock %}
+            {% if is_stock or is_asset %}
             <div class="mb-3 form-check">
-                {{ form.convert_to_cash }}
+                <input type="checkbox" class="form-check-input" id="id_convert_to_cash" name="convert_to_cash">
                 <label class="form-check-label ms-2">Convert proceeds to a cash account?</label>
             </div>
             <div class="cash-section" id="cashSection">
                 <label>Select Cash Account</label>
-                {{ form.cash_account }}
+                {% if is_stock %}
+                    {{ form.cash_account }}
+                {% else %}
+                    <select name="cash_account" class="form-select">
+                        <option value="">-- Select Account --</option>
+                        {% for account in cash_accounts %}
+                            <option value="{{ account.pk }}">{{ account.account_name }} ({{ account.currency }})</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
             </div>
             {% endif %}
 

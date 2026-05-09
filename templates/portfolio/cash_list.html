@@ -209,7 +209,21 @@
                 <a href="/portfolio/cash/add/" class="btn-add d-inline-block mt-2">Get Started</a>
             </div>
         {% endif %}
+
+        {% if cash_pie_json %}
+        <div class="card mt-4">
+            <p class="stat-label mb-3">Cash Breakdown</p>
+            <div id="cash-pie"></div>
+        </div>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script>
+            var cashPie = JSON.parse('{{ cash_pie_json|escapejs }}');
+            Plotly.newPlot('cash-pie', cashPie.data, cashPie.layout);
+        </script>
+        {% endif %}
     </div>
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

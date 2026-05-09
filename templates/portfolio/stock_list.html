@@ -206,7 +206,7 @@
                 <tbody>
                     {% for item in stock_data %}
                     <tr>
-                        <td><span class="ticker-badge">{{ item.stock.ticker }}</span></td>
+                        <td><a href="/portfolio/stocks/{{ item.stock.pk }}/"><span class="ticker-badge">{{ item.stock.ticker }}</span></a></td>
                         <td class="fw-semibold">{{ item.stock.company_name }}</td>
                         <td>{{ item.stock.shares }}</td>
                         <td class="text-muted">${{ item.stock.purchase_price }}</td>
@@ -247,6 +247,18 @@
                 <i class="bi bi-graph-up-arrow fs-1 text-muted"></i>
                 <p class="text-muted mt-3">No active positions. Add a stock ticker to begin tracking.</p>
             </div>
+        {% endif %}
+
+        {% if stock_pie_json %}
+        <div class="card mt-4">
+            <p class="stat-label mb-3">Stock Breakdown</p>
+            <div id="stock-pie"></div>
+        </div>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script>
+            var stockPie = JSON.parse('{{ stock_pie_json|escapejs }}');
+            Plotly.newPlot('stock-pie', stockPie.data, stockPie.layout);
+        </script>
         {% endif %}
 
         {% if sold_stocks %}

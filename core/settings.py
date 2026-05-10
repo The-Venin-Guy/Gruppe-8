@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'dashboard',
     'portfolio',
     'news',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

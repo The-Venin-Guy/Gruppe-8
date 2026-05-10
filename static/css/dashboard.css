@@ -1,0 +1,585 @@
+/* ============================================================
+   GRUPPE-8  |  dashboard.css  —  Dashboard-Specific Styles
+   ============================================================ */
+
+/* ─── LAYOUT ─────────────────────────────────────────────────── */
+.dash-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* ─── WELCOME HEADER ─────────────────────────────────────────── */
+.dash-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem 0 1.5rem;
+    flex-wrap: wrap;
+}
+
+.dash-header__greeting {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+}
+
+.dash-header__eyebrow {
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dash-header__eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 1px;
+    background: var(--gold);
+    opacity: .5;
+}
+
+.dash-header__title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin: 0;
+    letter-spacing: -.3px;
+}
+
+.dash-header__sub {
+    font-size: .83rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ─── NET WORTH PANEL ────────────────────────────────────────── */
+.dash-networth {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: .6rem;
+    flex-shrink: 0;
+}
+
+.dash-networth__label {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.dash-networth__currency-toggle {
+    display: flex;
+    gap: .4rem;
+}
+
+.dash-networth__value-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dash-networth__value {
+    font-family: 'DM Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: -1px;
+    line-height: 1;
+}
+
+.dash-eye-btn {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
+    font-size: .85rem;
+    flex-shrink: 0;
+}
+
+.dash-eye-btn:hover {
+    color: var(--gold);
+    border-color: var(--gold-dark);
+    background: var(--gold-glow);
+}
+
+/* ─── SECTION TITLE ──────────────────────────────────────────── */
+.dash-section-label {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+}
+
+.dash-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    opacity: .6;
+}
+
+/* ─── KPI CARDS ──────────────────────────────────────────────── */
+.dash-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.dash-kpi-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.dash-kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, .3);
+}
+
+.dash-kpi-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.02) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.dash-kpi-card--assets  { border-color: var(--border); }
+.dash-kpi-card--assets:hover  { border-color: var(--gold-dark);   box-shadow: 0 8px 32px var(--gold-glow); }
+
+.dash-kpi-card--stocks  { border-color: var(--border); }
+.dash-kpi-card--stocks:hover  { border-color: rgba(59,130,246,.4); box-shadow: 0 8px 32px rgba(59,130,246,.12); }
+
+.dash-kpi-card--cash    { border-color: var(--border); }
+.dash-kpi-card--cash:hover    { border-color: rgba(16,185,129,.4); box-shadow: 0 8px 32px var(--green-dim); }
+
+.dash-kpi-card__accent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.dash-kpi-card--assets .dash-kpi-card__accent  { background: linear-gradient(90deg, var(--gold), var(--gold-dark)); }
+.dash-kpi-card--stocks .dash-kpi-card__accent  { background: linear-gradient(90deg, var(--blue), transparent); }
+.dash-kpi-card--cash   .dash-kpi-card__accent  { background: linear-gradient(90deg, var(--green), transparent); }
+
+.dash-kpi-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: .9rem;
+}
+
+.dash-kpi-card__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .9rem;
+    flex-shrink: 0;
+}
+
+.dash-kpi-card__label {
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 .4rem;
+}
+
+.dash-kpi-card__value {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin: 0;
+    letter-spacing: -.5px;
+}
+
+.dash-kpi-card__footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: .65rem;
+    font-size: .73rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.dash-kpi-card__footer i { font-size: .7rem; }
+
+.dash-kpi-card--assets  .dash-kpi-card__footer { color: var(--gold); }
+.dash-kpi-card--stocks  .dash-kpi-card__footer { color: var(--blue); }
+.dash-kpi-card--cash    .dash-kpi-card__footer { color: var(--green); }
+
+/* ─── CHARTS ROW ─────────────────────────────────────────────── */
+.dash-charts-row {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+    align-items: start;
+}
+
+.dash-chart-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-chart-card--accented::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent 60%);
+}
+
+.dash-chart-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.1rem;
+}
+
+.dash-chart-card__title {
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dash-chart-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-md);
+}
+
+.dash-chart-empty__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--gold-glow);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.dash-chart-empty__text {
+    font-size: .8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    max-width: 200px;
+}
+
+/* ─── INSIGHTS ROW ───────────────────────────────────────────── */
+.dash-insights-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+/* ─── AI CARD ────────────────────────────────────────────────── */
+.dash-ai-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-ai-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green), transparent 60%);
+}
+
+.dash-ai-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    top: 0;
+    background: linear-gradient(160deg, rgba(16,185,129,.03) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.dash-ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-dim);
+    border: 1px solid rgba(16,185,129,.2);
+    border-radius: var(--radius-xs);
+    padding: 3px 10px;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: .9rem;
+}
+
+.dash-ai-badge__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: dash-pulse 2s ease-in-out infinite;
+}
+
+@keyframes dash-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: .4; transform: scale(.75); }
+}
+
+.dash-ai-content {
+    font-size: .85rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    position: relative;
+    z-index: 1;
+}
+
+/* ─── NEWS GRID ──────────────────────────────────────────────── */
+.dash-news-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .9rem;
+}
+
+.dash-news-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    text-decoration: none;
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-news-card:hover {
+    border-color: var(--gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px var(--gold-glow);
+}
+
+.dash-news-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.dash-news-card__source {
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xs);
+    padding: 2px 7px;
+}
+
+.dash-news-card__date {
+    font-size: .65rem;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+}
+
+.dash-news-card__title {
+    font-size: .83rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.dash-news-card__desc {
+    font-size: .76rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.dash-news-card__cta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: .71rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin-top: auto;
+    transition: gap var(--transition);
+}
+
+.dash-news-card:hover .dash-news-card__cta { gap: 7px; }
+
+.dash-news-empty {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: .83rem;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-md);
+}
+
+/* ─── STAT STRIP ─────────────────────────────────────────────── */
+.dash-stat-strip {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: .85rem 1.25rem;
+    margin-bottom: 1.75rem;
+    overflow-x: auto;
+}
+
+.dash-stat-strip__item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex-shrink: 0;
+}
+
+.dash-stat-strip__label {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.dash-stat-strip__value {
+    font-family: 'DM Mono', monospace;
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.dash-stat-strip__divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border);
+    flex-shrink: 0;
+}
+
+/* ─── PLOTLY CHART OVERRIDES ─────────────────────────────────── */
+.js-plotly-plot .plotly .modebar {
+    top: 8px !important;
+    right: 8px !important;
+}
+
+.js-plotly-plot .plotly .modebar-btn path {
+    fill: var(--text-muted) !important;
+}
+
+.js-plotly-plot .plotly .modebar-btn:hover path {
+    fill: var(--gold) !important;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .dash-charts-row {
+        grid-template-columns: 1fr;
+    }
+
+    .dash-insights-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dash-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dash-header {
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .dash-networth {
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .dash-networth__value {
+        font-size: 1.6rem;
+    }
+
+    .dash-news-grid {
+        grid-template-columns: 1fr;
+    }
+}

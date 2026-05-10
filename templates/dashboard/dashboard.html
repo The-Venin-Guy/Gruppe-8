@@ -28,7 +28,6 @@
         <div class="g8-brand">
             <div class="g8-brand__mark">G8</div>
             <span class="g8-brand__name"><em>GRUPPE</em>-8</span>
-            <span class="g8-brand__sep">/ PORTFOLIO</span>
         </div>
 
         <div class="g8-nav-actions">
@@ -40,7 +39,7 @@
 
             <!-- User pill -->
             <div class="g8-user-pill">
-                <div class="g8-user-avatar">{{ user.username|slice:":2" }}</div>
+                <i class="bi bi-person-circle me-2"></i>
                 <span class="g8-user-name">{{ user.username }}</span>
             </div>
 
@@ -58,7 +57,6 @@
     <!-- 1. HEADER -->
     <div class="dash-header anim-fadeUp">
         <div class="dash-header__greeting">
-            <p class="dash-header__eyebrow">Portfolio Overview</p>
             <h1 class="dash-header__title">
                 Welcome back, {{ user.username }} <span class="wave-emoji">👋</span>
             </h1>
@@ -75,7 +73,7 @@
 
             <div class="dash-networth__value-row">
                 <span class="dash-networth__value sensitive-value mono"
-                      data-value="{{ currency_symbol }}{{ net_worth|intcomma }}">****</span>
+                      data-value="{{ currency_symbol }}{{ net_worth|floatformat:2|intcomma }}">****</span>
                 <button id="toggle-visibility" class="dash-eye-btn" aria-label="Toggle visibility">
                     <i id="eye-icon" class="bi bi-eye"></i>
                 </button>
@@ -87,17 +85,17 @@
     <div class="dash-stat-strip anim-fadeUp anim-delay-1">
         <div class="dash-stat-strip__item">
             <span class="dash-stat-strip__label">Assets</span>
-            <span class="dash-stat-strip__value sensitive-value" data-value="{{ currency_symbol }}{{ total_assets|intcomma }}">****</span>
+            <span class="dash-stat-strip__value sensitive-value" data-value="{{ currency_symbol }}{{ total_assets|floatformat:2|intcomma }}">****</span>
         </div>
         <div class="dash-stat-strip__divider"></div>
         <div class="dash-stat-strip__item">
             <span class="dash-stat-strip__label">Stocks</span>
-            <span class="dash-stat-strip__value sensitive-value" data-value="{{ currency_symbol }}{{ total_stock|intcomma }}">****</span>
+            <span class="dash-stat-strip__value sensitive-value" data-value="{{ currency_symbol }}{{ total_stock|floatformat:2|intcomma }}">****</span>
         </div>
         <div class="dash-stat-strip__divider"></div>
         <div class="dash-stat-strip__item">
             <span class="dash-stat-strip__label">Cash</span>
-            <span class="dash-stat-strip__value sensitive-value" data-value="{{ currency_symbol }}{{ total_cash|intcomma }}">****</span>
+            <span class="dash-stat-strip__value sensitive-value" data-value="{{ currency_symbol }}{{ total_cash|floatformat:2|intcomma }}">****</span>
         </div>
         <div class="dash-stat-strip__divider"></div>
         <div class="dash-stat-strip__item">
@@ -115,7 +113,7 @@
             <div class="dash-kpi-card__header">
                 <div>
                     <p class="dash-kpi-card__label">Total Assets</p>
-                    <h3 class="dash-kpi-card__value sensitive-value" data-value="{{ currency_symbol }}{{ total_assets|intcomma }}">****</h3>
+                    <h3 class="dash-kpi-card__value sensitive-value" data-value="{{ currency_symbol }}{{ total_assets|floatformat:2|intcomma }}">****</h3>
                 </div>
                 <div class="dash-kpi-card__icon icon--gold">
                     <i class="bi bi-briefcase-fill"></i>
@@ -133,7 +131,7 @@
             <div class="dash-kpi-card__header">
                 <div>
                     <p class="dash-kpi-card__label">Stocks Value</p>
-                    <h3 class="dash-kpi-card__value sensitive-value" data-value="{{ currency_symbol }}{{ total_stock|intcomma }}">****</h3>
+                    <h3 class="dash-kpi-card__value sensitive-value" data-value="{{ currency_symbol }}{{ total_stock|floatformat:2|intcomma }}">****</h3>
                 </div>
                 <div class="dash-kpi-card__icon icon--blue">
                     <i class="bi bi-graph-up-arrow"></i>
@@ -151,7 +149,7 @@
             <div class="dash-kpi-card__header">
                 <div>
                     <p class="dash-kpi-card__label">Available Cash</p>
-                    <h3 class="dash-kpi-card__value sensitive-value" data-value="{{ currency_symbol }}{{ total_cash|intcomma }}">****</h3>
+                    <h3 class="dash-kpi-card__value sensitive-value" data-value="{{ currency_symbol }}{{ total_cash|floatformat:2|intcomma }}">****</h3>
                 </div>
                 <div class="dash-kpi-card__icon icon--green">
                     <i class="bi bi-cash-stack"></i>

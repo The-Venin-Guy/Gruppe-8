@@ -149,8 +149,7 @@
 
 .dash-kpi-card {
     background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-sm);
     padding: 1.4rem 1.5rem;
     position: relative;
     overflow: hidden;
@@ -181,16 +180,6 @@
 .dash-kpi-card--cash    { border-color: var(--border); }
 .dash-kpi-card--cash:hover    { border-color: rgba(16,185,129,.4); box-shadow: 0 8px 32px var(--green-dim); }
 
-.dash-kpi-card__accent {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-
-.dash-kpi-card--assets .dash-kpi-card__accent  { background: linear-gradient(90deg, var(--gold), var(--gold-dark)); }
-.dash-kpi-card--stocks .dash-kpi-card__accent  { background: linear-gradient(90deg, var(--blue), transparent); }
-.dash-kpi-card--cash   .dash-kpi-card__accent  { background: linear-gradient(90deg, var(--green), transparent); }
 
 .dash-kpi-card__header {
     display: flex;
@@ -257,19 +246,12 @@
 .dash-chart-card {
     background: var(--bg-surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-sm);
     padding: 1.4rem 1.5rem;
     position: relative;
     overflow: hidden;
 }
 
-.dash-chart-card--accented::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--gold), transparent 60%);
-}
 
 .dash-chart-card__header {
     display: flex;
@@ -333,28 +315,13 @@
 .dash-ai-card {
     background: var(--bg-surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-sm);
     padding: 1.4rem 1.5rem;
     position: relative;
     overflow: hidden;
 }
 
-.dash-ai-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--green), transparent 60%);
-}
 
-.dash-ai-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    top: 0;
-    background: linear-gradient(160deg, rgba(16,185,129,.03) 0%, transparent 50%);
-    pointer-events: none;
-}
 
 .dash-ai-badge {
     display: inline-flex;

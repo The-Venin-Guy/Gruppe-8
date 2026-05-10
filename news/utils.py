@@ -1,6 +1,7 @@
 import requests
 from django.conf import settings
 from groq import Groq
+from textblob import TextBlob
 
 def fetch_financial_news():
     url = 'https://newsapi.org/v2/everything'
@@ -64,3 +65,43 @@ Keep the entire response under 200 words. Be direct and specific."""
         return response.choices[0].message.content
     except Exception as e:
         return f"AI analysis unavailable: {str(e)}"
+
+from textblob import TextBlob
+
+def analyse_sentiment(articles):
+    if not articles:
+        return articles, {'score': 0, 'label': 'Neutral', 'color': '#898989', 'article_count': 0}
+    
+    top10 = articles[:10]
+    total_polarity = 0
+    
+    for a in top10:
+        text = (a['title'] or '') + ' ' + (a['description'] or '')
+        blob = TextBlob(text)
+        score = blob.sentiment.polarity
+        total_polarity += score
+        
+        if score > 0.1:
+            a['sentiment_label'] = 'Bullish'
+            a['sentiment_color'] = '#4ade80'
+        elif score < -0.1:
+            a['sentiment_label'] = 'Bearish'
+            a['sentiment_color'] = '#de4a4a'
+        else:
+            a['sentiment_label'] = 'Neutral'
+            a['sentiment_color'] = '#898989'
+        
+        a['polarity'] = round(score, 2)
+    
+    overall_sentiment = total_polarity/10
+    if overall_sentiment > 0.1:
+        overall_label = 'Bullish'
+        overall_color = '#4ade80'
+    elif overall_sentiment < -0.1:
+        overall_label = 'Bearish'
+        overall_color = '#de4a4a'
+    else:
+        overall_label = 'Neutral'
+        overall_color = '#898989'
+    
+    return top10, overall_label, overall_color

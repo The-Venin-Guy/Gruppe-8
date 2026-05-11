@@ -1,74 +1,170 @@
+{% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ title }} | Portfolio Tracker</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #0d1a0f; color: #ffffff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .card { background-color: #1a3d1f; border: none; border-radius: 16px; padding: 2rem; width: 100%; max-width: 500px; border-top: 5px solid #f87171; }
-        h2 { color: #f87171; font-weight: 700; margin-bottom: 0.3rem; }
-        .subtitle { color: #6b7280; font-size: 0.875rem; margin-bottom: 1.5rem; }
-        label { color: #9ca3af; font-size: 0.85rem; font-weight: 600; }
-        .form-control, .form-select { background-color: #0d1a0f; border: 1.5px solid #2d6b35; color: #ffffff; border-radius: 8px; }
-        .form-control:focus, .form-select:focus { background-color: #0d1a0f; border-color: #f87171; color: #ffffff; box-shadow: 0 0 0 3px rgba(248,113,113,0.15); }
-        .form-check-input:checked { background-color: #a8e63d; border-color: #a8e63d; }
-        .form-check-label { color: #9ca3af; font-size: 0.9rem; }
-        .btn-sell { background-color: #f87171; border: none; border-radius: 8px; padding: 0.65rem; font-weight: 700; color: #ffffff; width: 100%; }
-        .btn-sell:hover { background-color: #ef4444; color: #ffffff; }
-        .back-link { color: #6b7280; font-size: 0.85rem; text-decoration: none; display: block; text-align: center; margin-top: 1rem; }
-        .back-link:hover { color: #a8e63d; }
-        select option { background-color: #1a3d1f; }
-        .cash-section { display: none; margin-top: 1rem; padding: 1rem; background-color: #0d1a0f; border-radius: 8px; border: 1px solid #2d6b35; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | GRUPPE-8</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Design System -->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sell_form.css' %}">
 </head>
-<body>
-    <div class="card">
-        <h2>{{ title }}</h2>
-        <p class="subtitle">Enter the details of your sale below</p>
+<body class="sell-body">
 
-        <form method="POST">
+    <!-- Ambient orbs -->
+    <div class="sell-orb sell-orb--red"></div>
+    <div class="sell-orb sell-orb--amber"></div>
+
+    <!-- ─── SELL CARD ──────────────────────────────────────────── -->
+    <div class="sell-card">
+
+        <!-- Header -->
+        <p class="sell-card__eyebrow">
+            <i class="bi bi-tag-fill"></i> Confirm Sale
+        </p>
+        <h1 class="sell-card__title">{{ title }}</h1>
+        <p class="sell-card__sub">Enter the details of your sale below.</p>
+
+        <!-- Stock / Asset context pill (shown when we have object info) -->
+        {% if stock %}
+        <div class="sell-context">
+            <span class="sell-context__ticker">{{ stock.ticker }}</span>
+            <span class="sell-context__name">{{ stock.company_name }}</span>
+            <span class="sell-context__cost">{{ stock.shares|intcomma }} shares · ${{ stock.purchase_price|floatformat:2 }}/sh</span>
+        </div>
+        {% elif asset %}
+        <div class="sell-context">
+            <span class="sell-context__ticker" style="color:var(--blue); background:var(--blue-dim); border-color:rgba(59,130,246,.2);">ASSET</span>
+            <span class="sell-context__name">{{ asset.name }}</span>
+            <span class="sell-context__cost">${{ asset.purchase_price|floatformat:2|intcomma }}</span>
+        </div>
+        {% endif %}
+
+        <div class="sell-divider"></div>
+
+        <form method="POST" novalidate>
             {% csrf_token %}
-            <div class="mb-3">
-                <label>Sale Price {% if is_stock %}(per share){% endif %}</label>
-                {{ form.sale_price }}
-            </div>
-            <div class="mb-3">
-                <label>Sale Date</label>
-                {{ form.sale_date }}
-            </div>
 
-            {% if is_stock or is_asset %}
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="id_convert_to_cash" name="convert_to_cash">
-                <label class="form-check-label ms-2">Convert proceeds to a cash account?</label>
-            </div>
-            <div class="cash-section" id="cashSection">
-                <label>Select Cash Account</label>
-                {% if is_stock %}
-                    {{ form.cash_account }}
-                {% else %}
-                    <select name="cash_account" class="form-select">
-                        <option value="">-- Select Account --</option>
-                        {% for account in cash_accounts %}
-                            <option value="{{ account.pk }}">{{ account.account_name }} ({{ account.currency }})</option>
-                        {% endfor %}
-                    </select>
+            <div class="sell-fields">
+
+                <!-- Sale Price -->
+                <div class="sell-field">
+                    <label class="sell-label" for="{{ form.sale_price.id_for_label }}">
+                        <i class="bi bi-currency-dollar"></i>
+                        Sale Price {% if is_stock %}(per share){% endif %}
+                    </label>
+                    {{ form.sale_price }}
+                    {% if form.sale_price.errors %}
+                        <ul class="errorlist">{% for e in form.sale_price.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+
+                <!-- Sale Date -->
+                <div class="sell-field">
+                    <label class="sell-label" for="{{ form.sale_date.id_for_label }}">
+                        <i class="bi bi-calendar3"></i>
+                        Sale Date
+                    </label>
+                    {{ form.sale_date }}
+                    {% if form.sale_date.errors %}
+                        <ul class="errorlist">{% for e in form.sale_date.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+
+                <!-- Convert to Cash toggle -->
+                {% if is_stock or is_asset %}
+                <div class="sell-field">
+                    <label class="sell-toggle-row" for="id_convert_to_cash">
+                        <div class="sell-toggle-row__text">
+                            <span class="sell-toggle-row__label">Convert proceeds to cash</span>
+                            <span class="sell-toggle-row__sub">Add the sale proceeds to an existing cash account</span>
+                        </div>
+                        <input type="checkbox" id="id_convert_to_cash" name="convert_to_cash">
+                    </label>
+                </div>
+
+                <!-- Cash account reveal panel -->
+                <div class="sell-cash-reveal" id="cashReveal">
+                    <div class="sell-cash-reveal__inner">
+                        <div class="sell-cash-panel">
+                            <p class="sell-cash-panel__label">
+                                <i class="bi bi-piggy-bank-fill"></i> Select Cash Account
+                            </p>
+                            {% if is_stock %}
+                                {{ form.cash_account }}
+                            {% else %}
+                                <select name="cash_account" class="sell-fields">
+                                    <option value="">— Choose account —</option>
+                                    {% for account in cash_accounts %}
+                                    <option value="{{ account.pk }}">
+                                        {{ account.account_name }} ({{ account.currency }})
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
                 {% endif %}
-            </div>
-            {% endif %}
 
-            <button type="submit" class="btn-sell mt-3">Confirm Sale</button>
+            </div><!-- /.sell-fields -->
+
+            <!-- Confirm button -->
+            <button type="submit" class="sell-submit">
+                <i class="bi bi-check2-circle"></i> Confirm Sale
+            </button>
         </form>
-        <a href="{{ back_url }}" class="back-link">← Cancel</a>
+
+        <!-- Cancel -->
+        <a href="{{ back_url }}" class="sell-cancel">
+            <i class="bi bi-x-circle"></i> Cancel &amp; go back
+        </a>
+
     </div>
 
     <script>
-        const checkbox = document.getElementById('id_convert_to_cash');
-        const cashSection = document.getElementById('cashSection');
-        checkbox.addEventListener('change', function() {
-            cashSection.style.display = this.checked ? 'block' : 'none';
-        });
+    (function () {
+        const checkbox   = document.getElementById('id_convert_to_cash');
+        const reveal     = document.getElementById('cashReveal');
+
+        if (checkbox && reveal) {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    reveal.classList.add('sell-cash-reveal--open');
+                } else {
+                    reveal.classList.remove('sell-cash-reveal--open');
+                }
+            });
+        }
+
+        /* Style the Django-rendered cash_account select if present */
+        const accountSelect = reveal ? reveal.querySelector('select') : null;
+        if (accountSelect) {
+            accountSelect.style.cssText = [
+                'width:100%',
+                'background:var(--bg-base)',
+                'border:1px solid var(--border)',
+                'border-radius:var(--radius-sm)',
+                'color:var(--text-primary)',
+                "font-family:'DM Sans',sans-serif",
+                'font-size:.875rem',
+                'padding:.6rem .9rem',
+                'outline:none',
+                '-webkit-appearance:none',
+                'appearance:none',
+                'margin-top:.25rem',
+            ].join(';');
+        }
+    })();
     </script>
+
 </body>
 </html>

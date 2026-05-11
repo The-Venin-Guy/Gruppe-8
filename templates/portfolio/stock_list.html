@@ -28,13 +28,18 @@
         <div class="g8-brand">
             <div class="g8-brand__mark">G8</div>
             <span class="g8-brand__name"><em>GRUPPE</em>-8</span>
+            <span class="g8-brand__sep">/ STOCKS</span>
         </div>
 
         <div class="g8-nav-actions">
-            <a href="/dashboard/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <span class="g8-badge g8-badge--green" style="gap:6px;">
+                <span style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:stock-pulse 2.2s infinite;display:inline-block;flex-shrink:0;"></span>
+                Markets Live
+            </span>
+            <a href="/dashboard/"        class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-speedometer2"></i> Dashboard</a>
             <a href="/portfolio/assets/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-briefcase"></i> Assets</a>
-            <a href="/portfolio/cash/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-cash"></i> Cash</a>
-            <a href="/users/logout/" class="btn-g8 btn-g8--danger btn-g8--xs"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            <a href="/portfolio/cash/"   class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-cash"></i> Cash</a>
+            <a href="/users/logout/"     class="btn-g8 btn-g8--danger btn-g8--xs"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
     </div>
 </nav>
@@ -159,7 +164,9 @@
                 </div>
 
                 <div class="stock-metric">
-                    <span class="stock-metric__label">Current Price</span>
+                    <span class="stock-metric__label">
+                        <span class="live-dot"></span>Current Price
+                    </span>
                     <span class="stock-metric__value">
                         {% if item.current_price %}${{ item.current_price|floatformat:2|intcomma }}{% else %}—{% endif %}
                     </span>
@@ -244,7 +251,7 @@
                     </div>
                     <div class="sold-stock-row__flow">
                         <span>{{ stock.shares|intcomma }} shares @ ${{ stock.purchase_price|floatformat:2 }}</span>
-                        <span style="color:var(--border);"><i class="bi bi-arrow-right"></i></span>
+                        <span class="arrow"><i class="bi bi-arrow-right"></i></span>
                         {% if stock.sale_price %}
                         <span style="color:var(--text-primary);">Sold @ ${{ stock.sale_price|floatformat:2 }}</span>
                         {% endif %}

@@ -34,7 +34,7 @@
             <a href="/dashboard/"      class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-speedometer2"></i> Dashboard</a>
             <a href="/portfolio/stocks/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-graph-up"></i> Stocks</a>
             <a href="/portfolio/cash/"   class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-cash"></i> Cash</a>
-            <a href="/users/logout/"     class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            <a href="/users/logout/"     class="btn-g8 btn-g8--danger btn-g8--xs"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
     </div>
 </nav>
@@ -100,7 +100,6 @@
     {% if assets %}
         {% for asset in assets %}
         <div class="asset-card anim-fadeUp" style="animation-delay: {{ forloop.counter0 }}00ms;">
-            <div class="asset-card__accent"></div>
 
             <div class="asset-card__top">
                 <div class="asset-card__info">

@@ -13,8 +13,8 @@
 
     /* subtle radial glow behind form */
     background-image:
-        radial-gradient(ellipse 600px 400px at 20% 80%, rgba(16, 185, 129, .06) 0%, transparent 70%),
-        radial-gradient(ellipse 500px 350px at 80% 20%, rgba(59, 130, 246, .05) 0%, transparent 70%);
+        radial-gradient(ellipse 600px 400px at 20% 80%, rgba(201,169,110,.04) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 350px at 80% 20%, rgba(201,169,110,.04) 0%, transparent 70%);
 }
 
 /* ─── FORM CARD ──────────────────────────────────────────────── */
@@ -22,32 +22,15 @@
     width: 100%;
     max-width: 480px;
     background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-sm);
     padding: 2.5rem 2.25rem 2rem;
     position: relative;
-    overflow: hidden;
     box-shadow: 0 24px 60px rgba(0, 0, 0, .55);
     animation: g8-fadeUp .4s var(--ease) both;
 }
 
-/* green top accent */
-.cash-form-card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--green), transparent 65%);
-}
 
-/* inner ambient gradient */
-.cash-form-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(155deg, rgba(16, 185, 129, .04) 0%, transparent 55%);
-    pointer-events: none;
-}
+
 
 /* ─── CARD HEADER ────────────────────────────────────────────── */
 .cash-form-card__eyebrow {
@@ -55,7 +38,7 @@
     font-weight: 600;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--green);
+    color: var(--gold);
     margin-bottom: .35rem;
 }
 
@@ -130,8 +113,8 @@
 .cash-form-fields input:focus,
 .cash-form-fields select:focus,
 .cash-form-fields textarea:focus {
-    border-color: var(--green);
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, .12);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,169,110, .12);
 }
 
 /* Select arrow */
@@ -174,9 +157,8 @@
     width: 100%;
     padding: .75rem;
     margin-top: 1.5rem;
-    background: linear-gradient(135deg, #0b9f6a, var(--green));
     border: 1px solid transparent;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     color: #fff;
     font-family: 'DM Sans', sans-serif;
     font-size: .9rem;
@@ -189,8 +171,6 @@
 }
 
 .cash-form-submit:hover {
-    background: linear-gradient(135deg, #0a8a5c, #0ecf8a);
-    box-shadow: 0 4px 22px rgba(16, 185, 129, .3);
     transform: translateY(-1px);
 }
 
@@ -213,7 +193,6 @@
     z-index: 1;
 }
 
-.cash-form-back:hover { color: var(--green); }
 
 /* ─── AMBIENT ORBS ───────────────────────────────────────────── */
 .cash-orb {
@@ -227,7 +206,6 @@
 
 .cash-orb--green {
     width: 500px; height: 500px;
-    background: radial-gradient(circle, #065f46, transparent 70%);
     bottom: -160px; left: -140px;
 }
 

@@ -29,14 +29,7 @@
     gap: 6px;
 }
 
-.assets-header__eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 18px;
-    height: 1px;
-    background: var(--gold);
-    opacity: .5;
-}
+
 
 .assets-header__title {
     font-size: 1.65rem;
@@ -59,7 +52,6 @@
     align-items: center;
     gap: 0;
     background: var(--bg-surface);
-    border: 1px solid var(--border);
     border-radius: var(--radius-md);
     overflow: hidden;
     margin-bottom: 1.75rem;
@@ -144,12 +136,7 @@
     pointer-events: none;
 }
 
-.asset-card__accent {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--gold), transparent 70%);
-}
+
 
 .asset-card__top {
     display: flex;
@@ -238,13 +225,6 @@
     margin-bottom: 1.75rem;
 }
 
-.asset-chart-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--gold), transparent 60%);
-}
 
 .asset-chart-card__header {
     display: flex;

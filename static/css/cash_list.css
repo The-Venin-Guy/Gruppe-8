@@ -17,7 +17,7 @@
     font-weight: 600;
     letter-spacing: 1.4px;
     text-transform: uppercase;
-    color: var(--green);
+    color: var(--gold);
     margin-bottom: .35rem;
 }
 
@@ -99,8 +99,7 @@
 /* ─── ACCOUNT CARD ───────────────────────────────────────────── */
 .cash-card {
     background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     padding: 1.5rem;
     position: relative;
     overflow: hidden;
@@ -116,26 +115,6 @@
     transform: translateY(-2px);
 }
 
-/* Top accent line */
-.cash-card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--green), transparent 70%);
-}
-
-/* left glow bar */
-.cash-card::before {
-    content: '';
-    position: absolute;
-    top: 20%; bottom: 20%;
-    left: 0;
-    width: 3px;
-    background: var(--green);
-    border-radius: 0 3px 3px 0;
-    opacity: .7;
-}
 
 /* ─── CARD TOP ROW ───────────────────────────────────────────── */
 .cash-card__top {
@@ -166,7 +145,7 @@
 .cash-card__currency {
     font-size: .85rem;
     font-weight: 500;
-    color: var(--green);
+    color: var(--gold);
     vertical-align: middle;
     margin-right: 4px;
     font-family: 'DM Mono', monospace;
@@ -229,7 +208,7 @@
 .cash-card__update-btn:hover {
     background: rgba(16, 185, 129, .08);
     border-color: rgba(16, 185, 129, .3);
-    color: var(--green);
+    color: var(--gold);
 }
 
 /* ─── DROPDOWN OVERRIDE ──────────────────────────────────────── */
@@ -322,11 +301,11 @@
 
 .cash-empty__icon {
     width: 56px; height: 56px;
-    background: var(--green-dim);
+    background: var(--gold-dim);
     border-radius: 16px;
     display: flex; align-items: center; justify-content: center;
     font-size: 1.4rem;
-    color: var(--green);
+    color: var(--gold);
     margin-bottom: .5rem;
 }
 

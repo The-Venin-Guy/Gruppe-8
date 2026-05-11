@@ -1,84 +1,278 @@
+{% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ stock.ticker }} | Portfolio Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ stock.ticker }} — {{ stock.company_name }} | GRUPPE-8</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Plotly -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <style>
-        :root {
-            --bg-dark: #121415;
-            --card-bg: #1b1e20;
-            --accent-green: #a8e63d;
-            --border-subtle: #2c3034;
-            --text-muted: #8a8d91;
-        }
-        body { background-color: var(--bg-dark); color: #fff; font-family: 'Inter', sans-serif; }
-        .navbar { background-color: rgba(18,20,21,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-subtle); padding: 0.75rem 2rem; }
-        .navbar-brand { color: #fff; font-weight: 700; }
-        .nav-link { color: var(--text-muted) !important; font-size: 0.9rem; }
-        .nav-link:hover { color: var(--accent-green) !important; }
-        .card { background-color: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
-        .ticker-badge { background-color: #2d6b35; color: var(--accent-green); padding: 0.3rem 0.8rem; border-radius: 6px; font-weight: 700; font-size: 1rem; }
-        .stat-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
-        .stat-value { color: #fff; font-weight: 700; font-size: 1.2rem; }
-        .gain { color: #4ade80; }
-        .loss { color: #f87171; }
-        .period-btn { background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted); border-radius: 6px; padding: 0.3rem 0.8rem; font-size: 0.8rem; text-decoration: none; transition: 0.2s; }
-        .period-btn:hover, .period-btn.active { border-color: var(--accent-green); color: var(--accent-green); }
-        .back-link { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; }
-        .back-link:hover { color: var(--accent-green); }
-    </style>
+
+    <!-- Design System -->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/stock_detail.css' %}">
 </head>
 <body>
-    <nav class="navbar">
-        <span class="navbar-brand">GRUPPE-8</span>
-        <div class="ms-auto d-flex gap-3">
-            <a href="/dashboard/" class="nav-link">Dashboard</a>
-            <a href="/portfolio/stocks/" class="nav-link">← Stocks</a>
+
+<!-- ─── NAVBAR ────────────────────────────────────────────────── -->
+<nav class="g8-navbar">
+    <div class="g8-navbar__inner">
+        <div class="g8-brand">
+            <div class="g8-brand__mark">G8</div>
+            <span class="g8-brand__name"><em>GRUPPE</em>-8</span>
         </div>
-    </nav>
+        <div class="g8-nav-actions">
+            <a href="/dashboard/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="/portfolio/stocks/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-graph-up-arrow"></i> Stocks</a>
+            <a href="/portfolio/cash/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-cash"></i> Cash</a>
+            <a href="/users/logout/" class="btn-g8 btn-g8--danger btn-g8--xs"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        </div>
+    </div>
+</nav>
 
-    <div class="container mt-4">
-        <a href="/portfolio/stocks/" class="back-link">← Back to Stocks</a>
+<!-- ─── MAIN ─────────────────────────────────────────────────── -->
+<main class="g8-main">
 
-        <div class="card mt-3">
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
-                <div>
-                    <span class="ticker-badge">{{ stock.ticker }}</span>
-                    <h3 class="mt-2 mb-0">{{ stock.company_name }}</h3>
-                    <p style="color: var(--text-muted); font-size:0.85rem;">{{ stock.shares }} shares · Bought {{ stock.purchase_date }}</p>
+    <!-- Back link -->
+    <a href="/portfolio/stocks/" class="detail-back anim-fadeUp">
+        <i class="bi bi-arrow-left"></i> Back to Stocks
+    </a>
+
+    <!-- ─── HERO ───────────────────────────────────────────────── -->
+    <div class="detail-hero anim-fadeUp">
+        <div class="detail-hero__inner">
+
+            <!-- Left: identity -->
+            <div class="detail-hero__id">
+                <div class="detail-ticker">
+                    <span class="detail-ticker__badge">{{ stock.ticker }}</span>
+                    <span class="g8-badge g8-badge--blue">Equity</span>
                 </div>
-                <div class="text-end">
-                    <p class="stat-label">Purchase Price</p>
-                    <p class="stat-value">${{ stock.purchase_price }}</p>
+                <h1 class="detail-hero__company">{{ stock.company_name }}</h1>
+                <div class="detail-hero__meta">
+                    <span class="detail-hero__meta-item">
+                        <i class="bi bi-layers"></i>
+                        {{ stock.shares|intcomma }} shares
+                    </span>
+                    <span class="detail-hero__meta-item">
+                        <i class="bi bi-calendar3"></i>
+                        Bought {{ stock.purchase_date }}
+                    </span>
+                    <span class="detail-hero__meta-item">
+                        <i class="bi bi-tag"></i>
+                        ${{ stock.purchase_price|floatformat:2|intcomma }} avg cost
+                    </span>
                 </div>
             </div>
+
+            <!-- Right: actions -->
+            <div class="detail-hero__actions">
+                <a href="/portfolio/stocks/sell/{{ stock.pk }}/" class="btn-g8 btn-g8--amber btn-g8--xs">
+                    <i class="bi bi-tag-fill"></i> Sell
+                </a>
+                <a href="/portfolio/stocks/edit/{{ stock.pk }}/" class="btn-g8 btn-g8--ghost btn-g8--xs">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <form method="POST" action="/portfolio/stocks/delete/{{ stock.pk }}/" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="btn-g8 btn-g8--danger btn-g8--xs"
+                            onclick="return confirm('Delete {{ stock.ticker }}? This cannot be undone.')">
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ─── STAT STRIP ─────────────────────────────────────────── -->
+    <div class="detail-stats anim-fadeUp anim-delay-1">
+
+        <div class="detail-stat">
+            <span class="detail-stat__label">Purchase Price</span>
+            <span class="detail-stat__value">${{ stock.purchase_price|floatformat:2|intcomma }}</span>
+            <span class="detail-stat__sub">per share</span>
         </div>
 
-        <!-- Time Period Filters -->
-        <div class="d-flex gap-2 mb-3">
-            {% for p, label in periods %}
-            <a href="?period={{ p }}" class="period-btn {% if period == p %}active{% endif %}">{{ label }}</a>
-            {% endfor %}
+        <div class="detail-stat">
+            <span class="detail-stat__label">Total Cost</span>
+            <span class="detail-stat__value">${{ stock.purchase_price|floatformat:2|intcomma }}</span>
+            <span class="detail-stat__sub">{{ stock.shares|intcomma }} × ${{ stock.purchase_price|floatformat:2 }}</span>
         </div>
 
-        <!-- Graph -->
-        <div class="card">
+        <div class="detail-stat">
+            <span class="detail-stat__label">Current Price</span>
+            <span class="detail-stat__value" id="stat-current-price">—</span>
+            <span class="detail-stat__sub">live market</span>
+        </div>
+
+        <div class="detail-stat">
+            <span class="detail-stat__label">Market Value</span>
+            <span class="detail-stat__value" id="stat-market-value">—</span>
+            <span class="detail-stat__sub">total position</span>
+        </div>
+
+        <div class="detail-stat" id="stat-pnl-cell">
+            <span class="detail-stat__label">P &amp; L</span>
+            <span class="detail-stat__value" id="stat-pnl">—</span>
+            <span class="detail-stat__sub" id="stat-pnl-pct">—</span>
+        </div>
+
+    </div>
+
+    <!-- ─── PERIOD FILTER ──────────────────────────────────────── -->
+    <div class="detail-periods anim-fadeUp anim-delay-2">
+        <span class="detail-periods__label">Period</span>
+        {% for p, label in periods %}
+        <a href="?period={{ p }}"
+           class="period-pill {% if period == p %}active{% endif %}">
+            {{ label }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- ─── CHART ──────────────────────────────────────────────── -->
+    <div class="detail-chart-card anim-fadeUp anim-delay-2">
+        <div class="detail-chart-card__header">
+            <h4 class="detail-chart-card__title">
+                <i class="bi bi-activity" style="color:var(--gold);"></i>
+                {{ stock.ticker }} Price History
+            </h4>
+            <span class="g8-badge g8-badge--gold">
+                {% for p, label in periods %}{% if period == p %}{{ label }}{% endif %}{% endfor %}
+            </span>
+        </div>
+        <div class="detail-chart-card__body">
             {% if graph_json %}
-                <div id="stock-graph"></div>
+                <div id="stock-graph" style="min-height:380px;"></div>
             {% else %}
-                <p style="color: var(--text-muted); text-align:center; padding: 2rem;">Could not load market data for {{ stock.ticker }}</p>
+                <div class="detail-nodata">
+                    <div class="detail-nodata__icon">
+                        <i class="bi bi-wifi-off"></i>
+                    </div>
+                    <h5 class="detail-nodata__title">Market data unavailable</h5>
+                    <p class="detail-nodata__sub">Could not load price history for <strong style="color:var(--gold);">{{ stock.ticker }}</strong>. Check the ticker or try again later.</p>
+                </div>
             {% endif %}
         </div>
     </div>
 
-    {% if graph_json %}
-    <script>
-        var graphData = JSON.parse('{{ graph_json|escapejs }}');
-        Plotly.newPlot('stock-graph', graphData.data, graphData.layout);
-    </script>
-    {% endif %}
+</main>
+
+<!-- ─── SCRIPTS ───────────────────────────────────────────────── -->
+{% if graph_json %}
+<script>
+(function () {
+    const FONT   = "'DM Mono','DM Sans',monospace";
+    const TRANS  = 'rgba(0,0,0,0)';
+    const TEXT_S = 'rgba(255,255,255,.65)';
+    const GRID   = 'rgba(255,255,255,.05)';
+    const GOLD   = '#C9A96E';
+    const GREEN  = '#10B981';
+    const RED    = '#EF4444';
+
+    /* ── Render chart ── */
+    const raw = JSON.parse('{{ graph_json|escapejs }}');
+
+    if (raw.data && raw.data[0]) {
+        Object.assign(raw.data[0], {
+            line: { color: GOLD, width: 2 },
+            fill: 'tozeroy',
+            fillcolor: 'rgba(201,169,110,.06)',
+            hovertemplate: '<b>%{x}</b><br>$%{y:,.2f}<extra></extra>',
+        });
+    }
+
+    Object.assign(raw.layout, {
+        autosize:      true,
+        paper_bgcolor: TRANS,
+        plot_bgcolor:  TRANS,
+        margin: { l: 52, r: 20, t: 20, b: 48 },
+        font:   { family: FONT, color: TEXT_S, size: 11 },
+        xaxis: {
+            gridcolor:    GRID,
+            linecolor:    'rgba(255,255,255,.08)',
+            tickfont:     { family: FONT, size: 10, color: TEXT_S },
+            showgrid:     true,
+            zeroline:     false,
+        },
+        yaxis: {
+            gridcolor:    GRID,
+            linecolor:    'rgba(255,255,255,.08)',
+            tickfont:     { family: FONT, size: 10, color: TEXT_S },
+            tickprefix:   '$',
+            tickformat:   ',.2f',
+            showgrid:     true,
+            zeroline:     false,
+        },
+        hoverlabel: {
+            bgcolor:  '#2A2A2A',
+            bordercolor: GOLD,
+            font: { family: FONT, size: 12, color: '#fff' }
+        },
+        hovermode: 'x unified',
+    });
+
+    Plotly.newPlot('stock-graph', raw.data, raw.layout, {
+        responsive:     true,
+        displayModeBar: false,
+    });
+
+    /* ── Populate stat strip from chart data ── */
+    try {
+        const yVals  = raw.data[0].y;
+        const lastPx = yVals[yVals.length - 1];
+        const shares = {{ stock.shares }};
+        const cost   = {{ stock.purchase_price }};
+
+        const fmt = function (n) {
+            return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        };
+
+        document.getElementById('stat-current-price').textContent = fmt(lastPx);
+        document.getElementById('stat-market-value').textContent  = fmt(lastPx * shares);
+
+        const pnl    = (lastPx - cost) * shares;
+        const pnlPct = ((lastPx - cost) / cost) * 100;
+        const pnlEl  = document.getElementById('stat-pnl');
+        const pctEl  = document.getElementById('stat-pnl-pct');
+        const cell   = document.getElementById('stat-pnl-cell');
+
+        pnlEl.textContent = (pnl >= 0 ? '▲ ' : '▼ ') + fmt(Math.abs(pnl));
+        pctEl.textContent = (pnlPct >= 0 ? '+' : '') + pnlPct.toFixed(2) + '%';
+
+        if (pnl >= 0) {
+            cell.classList.add('detail-stat--gain');
+            raw.data[0].line.color    = GREEN;
+            raw.data[0].fillcolor     = 'rgba(16,185,129,.06)';
+        } else {
+            cell.classList.add('detail-stat--loss');
+            raw.data[0].line.color    = RED;
+            raw.data[0].fillcolor     = 'rgba(239,68,68,.06)';
+        }
+
+        /* Re-render with correct gain/loss colour */
+        Plotly.react('stock-graph', raw.data, raw.layout, {
+            responsive:     true,
+            displayModeBar: false,
+        });
+
+    } catch (e) {
+        console.warn('Stat population error:', e);
+    }
+
+})();
+</script>
+{% endif %}
+
 </body>
 </html>

@@ -1,0 +1,280 @@
+/* ============================================================
+   GRUPPE-8  |  stock_detail.css
+   ============================================================ */
+
+/* ─── BACK LINK ──────────────────────────────────────────────── */
+.detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-bottom: 1.75rem;
+    transition: color var(--transition);
+}
+.detail-back:hover { color: var(--gold); }
+
+/* ─── HERO CARD ──────────────────────────────────────────────── */
+.detail-hero {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 2rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+/* ambient shimmer */
+.detail-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, rgba(201,169,110,.04) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.detail-hero__inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+/* Left: ticker + name */
+.detail-hero__id { display: flex; flex-direction: column; gap: .6rem; }
+
+.detail-ticker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-ticker__badge {
+    background: rgba(201,169,110,.12);
+    color: var(--gold);
+    border: 1px solid rgba(201,169,110,.22);
+    border-radius: var(--radius-xs);
+    padding: 3px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: .88rem;
+    font-weight: 500;
+    letter-spacing: .5px;
+}
+
+.detail-hero__company {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -.03em;
+    margin: 0;
+    line-height: 1.15;
+}
+
+.detail-hero__meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: .2rem;
+}
+
+.detail-hero__meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: .8rem;
+    color: var(--text-muted);
+}
+
+.detail-hero__meta-item i { font-size: .78rem; }
+
+/* Right: action buttons */
+.detail-hero__actions {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+/* ─── STAT STRIP ─────────────────────────────────────────────── */
+.detail-stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.detail-stat {
+    background: var(--bg-surface);
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    transition: background var(--transition);
+}
+
+.detail-stat:hover { background: var(--bg-elevated); }
+
+.detail-stat__label {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.detail-stat__value {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -.03em;
+}
+
+.detail-stat__sub {
+    font-size: .68rem;
+    color: var(--text-muted);
+}
+
+.detail-stat--gain .detail-stat__value { color: var(--green); }
+.detail-stat--loss .detail-stat__value { color: var(--red); }
+
+/* ─── PERIOD FILTER ──────────────────────────────────────────── */
+.detail-periods {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.detail-periods__label {
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-right: .25rem;
+}
+
+.period-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: .3rem .85rem;
+    border-radius: 100px;
+    font-size: .75rem;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition: background var(--transition), color var(--transition),
+                border-color var(--transition), box-shadow var(--transition);
+    letter-spacing: .3px;
+}
+
+.period-pill:hover {
+    color: var(--text-primary);
+    border-color: var(--border-subtle);
+    background: var(--bg-elevated);
+}
+
+.period-pill.active {
+    background: rgba(201,169,110,.12);
+    border-color: rgba(201,169,110,.3);
+    color: var(--gold);
+    box-shadow: 0 0 12px rgba(201,169,110,.1);
+}
+
+/* ─── CHART CARD ─────────────────────────────────────────────── */
+.detail-chart-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.detail-chart-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.15rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-chart-card__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.detail-chart-card__body {
+    padding: .5rem 0 0;
+}
+
+/* ─── NO DATA STATE ──────────────────────────────────────────── */
+.detail-nodata {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .6rem;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.detail-nodata__icon {
+    width: 52px; height: 52px;
+    background: var(--amber-dim);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.35rem;
+    color: var(--amber);
+    margin-bottom: .4rem;
+}
+
+.detail-nodata__title {
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.detail-nodata__sub {
+    font-size: .8rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .detail-stats { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 700px) {
+    .detail-stats { grid-template-columns: repeat(2, 1fr); }
+    .detail-hero__inner { flex-direction: column; }
+    .detail-hero__actions { width: 100%; }
+    .detail-hero__company { font-size: 1.3rem; }
+    .detail-hero { padding: 1.4rem 1.25rem; }
+}
+
+@media (max-width: 480px) {
+    .detail-stats { grid-template-columns: 1fr 1fr; }
+}

@@ -1,230 +1,241 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cash | Portfolio Tracker</title>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Cash Accounts | GRUPPE-8</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <style>
-        :root {
-            --bg-dark: #121415;
-            --card-bg: #1b1e20;
-            --accent-green: #a8e63d;
-            --border-subtle: #2c3034;
-            --text-muted: #8a8d91;
-            --text-bright: #ffffff;
-            --danger-red: #f87171;
-        }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-bright);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-        }
+    <!-- Bootstrap (dropdown JS only) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        /* Navbar */
-        .navbar {
-            background-color: rgba(18, 20, 21, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 0.75rem 2rem;
-        }
-        .navbar-brand {
-            color: var(--text-bright);
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .nav-link { 
-            color: var(--text-muted) !important; 
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-        .nav-link:hover { color: var(--accent-green) !important; }
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-        /* Header */
-        .page-header { margin: 3rem 0 2rem; }
-        .page-header h2 { font-weight: 700; font-size: 1.75rem; color: var(--text-bright); }
-
-        /* Cash Cards */
-        .cash-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.25rem;
-            position: relative;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-        .cash-card:hover {
-            border-color: #3e4246;
-            transform: translateY(-2px);
-        }
-        
-        .accent-bar {
-            position: absolute; left: 0; top: 25%; bottom: 25%; width: 4px; 
-            background: var(--accent-green); border-radius: 0 4px 4px 0;
-        }
-
-        .account-name { 
-            font-weight: 600; 
-            font-size: 1.1rem; 
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-        }
-
-        .balance-display { 
-            font-weight: 700; 
-            font-size: 1.8rem; 
-            color: var(--text-bright);
-            letter-spacing: -1px;
-        }
-
-        .updated-tag { 
-            color: var(--text-muted); 
-            font-size: 0.75rem; 
-            margin-top: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* Buttons */
-        .btn-add {
-            background-color: var(--accent-green);
-            color: #121415;
-            border: none;
-            border-radius: 8px;
-            padding: 0.6rem 1.25rem;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        .btn-add:hover { opacity: 0.9; color: #121415; }
-
-        .btn-action {
-            background: transparent;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-muted);
-            border-radius: 6px;
-            padding: 0.4rem 0.9rem;
-            font-size: 0.8rem;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        .btn-action:hover { border-color: var(--text-bright); color: var(--text-bright); }
-        .btn-delete:hover { border-color: var(--danger-red); color: var(--danger-red); }
-
-        .empty-state {
-            padding: 5rem 0;
-            text-align: center;
-            border: 1px dashed var(--border-subtle);
-            border-radius: 16px;
-            color: var(--text-muted);
-        }
-    </style>
+    <!-- Design System -->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cash_list.css' %}">
 </head>
 <body>
 
-    <nav class="navbar sticky-top">
-        <div class="container-fluid">
-            <span class="navbar-brand">GRUPPE-8</span>
-            <div class="ms-auto d-flex gap-4">
-                <a href="/dashboard/" class="nav-link">Dashboard</a>
-                <a href="/portfolio/assets/" class="nav-link">Assets</a>
-                <a href="/portfolio/stocks/" class="nav-link">Stocks</a>
-                <a href="/users/logout/" class="nav-link text-danger">Logout</a>
-            </div>
+<nav class="g8-navbar">
+    <div class="g8-navbar__inner">
+        <div class="g8-brand">
+            <div class="g8-brand__mark">G8</div>
+            <span class="g8-brand__name"><em>GRUPPE</em>-8</span>
         </div>
-    </nav>
-
-    <div class="container">
-        <div class="page-header d-flex justify-content-between align-items-center">
-            <div>
-                <h2>Cash Accounts</h2>
-                <p class="text-muted mb-0">Monitor your liquid capital and bank balances.</p>
-            </div>
-            <a href="/portfolio/cash/add/" class="btn-add"><i class="bi bi-plus-lg me-2"></i>Add Account</a>
+        <div class="g8-nav-actions">
+            <a href="/dashboard/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="/portfolio/assets/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-briefcase"></i> Assets</a>
+            <a href="/portfolio/stocks/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-graph-up-arrow"></i> Stocks</a>
+            <a href="/users/logout/" class="btn-g8 btn-g8--danger btn-g8--xs"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
+    </div>
+</nav>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-dark border-success text-success py-2 mb-4" style="background: rgba(168, 230, 61, 0.05);">
-                    <i class="bi bi-check-circle me-2"></i>{{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+<main class="g8-main">
 
-        {% if accounts %}
-            <div class="row">
-                {% for account in accounts %}
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="cash-card">
-                        <div class="accent-bar"></div>
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h5 class="account-name">{{ account.account_name }}</h5>
-                                <div class="balance-display">
-                                    <span style="font-size: 1rem; color: var(--accent-green); vertical-align: middle; margin-right: 4px;">{{ account.currency }}</span>{{ account.balance }}
-                                </div>
-                                <div class="updated-tag">
-                                    <i class="bi bi-clock"></i> Updated {{ account.updated_at|date:"M d, Y" }}
-                                </div>
-                            </div>
-                            <div class="dropdown">
-                                <button class="btn-action border-0" type="button" data-bs-toggle="dropdown">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end border-secondary shadow">
-                                    <li><a class="dropdown-item py-2" href="/portfolio/cash/edit/{{ account.pk }}/"><i class="bi bi-pencil me-2"></i> Edit Account</a></li>
-                                    <li><hr class="dropdown-divider border-secondary"></li>
-                                    <li>
-                                        <form method="POST" action="/portfolio/cash/delete/{{ account.pk }}/" class="m-0">
-                                            {% csrf_token %}
-                                            <button type="submit" class="dropdown-item text-danger py-2" onclick="return confirm('Delete {{ account.account_name }}?')">
-                                                <i class="bi bi-trash me-2"></i> Delete
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="mt-4 d-flex gap-2">
-                             <a href="/portfolio/cash/edit/{{ account.pk }}/" class="btn-action w-100 text-center">Update Balance</a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <i class="bi bi-piggy-bank fs-1 mb-3"></i>
-                <h5>No accounts found</h5>
-                <p>Register your first bank or cash account to track your liquidity.</p>
-                <a href="/portfolio/cash/add/" class="btn-add d-inline-block mt-2">Get Started</a>
-            </div>
-        {% endif %}
-
-        {% if cash_pie_json %}
-        <div class="card mt-4">
-            <p class="stat-label mb-3">Cash Breakdown</p>
-            <div id="cash-pie"></div>
+    <div class="cash-header anim-fadeUp">
+        <div class="cash-header__left">
+            <p class="cash-header__eyebrow"><i class="bi bi-cash-coin"></i> &nbsp;Liquidity</p>
+            <h1 class="cash-header__title">Cash Accounts</h1>
+            <p class="cash-header__sub">Monitor your liquid capital and bank balances.</p>
         </div>
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        <script>
-            var cashPie = JSON.parse('{{ cash_pie_json|escapejs }}');
-            Plotly.newPlot('cash-pie', cashPie.data, cashPie.layout);
-        </script>
-        {% endif %}
+        <a href="/portfolio/cash/add/" class="btn-g8 btn-g8--gold">
+            <i class="bi bi-plus-lg"></i> Add Account
+        </a>
     </div>
 
+    {% if messages %}
+        {% for message in messages %}
+        <div class="g8-alert g8-alert--success anim-fadeUp">
+            <i class="bi bi-check-circle-fill"></i> {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
 
+    {% if accounts %}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="cash-strip anim-fadeUp anim-delay-1">
+        <div class="cash-strip__item">
+            <span class="cash-strip__label">Total Accounts</span>
+            <span class="cash-strip__value">{{ accounts|length }}</span>
+        </div>
+        <div class="cash-strip__item">
+            <span class="cash-strip__label">Liquid Capital</span>
+            <span class="cash-strip__value" style="color:var(--green);">—</span>
+        </div>
+        <div class="cash-strip__item">
+            <span class="cash-strip__label">Asset Type</span>
+            <span class="cash-strip__value" style="color:var(--green); font-size:.9rem; font-family:'DM Sans',sans-serif; font-weight:600;">Cash &amp; Deposits</span>
+        </div>
+        <div class="cash-strip__item">
+            <span class="cash-strip__label">Last Updated</span>
+            <span class="cash-strip__value" style="font-size:.85rem; font-family:'DM Sans',sans-serif;">
+                {% with last_acc=accounts|first %}
+                    {% if last_acc %}{{ last_acc.updated_at|date:"M d, Y" }}{% else %}—{% endif %}
+                {% endwith %}
+            </span>
+        </div>
+    </div>
+
+    <p class="cash-section-label anim-fadeUp anim-delay-1">
+        <i class="bi bi-piggy-bank-fill" style="color:var(--green);"></i>
+        Active Accounts
+    </p>
+
+    <div class="cash-grid">
+        {% for account in accounts %}
+        <div class="cash-card anim-fadeUp" style="animation-delay:{{ forloop.counter0 }}00ms;">
+            <div class="cash-card__top">
+                <div>
+                    <p class="cash-card__name">{{ account.account_name }}</p>
+                    <div class="cash-card__balance">
+                        <span class="cash-card__currency">{{ account.currency }}</span>{{ account.balance|floatformat:2|intcomma }}
+                    </div>
+                    <div class="cash-card__updated">
+                        <i class="bi bi-clock"></i> Updated {{ account.updated_at|date:"M d, Y" }}
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="cash-card__menu-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu cash-dropdown">
+                        <li>
+                            <a class="dropdown-item" href="/portfolio/cash/edit/{{ account.pk }}/">
+                                <i class="bi bi-pencil"></i> Edit Account
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="POST" action="/portfolio/cash/delete/{{ account.pk }}/" style="margin:0;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="dropdown-item text-danger"
+                                        onclick="return confirm('Delete {{ account.account_name }}? This cannot be undone.')">
+                                    <i class="bi bi-trash3"></i> Delete
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="cash-card__footer">
+                <a href="/portfolio/cash/edit/{{ account.pk }}/" class="cash-card__update-btn">
+                    <i class="bi bi-arrow-up-circle"></i> Update Balance
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+
+    <div class="cash-empty anim-fadeUp">
+        <div class="cash-empty__icon">
+            <i class="bi bi-piggy-bank"></i>
+        </div>
+        <h4 class="cash-empty__title">No accounts yet</h4>
+        <p class="cash-empty__sub">Register your first bank or cash account to start tracking your liquidity.</p>
+        <a href="/portfolio/cash/add/" class="btn-g8 btn-g8--gold">
+            <i class="bi bi-plus-lg"></i> Get Started
+        </a>
+    </div>
+
+    {% endif %}
+
+    {% if cash_pie_json %}
+    <div class="cash-chart-card anim-fadeUp">
+        <div class="cash-chart-card__header">
+            <h4 class="cash-chart-card__title">
+                <i class="bi bi-pie-chart-fill" style="color:var(--green);"></i>
+                Cash Breakdown
+            </h4>
+            <span class="g8-badge g8-badge--green">By Account</span>
+        </div>
+        <div class="cash-chart-card__body">
+            <div id="cash-pie-chart" style="min-height:320px;"></div>
+        </div>
+    </div>
+    {% endif %}
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+(function () {
+    const FONT   = "'DM Mono','DM Sans',monospace";
+    const TRANS  = 'rgba(0,0,0,0)';
+    const TEXT_S = 'rgba(255,255,255,.68)';
+    const COLORS = [
+        '#10B981','#3B82F6','#C9A96E','#818CF8',
+        '#F59E0B','#EF4444','#6EE7B7','#DFC28E'
+    ];
+
+    {% if cash_pie_json %}
+    (function renderCashPie() {
+        try {
+            const raw = JSON.parse('{{ cash_pie_json|escapejs }}');
+
+            if (raw.data && raw.data[0]) {
+                Object.assign(raw.data[0], {
+                    type: 'pie',
+                    hole: 0.54,
+                    marker: {
+                        colors: COLORS,
+                        line: { color: '#1A1A1A', width: 2 }
+                    },
+                    textfont: { family: FONT, size: 11, color: '#fff' },
+                    hovertemplate: '<b>%{label}</b><br>Balance: %{value:,.2f}<br>%{percent}<extra></extra>',
+                    insidetextorientation: 'radial'
+                });
+            }
+
+            Object.assign(raw.layout, {
+                autosize: true,
+                paper_bgcolor: TRANS,
+                plot_bgcolor: TRANS,
+                margin: { l: 10, r: 10, t: 10, b: 10 },
+                showlegend: true,
+                legend: {
+                    orientation: 'v',
+                    x: 1.04, y: 0.5,
+                    font: { family: FONT, size: 11, color: TEXT_S },
+                    bgcolor: TRANS,
+                    bordercolor: TRANS
+                },
+                annotations: [{
+                    text: '<b>Cash</b>',
+                    x: 0.5, y: 0.5,
+                    xref: 'paper', yref: 'paper',
+                    showarrow: false,
+                    font: { family: FONT, size: 14, color: '#10B981' }
+                }],
+                font: { family: FONT, color: TEXT_S }
+            });
+
+            Plotly.newPlot('cash-pie-chart', raw.data, raw.layout, {
+                responsive: true,
+                displayModeBar: false
+            });
+        } catch (e) {
+            console.warn('Cash pie chart error:', e);
+        }
+    })();
+    {% endif %}
+})();
+</script>
+
 </body>
 </html>

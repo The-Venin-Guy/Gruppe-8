@@ -1,33 +1,108 @@
 {% extends 'base_auth.html' %}
 
-{% block title %}Login | GRUPPE-8{% endblock %}
+{% block title %}Log In | GRUPPE-8{% endblock %}
 
-{% block auth_header %}
-<p class="subtitle">Log in to manage your portfolio</p>
+{% block auth_heading %}
+    <h1 class="g8-auth-heading__title">Welcome back</h1>
+    <p class="g8-auth-heading__sub">Log in to manage your portfolio</p>
 {% endblock %}
 
 {% block content %}
-<form method="POST">
+
+<!-- Username -->
+<div class="g8-field">
+    <label class="g8-label" for="id_username">
+        <i class="bi bi-person" style="color:var(--gold);"></i> Username
+    </label>
+    <div class="g8-input-wrap">
+        <i class="bi bi-person g8-input-icon"></i>
+        <input
+            type="text"
+            name="username"
+            id="id_username"
+            class="g8-input"
+            placeholder="Your username"
+            autocomplete="username"
+            autofocus
+            required
+        >
+    </div>
+</div>
+
+<!-- Password -->
+<div class="g8-field">
+    <div class="g8-auth-field-row">
+        <label class="g8-label" for="id_password">
+            <i class="bi bi-lock" style="color:var(--gold);"></i> Password
+        </label>
+        <a href="#" class="g8-forgot-link">Forgot password?</a>
+    </div>
+    <div class="g8-input-wrap">
+        <i class="bi bi-lock g8-input-icon"></i>
+        <input
+            type="password"
+            name="password"
+            id="id_password"
+            class="g8-input g8-input--has-reveal"
+            placeholder="Your password"
+            autocomplete="current-password"
+            required
+        >
+        <button type="button" class="g8-input-reveal" id="toggle-login-pw" aria-label="Toggle password visibility">
+            <i class="bi bi-eye" id="toggle-login-pw-icon"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Submit -->
+<button type="submit" class="g8-auth-submit" form="login-form">
+    <i class="bi bi-box-arrow-in-right"></i> Sign In
+</button>
+
+<!-- Hidden form wrapper (submit targets this) -->
+<form method="POST" id="login-form" style="display:none;">
     {% csrf_token %}
-    <div class="mb-3">
-        <label for="id_username">Username</label>
-        <input type="text" name="username" id="id_username" 
-               class="form-control" placeholder="Your username" 
-               required autofocus>
-    </div>
-    <div class="mb-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <label for="id_password">Password</label>
-        </div>
-        <input type="password" name="password" id="id_password" 
-               class="form-control" placeholder="Your password" 
-               required>
-    </div>
-    
-    <button type="submit" class="btn btn-primary">Sign In</button>
 </form>
+
+<!-- Visible inputs post into the real form via JS -->
 {% endblock %}
 
 {% block auth_footer %}
     Don't have an account? <a href="/users/signup/">Create Account</a>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    /* ── Wire visible inputs into hidden form ── */
+    const form    = document.getElementById('login-form');
+    const uInput  = document.getElementById('id_username');
+    const pwInput = document.getElementById('id_password');
+    const submit  = document.querySelector('.g8-auth-submit');
+
+    /* Rebuild form on actual submit */
+    submit.addEventListener('click', function () {
+        cloneField('username', uInput.value);
+        cloneField('password', pwInput.value);
+        form.submit();
+    });
+
+    function cloneField(name, value) {
+        let el = form.querySelector('[name="' + name + '"]');
+        if (!el) { el = document.createElement('input'); el.type = 'hidden'; el.name = name; form.appendChild(el); }
+        el.value = value;
+    }
+
+    /* ── Password reveal ── */
+    const toggleBtn  = document.getElementById('toggle-login-pw');
+    const toggleIcon = document.getElementById('toggle-login-pw-icon');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function () {
+            const isText = pwInput.type === 'text';
+            pwInput.type = isText ? 'password' : 'text';
+            toggleIcon.className = isText ? 'bi bi-eye' : 'bi bi-eye-slash';
+        });
+    }
+})();
+</script>
 {% endblock %}

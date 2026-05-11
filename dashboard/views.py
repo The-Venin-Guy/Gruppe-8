@@ -18,7 +18,7 @@ def dashboard_view(request):
     active_assets = Asset.objects.filter(user=request.user, status='active')
     accounts = CashAccount.objects.filter(user=request.user)
     active_stocks = Stock.objects.filter(user=request.user, status='active')
-    display_currency = request.GET.get('currency', 'USD')
+    display_currency = request.GET.get('currency', 'NGN')
     currency_symbols = {'USD': '$', 'NGN': '₦'}
     currency_symbol = currency_symbols.get(display_currency, '$')
     stock_data = []

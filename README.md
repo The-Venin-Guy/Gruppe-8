@@ -185,3 +185,7 @@ Visit `http://127.0.0.1:8000/users/login/` to get started.
 - All portfolio data is user-scoped — users can only see and edit their own data
 - Stock prices are fetched live on every page load — no caching yet
 - Currency conversion for mixed-currency net worth is planned for the next sprint
+
+
+
+

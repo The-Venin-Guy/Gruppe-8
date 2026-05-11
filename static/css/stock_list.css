@@ -1,0 +1,397 @@
+/* ============================================================
+   GRUPPE-8  |  stock_list.css  —  Stocks Page Styles
+   ============================================================ */
+
+/* ─── PAGE HEADER ────────────────────────────────────────────── */
+.stocks-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 2rem 0 1.75rem;
+    flex-wrap: wrap;
+}
+
+.stocks-header__left { display: flex; flex-direction: column; gap: .3rem; }
+
+.stocks-header__eyebrow {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.stocks-header__eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 1px;
+    background: var(--gold);
+    opacity: .5;
+}
+
+.stocks-header__title {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -.3px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.stocks-header__sub {
+    font-size: .82rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ─── SUMMARY STRIP ──────────────────────────────────────────── */
+.stocks-strip {
+    display: flex;
+    align-items: stretch;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 1.75rem;
+}
+
+.stocks-strip__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: .85rem 1.25rem;
+    border-right: 1px solid var(--border);
+    min-width: 0;
+}
+
+.stocks-strip__item:last-child { border-right: none; }
+
+.stocks-strip__label {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.stocks-strip__value {
+    font-family: 'DM Mono', monospace;
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stocks-strip__value--gain { color: var(--green); }
+.stocks-strip__value--loss { color: var(--red); }
+
+/* ─── SECTION LABEL ──────────────────────────────────────────── */
+.stocks-section-label {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+}
+
+.stocks-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+/* ─── STOCK ROW CARD ─────────────────────────────────────────── */
+.stock-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.3rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+    margin-bottom: .85rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.stock-card:hover {
+    border-color: var(--blue);
+    box-shadow: 0 6px 28px var(--blue-dim);
+    transform: translateY(-2px);
+}
+
+.stock-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.015) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.stock-card__accent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), transparent 70%);
+}
+
+.stock-card__id {
+    margin-bottom: 10px;
+}
+
+/* Ticker block */
+.stock-card__ticker-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    flex-shrink: 0;
+    min-width: 72px;
+}
+
+.stock-card__ticker {
+    font-family: 'DM Mono', monospace;
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--gold);
+    background: rgba(201,169,110,.1);
+    border: 1px solid rgba(201,169,110,.2);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    letter-spacing: .5px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.stock-card__shares {
+    font-size: .65rem;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+}
+
+/* Company info */
+.stock-card__info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.stock-card__company {
+    font-size: .93rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stock-card__date {
+    font-size: .7rem;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+}
+
+/* Metrics */
+.stock-card__metrics {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-shrink: 0;
+}
+
+.stock-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 80px;
+}
+
+.stock-metric__label {
+    font-size: .62rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.stock-metric__value {
+    font-family: 'DM Mono', monospace;
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.stock-metric--gain .stock-metric__value { color: var(--green); }
+.stock-metric--loss .stock-metric__value { color: var(--red); }
+
+.stock-metric__pct {
+    font-size: .68rem;
+    font-family: 'DM Mono', monospace;
+    opacity: .75;
+}
+
+.stock-metric--gain .stock-metric__pct { color: var(--green); }
+.stock-metric--loss .stock-metric__pct { color: var(--red); }
+
+/* Actions */
+.stock-card__actions {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    flex-shrink: 0;
+}
+
+/* ─── EMPTY STATE ────────────────────────────────────────────── */
+.stocks-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    padding: 4rem 2rem;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.stocks-empty__icon {
+    width: 56px; height: 56px;
+    border-radius: 15px;
+    background: var(--blue-dim);
+    color: var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+}
+
+.stocks-empty__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.stocks-empty__sub {
+    font-size: .8rem;
+    color: var(--text-secondary);
+    margin: 0;
+    max-width: 280px;
+    line-height: 1.5;
+}
+
+/* ─── SOLD / HISTORY CARD ────────────────────────────────────── */
+.sold-stock-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: .7rem;
+    opacity: .82;
+    transition: opacity var(--transition), border-color var(--transition);
+}
+
+.sold-stock-card:hover { opacity: 1; border-color: var(--border); }
+.sold-stock-card:last-child { margin-bottom: 0; }
+
+.sold-stock-card__left { flex: 1; min-width: 0; }
+
+.sold-stock-card__name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: .4rem;
+}
+
+.sold-stock-card__name {
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.sold-stock-card__flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .74rem;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+}
+
+.sold-stock-card__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: .45rem;
+    flex-shrink: 0;
+}
+
+.sold-stock-card__pnl {
+    font-family: 'DM Mono', monospace;
+    font-size: .88rem;
+    font-weight: 700;
+}
+
+.sold-stock-card__pnl--gain { color: var(--green); }
+.sold-stock-card__pnl--loss { color: var(--red); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .stock-card__metrics { gap: 1.2rem; }
+    .stock-metric { min-width: 64px; }
+}
+
+@media (max-width: 768px) {
+    .stock-card {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .stock-card__metrics {
+        width: 100%;
+        padding-top: .85rem;
+        border-top: 1px solid var(--border-subtle);
+        gap: 1.25rem;
+    }
+    .stock-card__actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    .stocks-strip { flex-wrap: wrap; }
+    .stocks-strip__item {
+        flex: 0 0 50%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+    .stocks-strip__item:nth-last-child(-n+2) { border-bottom: none; }
+    .sold-stock-card { flex-direction: column; align-items: flex-start; }
+    .sold-stock-card__right { flex-direction: row; align-items: center; width: 100%; }
+}
+
+@media (max-width: 480px) {
+    .stocks-header { flex-direction: column; gap: 1rem; }
+    .stock-card__metrics { grid-template-columns: 1fr 1fr; display: grid; }
+}

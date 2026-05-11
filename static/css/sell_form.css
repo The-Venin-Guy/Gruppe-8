@@ -1,0 +1,385 @@
+/* ============================================================
+   GRUPPE-8  |  sell_form.css
+   ============================================================ */
+
+/* ─── PAGE LAYOUT ────────────────────────────────────────────── */
+.sell-body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: var(--bg-base);
+    background-image:
+        radial-gradient(ellipse 600px 420px at 20% 80%, rgba(239, 68, 68, .06) 0%, transparent 70%),
+        radial-gradient(ellipse 460px 360px at 85% 15%, rgba(245, 158, 11, .05) 0%, transparent 70%);
+}
+
+/* ─── AMBIENT ORBS ───────────────────────────────────────────── */
+.sell-orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(100px);
+    opacity: .18;
+}
+
+.sell-orb--red {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, #7f1d1d, transparent 70%);
+    bottom: -180px;
+    left: -160px;
+}
+
+.sell-orb--amber {
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, #78350f, transparent 70%);
+    top: -110px;
+    right: -110px;
+}
+
+/* ─── FORM CARD ──────────────────────────────────────────────── */
+.sell-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 490px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem 2.25rem 2rem;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, .6);
+    overflow: hidden;
+    animation: g8-fadeUp .4s var(--ease) both;
+}
+
+
+/* Ambient overlay */
+.sell-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(155deg, rgba(239, 68, 68, .04) 0%, transparent 55%);
+    pointer-events: none;
+}
+
+/* ─── CARD HEADER ────────────────────────────────────────────── */
+.sell-card__eyebrow {
+    font-size: .67rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: .35rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+    z-index: 1;
+}
+
+.sell-card__title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 .3rem;
+    letter-spacing: -.025em;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+}
+
+.sell-card__sub {
+    font-size: .82rem;
+    color: var(--text-secondary);
+    margin: 0 0 .5rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* ─── STOCK CONTEXT PILL ─────────────────────────────────────── */
+.sell-context {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: .6rem 1rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+.sell-context__ticker {
+    font-family: 'DM Mono', monospace;
+    font-size: .82rem;
+    font-weight: 500;
+    color: var(--gold);
+    background: rgba(201,169,110,.1);
+    border: 1px solid rgba(201,169,110,.2);
+    border-radius: var(--radius-xs);
+    padding: 2px 8px;
+    letter-spacing: .5px;
+}
+
+.sell-context__name {
+    font-size: .82rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    flex: 1;
+}
+
+.sell-context__cost {
+    font-family: 'DM Mono', monospace;
+    font-size: .78rem;
+    color: var(--text-muted);
+}
+
+/* ─── DIVIDER ────────────────────────────────────────────────── */
+.sell-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.25rem 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* ─── FORM FIELDS ────────────────────────────────────────────── */
+.sell-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.sell-field {
+    display: flex;
+    flex-direction: column;
+    gap: .42rem;
+}
+
+.sell-label {
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .55px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sell-label i { color: var(--red); font-size: .78rem; }
+
+/* Override Django inputs */
+.sell-fields input,
+.sell-fields select,
+.sell-fields textarea {
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .875rem;
+    padding: .65rem .9rem;
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.sell-fields input::placeholder { color: var(--text-muted); }
+
+.sell-fields input:focus,
+.sell-fields select:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, .1);
+}
+
+.sell-fields select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238c9198' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right .85rem center;
+    padding-right: 2.25rem;
+    cursor: pointer;
+}
+
+.sell-fields select option { background: var(--bg-elevated); color: var(--text-primary); }
+
+.sell-fields input[type="number"]::-webkit-inner-spin-button,
+.sell-fields input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+.sell-fields input[type="number"] { -moz-appearance: textfield; }
+
+/* Error text */
+.sell-field .errorlist { list-style: none; padding: 0; margin: .2rem 0 0; }
+.sell-field .errorlist li { font-size: .72rem; color: var(--red); }
+
+/* ─── CONVERT TO CASH TOGGLE ─────────────────────────────────── */
+.sell-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: .85rem 1rem;
+    cursor: pointer;
+    transition: border-color var(--transition);
+    position: relative;
+    z-index: 1;
+}
+
+.sell-toggle-row:has(input:checked) {
+    border-color: rgba(16, 185, 129, .35);
+}
+
+.sell-toggle-row__text { flex: 1; }
+
+.sell-toggle-row__label {
+    font-size: .84rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block;
+    margin: 0 0 2px;
+    pointer-events: none;
+}
+
+.sell-toggle-row__sub {
+    font-size: .72rem;
+    color: var(--text-muted);
+    display: block;
+    pointer-events: none;
+}
+
+/* Custom checkbox */
+.sell-toggle-row input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border: 1.5px solid var(--border);
+    border-radius: 5px;
+    background: var(--bg-base);
+    cursor: pointer;
+    position: relative;
+    transition: background var(--transition), border-color var(--transition);
+}
+
+.sell-toggle-row input[type="checkbox"]:checked {
+    background: var(--green);
+    border-color: var(--green);
+}
+
+.sell-toggle-row input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px; top: 2px;
+    width: 6px; height: 10px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+}
+
+/* ─── CASH ACCOUNT REVEAL ────────────────────────────────────── */
+.sell-cash-reveal {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .28s var(--ease), opacity .22s ease;
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.sell-cash-reveal--open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+.sell-cash-reveal__inner {
+    overflow: hidden;
+    padding: .1px 0;
+}
+
+.sell-cash-panel {
+    background: var(--bg-elevated);
+    border: 1px solid rgba(16, 185, 129, .2);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-top: .75rem;
+}
+
+.sell-cash-panel__label {
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: .6rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* ─── SUBMIT ─────────────────────────────────────────────────── */
+.sell-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: .8rem;
+    margin-top: .25rem;
+    background: linear-gradient(135deg, #b91c1c, var(--red));
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .9rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: .15px;
+    transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+    position: relative;
+    z-index: 1;
+}
+
+.sell-submit:hover {
+    background: linear-gradient(135deg, #991b1b, #b91c1c);
+    box-shadow: 0 4px 22px rgba(239, 68, 68, .3);
+    transform: translateY(-1px);
+}
+
+.sell-submit:active { transform: none; }
+
+/* ─── CANCEL LINK ────────────────────────────────────────────── */
+.sell-cancel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 1.1rem;
+    font-size: .8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+    position: relative;
+    z-index: 1;
+}
+
+.sell-cancel:hover { color: var(--text-primary); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 540px) {
+    .sell-card {
+        padding: 2rem 1.25rem 1.75rem;
+        border-radius: var(--radius-lg);
+    }
+    .sell-card__title { font-size: 1.25rem; }
+}

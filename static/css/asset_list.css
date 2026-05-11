@@ -1,0 +1,366 @@
+/* ============================================================
+   GRUPPE-8  |  asset_list.css  —  Assets Page Styles
+   ============================================================ */
+
+/* ─── PAGE HEADER ────────────────────────────────────────────── */
+.assets-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 2rem 0 1.75rem;
+    flex-wrap: wrap;
+}
+
+.assets-header__left {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+}
+
+.assets-header__eyebrow {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+
+
+.assets-header__title {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -.3px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.assets-header__sub {
+    font-size: .82rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ─── SUMMARY STRIP ──────────────────────────────────────────── */
+.assets-strip {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 1.75rem;
+}
+
+.assets-strip__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: .85rem 1.25rem;
+    border-right: 1px solid var(--border);
+    min-width: 0;
+}
+
+.assets-strip__item:last-child { border-right: none; }
+
+.assets-strip__label {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.assets-strip__value {
+    font-family: 'DM Mono', monospace;
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.assets-strip__value--gain { color: var(--green); }
+.assets-strip__value--loss { color: var(--red); }
+
+/* ─── SECTION LABEL ──────────────────────────────────────────── */
+.assets-section-label {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+}
+
+.assets-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+/* ─── ASSET CARD ─────────────────────────────────────────────── */
+.asset-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+    margin-bottom: 1rem;
+}
+
+.asset-card:hover {
+    border-color: var(--gold-dark);
+    box-shadow: 0 6px 28px var(--gold-glow);
+    transform: translateY(-2px);
+}
+
+.asset-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.015) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+
+
+.asset-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.asset-card__info { flex: 1; min-width: 0; }
+
+.asset-card__type-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: .6rem;
+}
+
+.asset-card__name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.asset-card__actions {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+/* ─── METRICS ROW ────────────────────────────────────────────── */
+.asset-card__metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1.1rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.asset-metric__label {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 .35rem;
+}
+
+.asset-metric__value {
+    font-family: 'DM Mono', monospace;
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -.3px;
+}
+
+.asset-metric__sub {
+    font-size: .7rem;
+    color: var(--text-muted);
+    margin: 2px 0 0;
+    font-family: 'DM Mono', monospace;
+}
+
+.asset-metric--gain .asset-metric__value { color: var(--green); }
+.asset-metric--gain .asset-metric__sub   { color: var(--green); opacity: .75; }
+.asset-metric--loss .asset-metric__value { color: var(--red); }
+.asset-metric--loss .asset-metric__sub   { color: var(--red); opacity: .75; }
+
+/* ─── CHART CARD ─────────────────────────────────────────────── */
+.asset-chart-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.75rem;
+}
+
+
+.asset-chart-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.asset-chart-card__title {
+    font-size: .73rem;
+    font-weight: 600;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+/* ─── HISTORY / SOLD ─────────────────────────────────────────── */
+.sold-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: .75rem;
+    opacity: .85;
+    transition: opacity var(--transition), border-color var(--transition);
+}
+
+.sold-card:hover { opacity: 1; border-color: var(--border); }
+.sold-card:last-child { margin-bottom: 0; }
+
+.sold-card__left { flex: 1; min-width: 0; }
+
+.sold-card__name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: .45rem;
+}
+
+.sold-card__name {
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.sold-card__flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .76rem;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+}
+
+.sold-card__flow .arrow { color: var(--border); }
+
+.sold-card__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: .5rem;
+    flex-shrink: 0;
+}
+
+.sold-card__pnl {
+    font-family: 'DM Mono', monospace;
+    font-size: .88rem;
+    font-weight: 700;
+}
+
+.sold-card__pnl--gain { color: var(--green); }
+.sold-card__pnl--loss { color: var(--red); }
+
+/* ─── EMPTY STATE ────────────────────────────────────────────── */
+.assets-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    padding: 4rem 2rem;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.assets-empty__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 15px;
+    background: var(--gold-glow);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.assets-empty__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.assets-empty__sub {
+    font-size: .8rem;
+    color: var(--text-secondary);
+    margin: 0;
+    max-width: 280px;
+    line-height: 1.5;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .assets-header { flex-direction: column; gap: 1rem; }
+    .asset-card__metrics { grid-template-columns: 1fr 1fr; }
+    .assets-strip { flex-wrap: wrap; }
+    .assets-strip__item { border-right: none; border-bottom: 1px solid var(--border); flex: 0 0 50%; }
+    .assets-strip__item:nth-last-child(-n+2) { border-bottom: none; }
+    .sold-card { flex-direction: column; align-items: flex-start; }
+    .sold-card__right { align-items: flex-start; flex-direction: row; }
+}
+
+@media (max-width: 480px) {
+    .asset-card__metrics { grid-template-columns: 1fr; }
+    .asset-card__actions { width: 100%; margin-top: .75rem; }
+    .asset-card__top { flex-direction: column; }
+}

@@ -1,291 +1,304 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assets | Portfolio Tracker</title>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Assets | GRUPPE-8</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <style>
-        :root {
-            --bg-dark: #121415;
-            --card-bg: #1b1e20;
-            --accent-green: #a8e63d;
-            --border-subtle: #2c3034;
-            --text-muted: #8a8d91;
-            --text-bright: #ffffff;
-            --danger-red: #f87171;
-            --warning-orange: #fb923c;
-        }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-bright);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-        }
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-        /* Navbar Styling */
-        .navbar {
-            background-color: rgba(18, 20, 21, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 0.75rem 2rem;
-        }
-        .navbar-brand {
-            color: var(--text-bright);
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .nav-link { 
-            color: var(--text-muted) !important; 
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-        .nav-link:hover { color: var(--accent-green) !important; }
-
-        /* Header */
-        .page-header { margin: 3rem 0 2rem; }
-        .page-header h2 { font-weight: 700; font-size: 1.75rem; }
-
-        /* Asset Cards */
-        .asset-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.25rem;
-            position: relative;
-            transition: border-color 0.2s;
-        }
-        .asset-card:hover { border-color: var(--border-subtle); }
-        
-        .accent-bar {
-            position: absolute; left: 0; top: 20%; bottom: 20%; width: 4px; 
-            background: var(--accent-green); border-radius: 0 4px 4px 0;
-        }
-
-        .badge-type {
-            background-color: rgba(168, 230, 61, 0.1);
-            color: var(--accent-green);
-            padding: 0.25rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .asset-name { font-weight: 600; font-size: 1.1rem; margin-top: 0.75rem; }
-        .asset-meta { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.25rem; }
-
-        .value-large { font-weight: 700; font-size: 1.25rem; color: var(--text-bright); }
-        .gain { color: var(--accent-green); font-size: 0.85rem; font-weight: 600; }
-        .loss { color: var(--danger-red); font-size: 0.85rem; font-weight: 600; }
-
-        /* Buttons */
-        .btn-add {
-            background-color: var(--accent-green);
-            color: #121415;
-            border: none;
-            border-radius: 8px;
-            padding: 0.6rem 1.25rem;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
-        }
-        .btn-add:hover { opacity: 0.9; color: #121415; }
-
-        .btn-action {
-            background: transparent;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-muted);
-            border-radius: 6px;
-            padding: 0.35rem 0.8rem;
-            font-size: 0.8rem;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        .btn-action:hover { border-color: var(--text-bright); color: var(--text-bright); }
-        .btn-sell:hover { border-color: var(--warning-orange); color: var(--warning-orange); }
-        .btn-delete:hover { border-color: var(--danger-red); color: var(--danger-red); }
-
-        /* History Section */
-        .history-dropdown {
-            margin-top: 3rem;
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.02);
-        }
-        .history-dropdown summary {
-            padding: 1.25rem;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            list-style: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .history-count {
-            background: var(--border-subtle);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-        }
-        .history-content { padding: 0 1.25rem 1.25rem; }
-        .history-card {
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-top: 0.75rem;
-            opacity: 0.8;
-        }
-        .badge-sold { color: var(--danger-red); border: 1px solid var(--danger-red); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-    </style>
+    <!-- Design System -->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/asset_list.css' %}">
 </head>
 <body>
 
-    <nav class="navbar sticky-top">
-        <div class="container-fluid">
-            <span class="navbar-brand">GRUPPE-8</span>
-            <div class="ms-auto d-flex gap-4">
-                <a href="/dashboard/" class="nav-link">Dashboard</a>
-                <a href="/portfolio/stocks/" class="nav-link">Stocks</a>
-                <a href="/portfolio/cash/" class="nav-link">Cash</a>
-                <a href="/users/logout/" class="nav-link text-danger">Logout</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="page-header d-flex justify-content-between align-items-center">
-            <div>
-                <h2>My Assets</h2>
-                <p class="text-muted mb-0">Manage and track your physical and alternative investments.</p>
-            </div>
-            <a href="/portfolio/assets/add/" class="btn-add"><i class="bi bi-plus-lg me-2"></i>Add Asset</a>
+<!-- ─── NAVBAR ─────────────────────────────────────────────────── -->
+<nav class="g8-navbar">
+    <div class="g8-navbar__inner">
+        <div class="g8-brand">
+            <div class="g8-brand__mark">G8</div>
+            <span class="g8-brand__name"><em>GRUPPE</em>-8</span>
         </div>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-dark border-success text-success py-2" style="background: rgba(168, 230, 61, 0.05);">
-                    <i class="bi bi-check-circle me-2"></i>{{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+        <div class="g8-nav-actions">
+            <a href="/dashboard/"      class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="/portfolio/stocks/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-graph-up"></i> Stocks</a>
+            <a href="/portfolio/cash/"   class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-cash"></i> Cash</a>
+            <a href="/users/logout/"     class="btn-g8 btn-g8--danger btn-g8--xs"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        </div>
+    </div>
+</nav>
 
-        {% if assets %}
-            {% for asset in assets %}
-            <div class="asset-card">
-                <div class="accent-bar"></div>
-                <div class="d-flex justify-content-between align-items-start">
-                    <div class="flex-grow-1">
-                        <span class="badge-type">{{ asset.get_asset_type_display }}</span>
-                        <h5 class="asset-name">{{ asset.name }}</h5>
-                        
-                        <div class="row mt-3">
-                            <div class="col-sm-4">
-                                <p class="asset-meta">Purchase Value</p>
-                                <p class="fw-bold mb-0">{{ asset.currency }} {{ asset.purchase_value }}</p>
-                                <small class="text-muted">{{ asset.purchase_date }}</small>
-                            </div>
-                            <div class="col-sm-4">
-                                <p class="asset-meta">Current Value</p>
-                                <p class="value-large mb-0">{{ asset.currency }} {{ asset.current_value }}</p>
-                            </div>
-                            <div class="col-sm-4">
-                                <p class="asset-meta">Performance</p>
-                                {% if asset.appreciation >= 0 %}
-                                    <p class="gain mb-0">▲ {{ asset.currency }} {{ asset.appreciation|floatformat:2 }}</p>
-                                    <small class="gain">{{ asset.appreciation_percent|floatformat:1 }}%</small>
-                                {% else %}
-                                    <p class="loss mb-0">▼ {{ asset.currency }} {{ asset.appreciation|floatformat:2 }}</p>
-                                    <small class="loss">{{ asset.appreciation_percent|floatformat:1 }}%</small>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="d-flex gap-2 flex-wrap justify-content-end ms-3">
-                        <a href="/portfolio/assets/edit/{{ asset.pk }}/" class="btn-action">Edit</a>
-                        <a href="/portfolio/assets/sell/{{ asset.pk }}/" class="btn-action btn-sell">Sell</a>
-                        <form method="POST" action="/portfolio/assets/delete/{{ asset.pk }}/" style="margin:0">
-                            {% csrf_token %}
-                            <button type="submit" class="btn-action btn-delete" onclick="return confirm('Confirm deletion?')">Delete</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        {% else %}
-            <div class="py-5 text-center border border-dashed rounded-3" style="border-color: var(--border-subtle) !important;">
-                <i class="bi bi-safe2 fs-1 text-muted"></i>
-                <p class="text-muted mt-3">No active assets. Add your first investment to start tracking.</p>
-            </div>
-        {% endif %}
+<!-- ─── MAIN ────────────────────────────────────────────────────── -->
+<main class="g8-main">
 
-        {% if asset_pie_json %}
-            <div class="card mt-4">
-                <p class="stat-label mb-3">Asset Breakdown</p>
-                <div id="asset-pie"></div>
-            </div>
-            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-            <script>
-                var assetPie = JSON.parse('{{ asset_pie_json|escapejs }}');
-                Plotly.newPlot('asset-pie', assetPie.data, assetPie.layout);
-            </script>
-        {% endif %}
-
-        {% if sold_assets %}
-        <details class="history-dropdown">
-            <summary>
-                <i class="bi bi-clock-history"></i> History — Sold Assets
-                <span class="history-count">{{ sold_assets|length }}</span>
-            </summary>
-            <div class="history-content">
-                {% for asset in sold_assets %}
-                <div class="history-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="badge-sold">Sold</span>
-                            <span class="ms-2 text-muted small text-uppercase fw-bold">{{ asset.get_asset_type_display }}</span>
-                            <h6 class="mt-2 mb-1 fw-bold">{{ asset.name }}</h6>
-                            <p class="small text-muted mb-0">
-                                Bought for {{ asset.currency }} {{ asset.purchase_value }} 
-                                <i class="bi bi-arrow-right mx-2"></i> 
-                                Sold for <span class="text-white">{{ asset.currency }} {{ asset.sale_price }}</span>
-                            </p>
-                        </div>
-                        <div class="text-end">
-                            {% if asset.profit_loss >= 0 %}
-                                <span class="gain">Profit: +{{ asset.currency }}{{ asset.profit_loss|floatformat:2 }}</span>
-                            {% else %}
-                                <span class="loss">Loss: {{ asset.currency }}{{ asset.profit_loss|floatformat:2 }}</span>
-                            {% endif %}
-                            <div class="mt-2">
-                                <form method="POST" action="/portfolio/assets/delete/{{ asset.pk }}/" style="margin:0">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn-action btn-delete py-1 px-2" style="font-size: 0.7rem;">Clear Record</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </details>
-        {% endif %}
+    <!-- Header -->
+    <div class="assets-header anim-fadeUp">
+        <div class="assets-header__left">
+            <h1 class="assets-header__title">My Assets</h1>
+            <p class="assets-header__sub">Manage and track your physical and alternative investments.</p>
+        </div>
+        <a href="/portfolio/assets/add/" class="btn-g8 btn-g8--gold">
+            <i class="bi bi-plus-lg"></i> Add Asset
+        </a>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Flash Messages -->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="g8-alert g8-alert--success anim-fadeUp">
+            <i class="bi bi-check-circle-fill"></i> {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Summary Strip -->
+    {% if assets %}
+    <div class="assets-strip anim-fadeUp anim-delay-1">
+        <div class="assets-strip__item">
+            <span class="assets-strip__label">Active Holdings</span>
+            <span class="assets-strip__value">{{ assets|length }}</span>
+        </div>
+        <div class="assets-strip__item">
+            <span class="assets-strip__label">Total Purchase Value</span>
+            <span class="assets-strip__value">
+                {{ assets.0.currency }}
+                {% with total=0 %}{{ assets|length }}{% endwith %}
+                
+            </span>
+        </div>
+        <div class="assets-strip__item">
+            <span class="assets-strip__label">Sold Assets</span>
+            <span class="assets-strip__value">{{ sold_assets|length|default:"0" }}</span>
+        </div>
+        <div class="assets-strip__item">
+            <span class="assets-strip__label">Portfolio Section</span>
+            <span class="assets-strip__value" style="color:var(--gold);">Assets</span>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Section label -->
+    {% if assets %}
+    <p class="assets-section-label anim-fadeUp anim-delay-1">
+        <i class="bi bi-briefcase-fill" style="color:var(--gold);"></i>
+        Active Holdings
+    </p>
+    {% endif %}
+
+    <!-- Asset Cards -->
+    {% if assets %}
+        {% for asset in assets %}
+        <div class="asset-card anim-fadeUp" style="animation-delay: {{ forloop.counter0 }}00ms;">
+
+            <div class="asset-card__top">
+                <div class="asset-card__info">
+                    <div class="asset-card__type-row">
+                        <span class="g8-badge g8-badge--gold">{{ asset.get_asset_type_display }}</span>
+                        {% if asset.appreciation >= 0 %}
+                            <span class="g8-badge g8-badge--green"><i class="bi bi-arrow-up"></i> Gain</span>
+                        {% else %}
+                            <span class="g8-badge g8-badge--red"><i class="bi bi-arrow-down"></i> Loss</span>
+                        {% endif %}
+                    </div>
+                    <h4 class="asset-card__name">{{ asset.name }}</h4>
+                </div>
+
+                <div class="asset-card__actions">
+                    <a href="/portfolio/assets/edit/{{ asset.pk }}/" class="btn-g8 btn-g8--ghost btn-g8--xs">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
+                    <a href="/portfolio/assets/sell/{{ asset.pk }}/" class="btn-g8 btn-g8--amber btn-g8--xs">
+                        <i class="bi bi-tag"></i> Sell
+                    </a>
+                    <form method="POST" action="/portfolio/assets/delete/{{ asset.pk }}/" style="margin:0">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="btn-g8 btn-g8--danger btn-g8--xs"
+                                onclick="return confirm('Permanently delete {{ asset.name }}?')">
+                            <i class="bi bi-trash3"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="asset-card__metrics">
+                <!-- Purchase Value -->
+                <div class="asset-metric">
+                    <p class="asset-metric__label">Purchase Value</p>
+                    <p class="asset-metric__value">{{ asset.currency }} {{ asset.purchase_value|floatformat:2|intcomma }}</p>
+                    <p class="asset-metric__sub">{{ asset.purchase_date }}</p>
+                </div>
+
+                <!-- Current Value -->
+                <div class="asset-metric">
+                    <p class="asset-metric__label">Current Value</p>
+                    <p class="asset-metric__value">{{ asset.currency }} {{ asset.current_value|floatformat:2|intcomma }}</p>
+                    <p class="asset-metric__sub">Live estimate</p>
+                </div>
+
+                <!-- Performance -->
+                <div class="asset-metric {% if asset.appreciation >= 0 %}asset-metric--gain{% else %}asset-metric--loss{% endif %}">
+                    <p class="asset-metric__label">Performance</p>
+                    <p class="asset-metric__value">
+                        {% if asset.appreciation >= 0 %}▲{% else %}▼{% endif %}
+                        {{ asset.currency }} {{ asset.appreciation|floatformat:2|intcomma }}
+                    </p>
+                    <p class="asset-metric__sub">{{ asset.appreciation_percent|floatformat:2 }}%</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    {% else %}
+        <div class="assets-empty anim-fadeUp">
+            <div class="assets-empty__icon"><i class="bi bi-safe2"></i></div>
+            <h4 class="assets-empty__title">No active assets</h4>
+            <p class="assets-empty__sub">Add your first investment to begin tracking performance and allocation.</p>
+            <a href="/portfolio/assets/add/" class="btn-g8 btn-g8--gold">
+                <i class="bi bi-plus-lg"></i> Add Your First Asset
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- Asset Breakdown Chart -->
+    {% if asset_pie_json %}
+    <div class="asset-chart-card anim-fadeUp">
+        <div class="asset-chart-card__header">
+            <h4 class="asset-chart-card__title">
+                <i class="bi bi-pie-chart-fill" style="color:var(--gold);"></i>
+                Asset Breakdown
+            </h4>
+            <span class="g8-badge g8-badge--gold">By Type</span>
+        </div>
+        <div id="asset-pie-chart" style="min-height:300px;"></div>
+    </div>
+    {% endif %}
+
+    <!-- Sold Assets History -->
+    {% if sold_assets %}
+    <details class="g8-history anim-fadeUp">
+        <summary class="g8-history__summary">
+            <div class="g8-history__label">
+                <i class="bi bi-clock-history" style="color:var(--gold);"></i>
+                Sold Assets — History
+                <span class="g8-badge g8-badge--amber">{{ sold_assets|length }}</span>
+            </div>
+            <i class="bi bi-chevron-down g8-history__chevron"></i>
+        </summary>
+
+        <div class="g8-history__body" style="padding:1rem;">
+            {% for asset in sold_assets %}
+            <div class="sold-card">
+                <div class="sold-card__left">
+                    <div class="sold-card__name-row">
+                        <span class="g8-ticker g8-ticker--sold">SOLD</span>
+                        <span class="g8-badge g8-badge--indigo">{{ asset.get_asset_type_display }}</span>
+                        <h5 class="sold-card__name">{{ asset.name }}</h5>
+                    </div>
+                    <div class="sold-card__flow">
+                        <span>Bought {{ asset.currency }} {{ asset.purchase_value|floatformat:2|intcomma }}</span>
+                        <span class="arrow"><i class="bi bi-arrow-right"></i></span>
+                        <span style="color:var(--text-primary);">Sold {{ asset.currency }} {{ asset.sale_price|floatformat:2|intcomma }}</span>
+                    </div>
+                </div>
+
+                <div class="sold-card__right">
+                    <span class="sold-card__pnl {% if asset.profit_loss >= 0 %}sold-card__pnl--gain{% else %}sold-card__pnl--loss{% endif %}">
+                        {% if asset.profit_loss >= 0 %}+{% endif %}{{ asset.currency }}{{ asset.profit_loss|floatformat:2|intcomma }}
+                    </span>
+                    <form method="POST" action="/portfolio/assets/delete/{{ asset.pk }}/" style="margin:0">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="btn-g8 btn-g8--danger btn-g8--xs"
+                                onclick="return confirm('Remove this record?')">
+                            <i class="bi bi-trash3"></i> Clear
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </details>
+    {% endif %}
+
+</main>
+
+<!-- ─── SCRIPTS ─────────────────────────────────────────────────── -->
+<script>
+{% if asset_pie_json %}
+(function () {
+    const FONT  = "'DM Mono','DM Sans',monospace";
+    const TRANS = 'rgba(0,0,0,0)';
+    const GOLD  = '#C9A96E';
+    const COLORS = ['#C9A96E','#3B82F6','#10B981','#F59E0B','#818CF8','#EF4444','#DFC28E'];
+
+    try {
+        const raw = JSON.parse('{{ asset_pie_json|escapejs }}');
+
+        if (raw.data && raw.data[0]) {
+            Object.assign(raw.data[0], {
+                type: 'pie',
+                hole: 0.52,
+                marker: {
+                    colors: COLORS,
+                    line: { color: '#1A1A1A', width: 2 }
+                },
+                textfont: { family: FONT, size: 11, color: '#fff' },
+                hovertemplate: '<b>%{label}</b><br>Value: %{value:.2f}<br>%{percent}<extra></extra>',
+                insidetextorientation: 'radial'
+            });
+        }
+
+        Object.assign(raw.layout, {
+            autosize: true,
+            paper_bgcolor: TRANS,
+            plot_bgcolor: TRANS,
+            margin: { l: 10, r: 10, t: 10, b: 10 },
+            showlegend: true,
+            legend: {
+                orientation: 'v',
+                x: 1.04, y: 0.5,
+                font: { family: FONT, size: 11, color: 'rgba(255,255,255,.68)' },
+                bgcolor: TRANS
+            },
+            annotations: [{
+                text: '<b>Assets</b>',
+                x: 0.5, y: 0.5,
+                xref: 'paper', yref: 'paper',
+                showarrow: false,
+                font: { family: FONT, size: 13, color: GOLD }
+            }]
+        });
+
+        Plotly.newPlot('asset-pie-chart', raw.data, raw.layout, {
+            responsive: true,
+            displayModeBar: false
+        });
+    } catch (e) { console.warn('Asset pie error:', e); }
+})();
+{% endif %}
+
+/* ── History chevron toggle ── */
+document.querySelectorAll('.g8-history').forEach(function(el) {
+    el.addEventListener('toggle', function() {
+        var chevron = el.querySelector('.g8-history__chevron');
+        if (chevron) {
+            chevron.style.transform = el.open ? 'rotate(180deg)' : '';
+        }
+    });
+});
+</script>
+
 </body>
 </html>

@@ -1,313 +1,355 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stocks | Portfolio Tracker</title>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Stocks | GRUPPE-8</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <style>
-        :root {
-            --bg-dark: #121415;
-            --card-bg: #1b1e20;
-            --accent-green: #a8e63d;
-            --border-subtle: #2c3034;
-            --text-muted: #8a8d91;
-            --text-bright: #ffffff;
-            --danger-red: #f87171;
-            --warning-orange: #fb923c;
-        }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-bright);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-        }
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-        /* Navbar Styling */
-        .navbar {
-            background-color: rgba(18, 20, 21, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 0.75rem 2rem;
-        }
-        .navbar-brand {
-            color: var(--text-bright);
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .nav-link { 
-            color: var(--text-muted) !important; 
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-        .nav-link:hover { color: var(--accent-green) !important; }
-
-        /* Header */
-        .page-header { margin: 3rem 0 2rem; }
-        .page-header h2 { font-weight: 700; font-size: 1.75rem; color: var(--text-bright); }
-
-        /* Table Styling */
-        .table-container {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            overflow: hidden;
-            padding: 1rem;
-        }
-
-        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
-        
-        thead th { 
-            color: var(--text-muted); 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-            font-weight: 600;
-            padding: 1rem 0.8rem;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        tbody tr { transition: transform 0.2s; }
-        tbody td { 
-            padding: 1.25rem 0.8rem; 
-            background: transparent;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            vertical-align: middle;
-        }
-
-        .ticker-badge {
-            background-color: rgba(168, 230, 61, 0.1);
-            color: var(--accent-green);
-            padding: 0.35rem 0.7rem;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        .gain { color: var(--accent-green); font-weight: 600; font-size: 0.9rem; }
-        .loss { color: var(--danger-red); font-weight: 600; font-size: 0.9rem; }
-
-        /* Buttons */
-        .btn-add {
-            background-color: var(--accent-green);
-            color: #121415;
-            border: none;
-            border-radius: 8px;
-            padding: 0.6rem 1.25rem;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        .btn-add:hover { opacity: 0.9; color: #121415; }
-
-        .btn-action {
-            background: transparent;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-muted);
-            border-radius: 6px;
-            padding: 0.35rem 0.8rem;
-            font-size: 0.75rem;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        .btn-action:hover { border-color: var(--text-bright); color: var(--text-bright); }
-        .btn-sell:hover { border-color: var(--warning-orange); color: var(--warning-orange); }
-        .btn-delete:hover { border-color: var(--danger-red); color: var(--danger-red); }
-
-        /* History */
-        .history-dropdown {
-            margin-top: 3rem;
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.02);
-        }
-        .history-dropdown summary {
-            padding: 1.25rem;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            list-style: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .history-count {
-            background: var(--border-subtle);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-        }
-        .history-content { padding: 0 1.25rem 1.25rem; overflow-x: auto; }
-        .sold-badge {
-            background: rgba(248, 113, 113, 0.1);
-            color: var(--danger-red);
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
-            font-weight: 700;
-            font-size: 0.75rem;
-        }
-    </style>
+    <!-- Design System -->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/stock_list.css' %}">
 </head>
 <body>
 
-    <nav class="navbar sticky-top">
-        <div class="container-fluid">
-            <span class="navbar-brand">GRUPPE-8</span>
-            <div class="ms-auto d-flex gap-4">
-                <a href="/dashboard/" class="nav-link">Dashboard</a>
-                <a href="/portfolio/assets/" class="nav-link">Assets</a>
-                <a href="/portfolio/cash/" class="nav-link">Cash</a>
-                <a href="/users/logout/" class="nav-link text-danger">Logout</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="page-header d-flex justify-content-between align-items-center">
-            <div>
-                <h2>Stock Portfolio</h2>
-                <p class="text-muted mb-0">Track your equity holdings and real-time performance.</p>
-            </div>
-            <a href="/portfolio/stocks/add/" class="btn-add"><i class="bi bi-plus-lg me-2"></i>Add Stock</a>
+<!-- ─── NAVBAR ─────────────────────────────────────────────────── -->
+<nav class="g8-navbar">
+    <div class="g8-navbar__inner">
+        <div class="g8-brand">
+            <div class="g8-brand__mark">G8</div>
+            <span class="g8-brand__name"><em>GRUPPE</em>-8</span>
+            <span class="g8-brand__sep">/ STOCKS</span>
         </div>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-dark border-success text-success py-2 mb-4" style="background: rgba(168, 230, 61, 0.05);">
-                    <i class="bi bi-check-circle me-2"></i>{{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        {% if stock_data %}
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Ticker</th>
-                        <th>Company</th>
-                        <th>Shares</th>
-                        <th>Bought At</th>
-                        <th>Current Price</th>
-                        <th>Current Value</th>
-                        <th>Gain / Loss</th>
-                        <th class="text-end">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in stock_data %}
-                    <tr>
-                        <td><a href="/portfolio/stocks/{{ item.stock.pk }}/"><span class="ticker-badge">{{ item.stock.ticker }}</span></a></td>
-                        <td class="fw-semibold">{{ item.stock.company_name }}</td>
-                        <td>{{ item.stock.shares }}</td>
-                        <td class="text-muted">${{ item.stock.purchase_price }}</td>
-                        <td>{% if item.current_price %}${{ item.current_price|floatformat:2 }}{% else %}—{% endif %}</td>
-                        <td class="fw-bold">{% if item.current_value %}${{ item.current_value|floatformat:2 }}{% else %}—{% endif %}</td>
-                        <td>
-                            {% if item.gain_loss != None %}
-                                {% if item.gain_loss >= 0 %}
-                                    <span class="gain">▲ ${{ item.gain_loss|floatformat:2 }}</span>
-                                    <div class="small gain" style="font-size: 0.7rem;">+{{ item.gain_loss_percent|floatformat:1 }}%</div>
-                                {% else %}
-                                    <span class="loss">▼ ${{ item.gain_loss|floatformat:2 }}</span>
-                                    <div class="small loss" style="font-size: 0.7rem;">{{ item.gain_loss_percent|floatformat:1 }}%</div>
-                                {% endif %}
-                            {% else %}
-                                <span class="text-muted small">N/A</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <div class="d-flex gap-2 justify-content-end">
-                                <a href="/portfolio/stocks/edit/{{ item.stock.pk }}/" class="btn-action">Edit</a>
-                                <a href="/portfolio/stocks/sell/{{ item.stock.pk }}/" class="btn-action btn-sell">Sell</a>
-                                <form method="POST" action="/portfolio/stocks/delete/{{ item.stock.pk }}/" style="margin:0">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn-action btn-delete" onclick="return confirm('Delete {{ item.stock.ticker }}?')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="g8-nav-actions">
+            <span class="g8-badge g8-badge--green" style="gap:6px;">
+                <span style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:stock-pulse 2.2s infinite;display:inline-block;flex-shrink:0;"></span>
+                Markets Live
+            </span>
+            <a href="/dashboard/"        class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="/portfolio/assets/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-briefcase"></i> Assets</a>
+            <a href="/portfolio/cash/"   class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-cash"></i> Cash</a>
+            <a href="/users/logout/"     class="btn-g8 btn-g8--danger btn-g8--xs"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
-        {% else %}
-            <div class="py-5 text-center border border-dashed rounded-3" style="border-color: var(--border-subtle) !important;">
-                <i class="bi bi-graph-up-arrow fs-1 text-muted"></i>
-                <p class="text-muted mt-3">No active positions. Add a stock ticker to begin tracking.</p>
-            </div>
-        {% endif %}
+    </div>
+</nav>
 
-        {% if stock_pie_json %}
-        <div class="card mt-4">
-            <p class="stat-label mb-3">Stock Breakdown</p>
-            <div id="stock-pie"></div>
+<!-- ─── MAIN ────────────────────────────────────────────────────── -->
+<main class="g8-main">
+
+    <!-- Header -->
+    <div class="stocks-header anim-fadeUp">
+        <div class="stocks-header__left">
+            <h1 class="stocks-header__title">My Stocks</h1>
+            <p class="stocks-header__sub">Track your equity holdings and monitor market performance.</p>
         </div>
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        <script>
-            var stockPie = JSON.parse('{{ stock_pie_json|escapejs }}');
-            Plotly.newPlot('stock-pie', stockPie.data, stockPie.layout);
-        </script>
-        {% endif %}
-
-        {% if sold_stocks %}
-        <details class="history-dropdown">
-            <summary>
-                <i class="bi bi-clock-history"></i> Trade History
-                <span class="history-count">{{ sold_stocks|length }}</span>
-            </summary>
-            <div class="history-content">
-                <table class="mb-0">
-                    <thead>
-                        <tr>
-                            <th style="font-size: 0.65rem;">Ticker</th>
-                            <th style="font-size: 0.65rem;">Company</th>
-                            <th style="font-size: 0.65rem;">Sold At</th>
-                            <th style="font-size: 0.65rem;">Profit/Loss</th>
-                            <th style="font-size: 0.65rem;">Cash Out</th>
-                            <th class="text-end"></th>
-                        </tr>
-                    </thead>
-                    <tbody style="opacity: 0.7;">
-                        {% for stock in sold_stocks %}
-                        <tr>
-                            <td><span class="sold-badge">{{ stock.ticker }}</span></td>
-                            <td class="small">{{ stock.company_name }}</td>
-                            <td class="small">${{ stock.sale_price }}</td>
-                            <td>
-                                {% if stock.profit_loss >= 0 %}
-                                    <span class="gain">▲ ${{ stock.profit_loss|floatformat:2 }}</span>
-                                {% else %}
-                                    <span class="loss">▼ ${{ stock.profit_loss|floatformat:2 }}</span>
-                                {% endif %}
-                            </td>
-                            <td>{% if stock.sale_converted_to_cash %}<i class="bi bi-check2-circle text-success"></i>{% else %}—{% endif %}</td>
-                            <td class="text-end">
-                                <form method="POST" action="/portfolio/stocks/delete/{{ stock.pk }}/" style="margin:0">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn-action btn-delete border-0"><i class="bi bi-x-lg"></i></button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </details>
-        {% endif %}
+        <a href="/portfolio/stocks/add/" class="btn-g8 btn-g8--gold">
+            <i class="bi bi-plus-lg"></i> Add Stock
+        </a>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Flash Messages -->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="g8-alert g8-alert--success anim-fadeUp">
+            <i class="bi bi-check-circle-fill"></i> {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- ─── ACTIVE STOCKS ─────────────────────────────────────── -->
+    {% if stock_data %}
+
+        <!-- Summary strip -->
+        <div class="stocks-strip anim-fadeUp anim-delay-1">
+            <div class="stocks-strip__item">
+                <span class="stocks-strip__label">Active Holdings</span>
+                <span class="stocks-strip__value">{{ stock_data|length }}</span>
+            </div>
+            <div class="stocks-strip__item">
+                <span class="stocks-strip__label">Sold Positions</span>
+                <span class="stocks-strip__value">{% if sold_stocks %}{{ sold_stocks|length }}{% else %}0{% endif %}</span>
+            </div>
+            <div class="stocks-strip__item">
+                <span class="stocks-strip__label">Portfolio Section</span>
+                <span class="stocks-strip__value" style="color:var(--blue);">Equities</span>
+            </div>
+            <div class="stocks-strip__item">
+                <span class="stocks-strip__label">Total Value</span>
+                <span class="stocks-strip__value sensitive-value" data-value="{{ currency_symbol }}{{ total_stock|floatformat:2|intcomma }}">****</span>
+            </div>
+        </div>
+
+        <!-- Section label -->
+        <p class="stocks-section-label anim-fadeUp anim-delay-1">
+            <i class="bi bi-graph-up-arrow" style="color:var(--blue);"></i>
+            Active Positions
+        </p>
+
+        <!-- Stock cards -->
+        {% for item in stock_data %}
+        <div class="stock-card anim-fadeUp" style="animation-delay: {{ forloop.counter0 }}00ms;">
+
+            <!-- Top row -->
+            <div class="stock-card__top">
+
+                <!-- Ticker + shares -->
+                <div class="stock-card__id">
+                    <span class="stock-card__ticker">{{ item.stock.ticker }}</span>
+                    <span class="stock-card__shares-label">{{ item.stock.shares|intcomma }} shares</span>
+                </div>
+
+                <!-- Company + meta -->
+                <div class="stock-card__body">
+                    <h4 class="stock-card__company">{{ item.stock.company_name }}</h4>
+                    <div class="stock-card__meta">
+                        <span><i class="bi bi-calendar3"></i> Bought {{ item.stock.purchase_date }}</span>
+                        <span><i class="bi bi-tag"></i> ${{ item.stock.purchase_price|floatformat:2|intcomma }} / share</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="stock-card__actions">
+                    <a href="/portfolio/stocks/{{ item.stock.pk }}/"
+                       class="btn-g8 btn-g8--outline-gold btn-g8--xs"
+                       title="View chart">
+                        <i class="bi bi-graph-up"></i> Chart
+                    </a>
+                    <a href="/portfolio/stocks/edit/{{ item.stock.pk }}/"
+                       class="btn-g8 btn-g8--ghost btn-g8--xs"
+                       title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="/portfolio/stocks/sell/{{ item.stock.pk }}/"
+                       class="btn-g8 btn-g8--amber btn-g8--xs"
+                       title="Sell">
+                        <i class="bi bi-tag-fill"></i> Sell
+                    </a>
+                    <form method="POST"
+                          action="/portfolio/stocks/delete/{{ item.stock.pk }}/"
+                          style="margin:0;">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="btn-g8 btn-g8--danger btn-g8--xs"
+                                onclick="return confirm('Delete {{ item.stock.ticker }}? This cannot be undone.')">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="stock-card__metrics">
+
+                <div class="stock-metric">
+                    <span class="stock-metric__label">Purchase Price</span>
+                    <span class="stock-metric__value">${{ item.stock.purchase_price|floatformat:2|intcomma }}</span>
+                    <span class="stock-metric__sub">per share</span>
+                </div>
+
+                <div class="stock-metric">
+                    <span class="stock-metric__label">Total Cost</span>
+                    <span class="stock-metric__value">${{ item.stock.purchase_price|floatformat:2 }}</span>
+                    <span class="stock-metric__sub">{{ item.stock.shares|intcomma }} × ${{ item.stock.purchase_price|floatformat:2 }}</span>
+                </div>
+
+                <div class="stock-metric">
+                    <span class="stock-metric__label">
+                        <span class="live-dot"></span>Current Price
+                    </span>
+                    <span class="stock-metric__value">
+                        {% if item.current_price %}${{ item.current_price|floatformat:2|intcomma }}{% else %}—{% endif %}
+                    </span>
+                    <span class="stock-metric__sub">live</span>
+                </div>
+
+                <div class="stock-metric">
+                    <span class="stock-metric__label">Market Value</span>
+                    <span class="stock-metric__value">
+                        {% if item.current_value %}${{ item.current_value|floatformat:2|intcomma }}{% else %}—{% endif %}
+                    </span>
+                    <span class="stock-metric__sub">total</span>
+                </div>
+
+                <div class="stock-metric {% if item.gain_loss < 0 %}stock-metric--loss{% else %}stock-metric--gain{% endif %}">
+                    <span class="stock-metric__label">P &amp; L</span>
+                    <span class="stock-metric__value">
+                        {% if item.gain_loss != None %}
+                            {% if item.gain_loss >= 0 %}
+                                ▲ ${{ item.gain_loss|floatformat:2|intcomma }}
+                            {% else %}
+                                ▼ ${{ item.gain_loss|floatformat:2|cut:"-"|intcomma }}
+                            {% endif %}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </span>
+                    {% if item.gain_loss_percent != None %}
+                        <span class="stock-metric__sub">{{ item.gain_loss_percent|floatformat:2 }}%</span>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+
+    {% else %}
+        <div class="stocks-empty anim-fadeUp">
+            <div class="stocks-empty__icon"><i class="bi bi-graph-up-arrow"></i></div>
+            <h4 class="stocks-empty__title">No stock positions yet</h4>
+            <p class="stocks-empty__sub">Add your first equity holding to start tracking live prices and performance.</p>
+            <a href="/portfolio/stocks/add/" class="btn-g8 btn-g8--gold">
+                <i class="bi bi-plus-lg"></i> Add Your First Stock
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- ─── PIE / ALLOCATION CHART ────────────────────────────── -->
+    {% if stock_pie_json %}
+    <div class="stocks-chart-card anim-fadeUp">
+        <div class="stocks-chart-card__header">
+            <h4 class="stocks-chart-card__title">
+                <i class="bi bi-pie-chart-fill" style="color:var(--blue);"></i>
+                Stock Allocation
+            </h4>
+            <span class="g8-badge g8-badge--blue">By Holding</span>
+        </div>
+        <div id="stocks-pie-chart" style="min-height:300px;"></div>
+    </div>
+    {% endif %}
+
+    <!-- ─── SOLD / HISTORY ────────────────────────────────────── -->
+    {% if sold_stocks %}
+    <details class="g8-history anim-fadeUp">
+        <summary class="g8-history__summary">
+            <div class="g8-history__label">
+                <i class="bi bi-clock-history" style="color:var(--gold);"></i>
+                Closed Positions — History
+                <span class="g8-badge g8-badge--amber">{{ sold_stocks|length }}</span>
+            </div>
+            <i class="bi bi-chevron-down g8-history__chevron"></i>
+        </summary>
+
+        <div class="g8-history__body" style="padding: 1rem;">
+            {% for stock in sold_stocks %}
+            <div class="sold-stock-row">
+                <div class="sold-stock-row__left">
+                    <div class="sold-stock-row__name-row">
+                        <span class="g8-ticker g8-ticker--sold">SOLD</span>
+                        <span class="g8-ticker">{{ stock.ticker }}</span>
+                        <h5 class="sold-stock-row__name">{{ stock.company_name }}</h5>
+                    </div>
+                    <div class="sold-stock-row__flow">
+                        <span>{{ stock.shares|intcomma }} shares @ ${{ stock.purchase_price|floatformat:2 }}</span>
+                        <span class="arrow"><i class="bi bi-arrow-right"></i></span>
+                        {% if stock.sale_price %}
+                        <span style="color:var(--text-primary);">Sold @ ${{ stock.sale_price|floatformat:2 }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="sold-stock-row__right">
+                    {% if stock.profit_loss %}
+                    <span class="sold-pnl {% if stock.profit_loss >= 0 %}sold-pnl--gain{% else %}sold-pnl--loss{% endif %}">
+                        {% if stock.profit_loss >= 0 %}+{% endif %}${{ stock.profit_loss|floatformat:2|intcomma }}
+                    </span>
+                    {% endif %}
+                    <form method="POST"
+                          action="/portfolio/stocks/delete/{{ stock.pk }}/"
+                          style="margin:0;">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="btn-g8 btn-g8--danger btn-g8--xs"
+                                onclick="return confirm('Remove this record?')">
+                            <i class="bi bi-trash3"></i> Clear
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </details>
+    {% endif %}
+
+</main>
+
+<!-- ─── SCRIPTS ─────────────────────────────────────────────────── -->
+<script>
+(function () {
+    const FONT   = "'DM Mono','DM Sans',monospace";
+    const TRANS  = 'rgba(0,0,0,0)';
+    const TEXT_S = 'rgba(255,255,255,.68)';
+    const COLORS = ['#3B82F6','#C9A96E','#10B981','#F59E0B','#818CF8','#EF4444','#DFC28E','#6EE7B7'];
+
+    function renderPie(elementId, rawJson) {
+        try {
+            const raw = JSON.parse(rawJson);
+            if (raw.data && raw.data[0]) {
+                Object.assign(raw.data[0], {
+                    type: 'pie',
+                    hole: 0.52,
+                    marker: {
+                        colors: COLORS,
+                        line: { color: '#1A1A1A', width: 2 }
+                    },
+                    textfont: { family: FONT, size: 11, color: '#fff' },
+                    hovertemplate: '<b>%{label}</b><br>Value: %{value:.2f}<br>%{percent}<extra></extra>',
+                    insidetextorientation: 'radial'
+                });
+            }
+            Object.assign(raw.layout, {
+                autosize: true,
+                paper_bgcolor: TRANS,
+                plot_bgcolor: TRANS,
+                margin: { l: 10, r: 10, t: 10, b: 10 },
+                showlegend: true,
+                legend: {
+                    orientation: 'v',
+                    x: 1.04, y: 0.5,
+                    font: { family: FONT, size: 11, color: TEXT_S },
+                    bgcolor: TRANS,
+                    bordercolor: TRANS
+                },
+                annotations: [{
+                    text: '<b>Stocks</b>',
+                    x: 0.5, y: 0.5,
+                    xref: 'paper', yref: 'paper',
+                    showarrow: false,
+                    font: { family: FONT, size: 13, color: '#3B82F6' }
+                }],
+                font: { family: FONT, color: TEXT_S }
+            });
+            Plotly.newPlot(elementId, raw.data, raw.layout, {
+                responsive: true,
+                displayModeBar: false
+            });
+        } catch (e) {
+            console.warn('Chart error:', e);
+        }
+    }
+
+    {% if stock_pie_json %}
+        renderPie('stocks-pie-chart', '{{ stock_pie_json|escapejs }}');
+    {% endif %}
+
+    document.querySelectorAll('.g8-history').forEach(function (el) {
+        el.addEventListener('toggle', function () {
+            var ch = el.querySelector('.g8-history__chevron');
+            if (ch) ch.style.transform = el.open ? 'rotate(180deg)' : '';
+        });
+    });
+})();
+</script>
+
 </body>
 </html>

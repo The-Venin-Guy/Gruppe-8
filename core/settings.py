@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'dashboard',
     'portfolio',
     'news',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -83,7 +84,9 @@ TIME_ZONE = 'Africa/Lagos'
 USE_I18N = True
 USE_TZ = True
 STATIC_URL = 'static/'
-
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/users/login/'

@@ -1,0 +1,393 @@
+/* ============================================================
+   GRUPPE-8  |  auth.css  —  Login & Signup Pages
+   ============================================================ */
+
+/* ─── AUTH BODY ──────────────────────────────────────────────── */
+.g8-auth-body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: var(--bg-base);
+    position: relative;
+}
+
+/* ─── AMBIENT ORBS ───────────────────────────────────────────── */
+.g8-auth-orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(100px);
+    opacity: .22;
+}
+
+.g8-auth-orb--gold {
+    width: 560px; height: 560px;
+    background: radial-gradient(circle, #7c5f1e, transparent 70%);
+    bottom: -180px;
+    left: -160px;
+}
+
+.g8-auth-orb--blue {
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, #1e3a8a, transparent 70%);
+    top: -120px;
+    right: -120px;
+}
+
+/* ─── GRID DECORATION ────────────────────────────────────────── */
+.g8-auth-grid {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(var(--border-subtle, rgba(46,46,46,.35)) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-subtle, rgba(46,46,46,.35)) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: .18;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+/* ─── AUTH CARD ──────────────────────────────────────────────── */
+.g8-auth-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 2.5rem 2.25rem 2rem;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, .6);
+    overflow: hidden;
+    animation: g8-fadeUp .42s var(--ease) both;
+}
+
+
+
+/* ─── BRAND BLOCK ────────────────────────────────────────────── */
+.g8-auth-card__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .65rem;
+    margin-bottom: 1.85rem;
+}
+
+.g8-brand__mark--lg {
+    width: 48px; height: 48px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .95rem;
+    font-weight: 800;
+    color: #1A1A1A;
+    letter-spacing: -.5px;
+    flex-shrink: 0;
+}
+
+.g8-auth-card__brand-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.g8-auth-card__brand-name em {
+    font-style: normal;
+    color: var(--gold);
+}
+
+/* ─── HEADING BLOCK ──────────────────────────────────────────── */
+.g8-auth-heading {
+    text-align: center;
+    margin-bottom: 1.75rem;
+}
+
+.g8-auth-heading__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 .3rem;
+    letter-spacing: -.02em;
+}
+
+.g8-auth-heading__sub {
+    font-size: .82rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ─── CARD BODY ──────────────────────────────────────────────── */
+.g8-auth-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* ─── FIELD ──────────────────────────────────────────────────── */
+.g8-field {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+
+.g8-label {
+    font-size: .71rem;
+    font-weight: 600;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.g8-input-wrap {
+    position: relative;
+}
+
+.g8-input-icon {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: .88rem;
+    pointer-events: none;
+    line-height: 1;
+    z-index: 2;
+}
+
+.g8-input {
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .9rem;
+    padding: .65rem .9rem .65rem 2.1rem;
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    -webkit-appearance: none;
+    position: relative;
+    z-index: 1;
+}
+
+.g8-input::placeholder { color: var(--text-muted); }
+
+.g8-input:focus {
+    border-color: var(--gold-dark);
+    box-shadow: 0 0 0 3px rgba(201, 169, 110, .12);
+}
+
+/* Input with reveal button padding */
+.g8-input--has-reveal { padding-right: 2.6rem; }
+
+/* ─── REVEAL BUTTON ──────────────────────────────────────────── */
+.g8-input-reveal {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: .9rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    transition: color var(--transition);
+}
+
+.g8-input-reveal:hover { color: var(--text-primary); }
+
+/* ─── FIELD ROW (label + forgot) ─────────────────────────────── */
+.g8-auth-field-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.g8-forgot-link {
+    font-size: .72rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+.g8-forgot-link:hover { color: var(--gold); }
+
+/* ─── HINT TEXT ──────────────────────────────────────────────── */
+.g8-field__hint {
+    font-size: .71rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+/* ─── ERROR TEXT ─────────────────────────────────────────────── */
+.g8-field__error {
+    font-size: .72rem;
+    color: var(--red);
+    margin: .2rem 0 0;
+}
+
+/* ─── PASSWORD STRENGTH ──────────────────────────────────────── */
+.g8-strength {
+    display: block;
+    height: 3px;
+    background: var(--border);
+    border-radius: 100px;
+    margin-top: .5rem;
+    overflow: hidden;
+}
+
+.g8-strength__fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 100px;
+    transition: width .3s ease, background .3s ease;
+}
+
+.g8-strength-label {
+    font-size: .68rem;
+    color: var(--text-muted);
+    margin-top: .3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.g8-strength-label span { transition: color .3s ease; }
+
+/* ─── SUBMIT BUTTON ──────────────────────────────────────────── */
+.g8-auth-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: .8rem;
+    margin-top: .5rem;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    color: #1A1A1A;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .92rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: .15px;
+    transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+    position: relative;
+    z-index: 1;
+}
+
+.g8-auth-submit:hover {
+    background: linear-gradient(135deg, #7a5018, #b8892a);
+    box-shadow: 0 4px 22px rgba(201, 169, 110, .3);
+    transform: translateY(-1px);
+}
+
+.g8-auth-submit:active { transform: none; }
+
+/* ─── CARD FOOTER ────────────────────────────────────────────── */
+.g8-auth-card__footer {
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.g8-auth-card__divider {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: 1.1rem;
+}
+
+.g8-auth-card__divider::before,
+.g8-auth-card__divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.g8-auth-card__divider span {
+    font-size: .68rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.g8-auth-footer-text {
+    text-align: center;
+    font-size: .83rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.g8-auth-footer-text a {
+    color: var(--gold);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+.g8-auth-footer-text a:hover { color: var(--gold-light); }
+
+/* ─── ALERT ──────────────────────────────────────────────────── */
+.g8-auth-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: .75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: .83rem;
+    font-weight: 500;
+    line-height: 1.45;
+    border: 1px solid;
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+.g8-auth-alert--success {
+    background: rgba(16, 185, 129, .08);
+    border-color: rgba(16, 185, 129, .2);
+    color: var(--green);
+}
+
+.g8-auth-alert--error {
+    background: rgba(239, 68, 68, .08);
+    border-color: rgba(239, 68, 68, .2);
+    color: var(--red);
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+    .g8-auth-card {
+        padding: 2rem 1.25rem 1.75rem;
+        border-radius: var(--radius-lg);
+    }
+    .g8-auth-card__brand { margin-bottom: 1.5rem; }
+    .g8-auth-heading { margin-bottom: 1.4rem; }
+    .g8-auth-orb--gold { width: 320px; height: 320px; }
+    .g8-auth-orb--blue { width: 260px; height: 260px; }
+}

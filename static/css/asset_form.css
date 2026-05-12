@@ -1,0 +1,215 @@
+/* ============================================================
+   GRUPPE-8  |  asset_form.css  —  Asset Add / Edit Form
+   ============================================================ */
+
+/* ─── CENTERED BODY ──────────────────────────────────────────── */
+.asset-form-body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: var(--bg-base);
+    position: relative;
+}
+
+/* Ambient orbs */
+.asset-form-body::before {
+    content: '';
+    position: fixed;
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, var(--gold-dark), transparent 70%);
+    border-radius: 50%;
+    bottom: -160px; left: -140px;
+    filter: blur(90px);
+    opacity: .18;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.asset-form-body::after {
+    content: '';
+    position: fixed;
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, #1d4ed8, transparent 70%);
+    border-radius: 50%;
+    top: -80px; right: -100px;
+    filter: blur(90px);
+    opacity: .14;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ─── FORM CARD ──────────────────────────────────────────────── */
+.asset-form-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 2.25rem 2rem 2rem;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, .5);
+    overflow: hidden;
+}
+
+
+/* Subtle inner glow */
+.asset-form-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(201,169,110,.04) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* ─── FORM HEADER ────────────────────────────────────────────── */
+.asset-form-card__brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 1.75rem;
+}
+
+.asset-form-card__eyebrow {
+    font-size: .63rem;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 .3rem;
+}
+
+.asset-form-card__title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -.2px;
+    line-height: 1.2;
+}
+
+/* ─── DJANGO FORM FIELD OVERRIDES ────────────────────────────── */
+/* These apply global g8-input styles to Django's auto-rendered fields */
+.asset-form-card .g8-field input,
+.asset-form-card .g8-field select,
+.asset-form-card .g8-field textarea,
+/* Django renders without our wrapper class, so also target directly */
+.af-fields input[type="text"],
+.af-fields input[type="number"],
+.af-fields input[type="date"],
+.af-fields input[type="email"],
+.af-fields input[type="url"],
+.af-fields select,
+.af-fields textarea {
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .875rem;
+    padding: .6rem .85rem;
+    transition: border-color .2s cubic-bezier(.4,0,.2,1),
+                box-shadow .2s cubic-bezier(.4,0,.2,1);
+    outline: none;
+    -webkit-appearance: none;
+    box-sizing: border-box;
+}
+
+.af-fields input:focus,
+.af-fields select:focus,
+.af-fields textarea:focus {
+    border-color: var(--gold-dark);
+    box-shadow: 0 0 0 3px rgba(201,169,110,.12);
+}
+
+.af-fields input::placeholder,
+.af-fields textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.af-fields select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.38)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right .85rem center;
+    padding-right: 2.25rem;
+}
+
+.af-fields select option {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+}
+
+.af-fields textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+/* Field label */
+.af-label {
+    display: block;
+    font-size: .73rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    color: var(--text-secondary);
+    margin-bottom: .4rem;
+    text-transform: capitalize;
+}
+
+/* Field wrapper */
+.af-field {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    margin-bottom: .9rem;
+}
+
+.af-field:last-child { margin-bottom: 0; }
+
+/* Error text */
+.af-error {
+    font-size: .72rem;
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ─── FORM FOOTER ────────────────────────────────────────────── */
+.asset-form-card__footer {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.asset-form-card__submit {
+    width: 100%;
+    justify-content: center;
+    padding: .72rem;
+    font-size: .9rem;
+}
+
+.asset-form-card__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: .78rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color .2s;
+}
+
+.asset-form-card__back:hover { color: var(--gold); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 560px) {
+    .asset-form-card {
+        padding: 1.75rem 1.25rem 1.5rem;
+        border-radius: var(--radius-lg);
+    }
+}

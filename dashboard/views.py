@@ -18,7 +18,7 @@ def dashboard_view(request):
     active_assets = Asset.objects.filter(user=request.user, status='active')
     accounts = CashAccount.objects.filter(user=request.user)
     active_stocks = Stock.objects.filter(user=request.user, status='active')
-    display_currency = request.GET.get('currency', 'USD')
+    display_currency = request.GET.get('currency', 'NGN')
     currency_symbols = {'USD': '$', 'NGN': '₦'}
     currency_symbol = currency_symbols.get(display_currency, '$')
     stock_data = []
@@ -109,7 +109,7 @@ def dashboard_view(request):
         }, timeout=86400)  # 86400 seconds = 24 hours
 
     ai_recommendation = markdown.markdown(ai_recommendation)
-    news_articles, overall_label, overall_color = analyse_sentiment(news_articles)
+    news_articles, overall_label = analyse_sentiment(news_articles)
 
     return render(request, 'dashboard/dashboard.html', {
         'user': request.user,
@@ -123,6 +123,4 @@ def dashboard_view(request):
         'portfolio_line_json': portfolio_line_json,
         'news_articles': news_articles,
         'ai_recommendation': ai_recommendation,
-        'overall_label': overall_label,
-        'overall_color': overall_color,
     })

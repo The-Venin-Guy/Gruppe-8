@@ -1,0 +1,225 @@
+/* ============================================================
+   GRUPPE-8  |  cash_form.css
+   ============================================================ */
+
+/* ─── PAGE LAYOUT ────────────────────────────────────────────── */
+.cash-form-body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: var(--bg-base);
+
+    /* subtle radial glow behind form */
+    background-image:
+        radial-gradient(ellipse 600px 400px at 20% 80%, rgba(201,169,110,.04) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 350px at 80% 20%, rgba(201,169,110,.04) 0%, transparent 70%);
+}
+
+/* ─── FORM CARD ──────────────────────────────────────────────── */
+.cash-form-card {
+    width: 100%;
+    max-width: 480px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    padding: 2.5rem 2.25rem 2rem;
+    position: relative;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .55);
+    animation: g8-fadeUp .4s var(--ease) both;
+}
+
+
+
+
+/* ─── CARD HEADER ────────────────────────────────────────────── */
+.cash-form-card__eyebrow {
+    font-size: .67rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: .35rem;
+}
+
+.cash-form-card__title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 .3rem;
+    letter-spacing: -.025em;
+    line-height: 1.2;
+}
+
+.cash-form-card__sub {
+    font-size: .82rem;
+    color: var(--text-secondary);
+    margin: 0 0 2rem;
+}
+
+/* ─── FORM DIVIDER ───────────────────────────────────────────── */
+.cash-form-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.5rem 0;
+}
+
+/* ─── FIELD ROWS ─────────────────────────────────────────────── */
+.cash-form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.cash-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+
+.cash-form-label {
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .55px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+/* Override Django-generated inputs to match design system */
+.cash-form-fields input,
+.cash-form-fields select,
+.cash-form-fields textarea {
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .875rem;
+    padding: .65rem .9rem;
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.cash-form-fields input::placeholder,
+.cash-form-fields textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.cash-form-fields input:focus,
+.cash-form-fields select:focus,
+.cash-form-fields textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,169,110, .12);
+}
+
+/* Select arrow */
+.cash-form-fields select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238c9198' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right .85rem center;
+    padding-right: 2.25rem;
+    cursor: pointer;
+}
+
+.cash-form-fields select option {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+}
+
+/* Number input — hide spinner */
+.cash-form-fields input[type="number"]::-webkit-inner-spin-button,
+.cash-form-fields input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+.cash-form-fields input[type="number"] { -moz-appearance: textfield; }
+
+/* Error text */
+.cash-form-field .errorlist {
+    list-style: none;
+    padding: 0; margin: .25rem 0 0;
+}
+.cash-form-field .errorlist li {
+    font-size: .72rem;
+    color: var(--red);
+}
+
+/* ─── SUBMIT BUTTON ──────────────────────────────────────────── */
+.cash-form-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: .75rem;
+    margin-top: 1.5rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+    position: relative;
+    z-index: 1;
+    letter-spacing: .2px;
+}
+
+.cash-form-submit:hover {
+    transform: translateY(-1px);
+}
+
+.cash-form-submit:active {
+    transform: translateY(0);
+}
+
+/* ─── BACK LINK ──────────────────────────────────────────────── */
+.cash-form-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 1.25rem;
+    font-size: .8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+    position: relative;
+    z-index: 1;
+}
+
+
+/* ─── AMBIENT ORBS ───────────────────────────────────────────── */
+.cash-orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(90px);
+    opacity: .2;
+}
+
+.cash-orb--green {
+    width: 500px; height: 500px;
+    bottom: -160px; left: -140px;
+}
+
+.cash-orb--blue {
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, #1d4ed8, transparent 70%);
+    top: -100px; right: -100px;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 540px) {
+    .cash-form-card {
+        padding: 2rem 1.25rem 1.75rem;
+        border-radius: var(--radius-lg);
+    }
+    .cash-form-card__title { font-size: 1.25rem; }
+}

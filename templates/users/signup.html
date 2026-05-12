@@ -1,44 +1,225 @@
 {% extends 'base_auth.html' %}
 
-{% block title %}Sign Up | GRUPPE-8{% endblock %}
+{% block title %}Create Account | GRUPPE-8{% endblock %}
 
-{% block auth_header %}
-    <p class="subtitle">Create your investment profile</p>
+{% block auth_heading %}
+    <h1 class="g8-auth-heading__title">Create your account</h1>
+    <p class="g8-auth-heading__sub">Start tracking your investment portfolio today</p>
 {% endblock %}
 
 {% block content %}
-<form method="POST">
+
+<!-- Username -->
+<div class="g8-field">
+    <label class="g8-label" for="id_username">
+        <i class="bi bi-person" style="color:var(--gold);"></i> Username
+    </label>
+    <div class="g8-input-wrap">
+        <i class="bi bi-person g8-input-icon"></i>
+        <input
+            type="text"
+            name="username"
+            id="id_username"
+            class="g8-input"
+            placeholder="Choose a username"
+            autocomplete="username"
+            autofocus
+            required
+        >
+    </div>
+    {% if form.username.errors %}
+        {% for error in form.username.errors %}
+        <span class="g8-field__error"><i class="bi bi-exclamation-circle" style="margin-right:4px;"></i>{{ error }}</span>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Password -->
+<div class="g8-field">
+    <label class="g8-label" for="id_password1">
+        <i class="bi bi-lock" style="color:var(--gold);"></i> Password
+    </label>
+    <div class="g8-input-wrap">
+        <i class="bi bi-lock g8-input-icon"></i>
+        <input
+            type="password"
+            name="password1"
+            id="id_password1"
+            class="g8-input g8-input--has-reveal"
+            placeholder="Create a strong password"
+            autocomplete="new-password"
+            required
+        >
+        <button type="button" class="g8-input-reveal" id="toggle-pw1" aria-label="Toggle password">
+            <i class="bi bi-eye" id="toggle-pw1-icon"></i>
+        </button>
+    </div>
+
+    <!-- Strength meter -->
+    <div class="g8-strength" id="strength-bar" style="display:block;">
+        <div class="g8-strength__fill" id="strength-fill"></div>
+    </div>
+    <div class="g8-strength-label">
+        <span id="strength-text" style="color:var(--text-muted);">—</span>
+        <span style="color:var(--text-muted); font-size:.66rem;">8+ chars · mix letters &amp; numbers</span>
+    </div>
+
+    {% if form.password1.errors %}
+        {% for error in form.password1.errors %}
+        <span class="g8-field__error"><i class="bi bi-exclamation-circle" style="margin-right:4px;"></i>{{ error }}</span>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Confirm Password -->
+<div class="g8-field">
+    <label class="g8-label" for="id_password2">
+        <i class="bi bi-shield-lock" style="color:var(--gold);"></i> Confirm Password
+    </label>
+    <div class="g8-input-wrap">
+        <i class="bi bi-shield-lock g8-input-icon"></i>
+        <input
+            type="password"
+            name="password2"
+            id="id_password2"
+            class="g8-input g8-input--has-reveal"
+            placeholder="Repeat your password"
+            autocomplete="new-password"
+            required
+        >
+        <button type="button" class="g8-input-reveal" id="toggle-pw2" aria-label="Toggle confirm password">
+            <i class="bi bi-eye" id="toggle-pw2-icon"></i>
+        </button>
+    </div>
+    <p class="g8-field__hint" id="pw-match-hint" style="display:none;"></p>
+    {% if form.password2.errors %}
+        {% for error in form.password2.errors %}
+        <span class="g8-field__error"><i class="bi bi-exclamation-circle" style="margin-right:4px;"></i>{{ error }}</span>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Submit -->
+<button type="submit" class="g8-auth-submit" form="signup-form">
+    <i class="bi bi-person-plus-fill"></i> Create Account
+</button>
+
+<!-- Hidden real form -->
+<form method="POST" id="signup-form" style="display:none;">
     {% csrf_token %}
-    
-    <div class="mb-3">
-        <label for="id_username">Username</label>
-        <input type="text" name="username" id="id_username" 
-               class="form-control" placeholder="Choose a username" 
-               required autofocus>
-    </div>
-
-    <div class="mb-3">
-        <label for="id_password1">Password</label>
-        <input type="password" name="password1" id="id_password1" 
-               class="form-control" placeholder="Create a password" 
-               required>
-        <!-- Customizing the hint to fit the dark theme -->
-        <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem; line-height: 1.4;">
-            <i class="bi bi-info-circle me-1"></i> Min 8 characters. Avoid common words or entirely numeric passwords.
-        </p>
-    </div>
-
-    <div class="mb-3">
-        <label for="id_password2">Confirm Password</label>
-        <input type="password" name="password2" id="id_password2" 
-               class="form-control" placeholder="Repeat your password" 
-               required>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Create Account</button>
 </form>
+
 {% endblock %}
 
 {% block auth_footer %}
-    Already have an account? <a href="/users/login/">Log in</a>
+    Already have an account? <a href="/users/login/">Sign In</a>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+
+    /* ── Wire visible inputs into hidden form on submit ── */
+    const form   = document.getElementById('signup-form');
+    const submit = document.querySelector('.g8-auth-submit');
+    const uInput = document.getElementById('id_username');
+    const pw1    = document.getElementById('id_password1');
+    const pw2    = document.getElementById('id_password2');
+
+    submit.addEventListener('click', function () {
+        cloneField('username',  uInput.value);
+        cloneField('password1', pw1.value);
+        cloneField('password2', pw2.value);
+        form.submit();
+    });
+
+    function cloneField(name, value) {
+        let el = form.querySelector('[name="' + name + '"]');
+        if (!el) {
+            el = document.createElement('input');
+            el.type = 'hidden';
+            el.name = name;
+            form.appendChild(el);
+        }
+        el.value = value;
+    }
+
+    /* ── Password reveal toggles ── */
+    [
+        ['toggle-pw1', 'toggle-pw1-icon', 'id_password1'],
+        ['toggle-pw2', 'toggle-pw2-icon', 'id_password2']
+    ].forEach(function (pair) {
+        const btn  = document.getElementById(pair[0]);
+        const icon = document.getElementById(pair[1]);
+        const inp  = document.getElementById(pair[2]);
+        if (btn) {
+            btn.addEventListener('click', function () {
+                const isText = inp.type === 'text';
+                inp.type = isText ? 'password' : 'text';
+                icon.className = isText ? 'bi bi-eye' : 'bi bi-eye-slash';
+            });
+        }
+    });
+
+    /* ── Strength meter ── */
+    const fill        = document.getElementById('strength-fill');
+    const strengthTxt = document.getElementById('strength-text');
+
+    function scorePassword(pw) {
+        var score = 0;
+        if (!pw) return 0;
+        if (pw.length >= 8)  score += 25;
+        if (pw.length >= 12) score += 15;
+        if (/[A-Z]/.test(pw)) score += 15;
+        if (/[a-z]/.test(pw)) score += 15;
+        if (/[0-9]/.test(pw)) score += 15;
+        if (/[^A-Za-z0-9]/.test(pw)) score += 15;
+        return Math.min(score, 100);
+    }
+
+    pw1.addEventListener('input', function () {
+        var score = scorePassword(pw1.value);
+        fill.style.width = score + '%';
+
+        if (score === 0) {
+            fill.style.background = 'transparent';
+            strengthTxt.textContent = '—';
+            strengthTxt.style.color = 'var(--text-muted)';
+        } else if (score < 35) {
+            fill.style.background = 'var(--red)';
+            strengthTxt.textContent = 'Weak';
+            strengthTxt.style.color = 'var(--red)';
+        } else if (score < 60) {
+            fill.style.background = 'var(--amber)';
+            strengthTxt.textContent = 'Fair';
+            strengthTxt.style.color = 'var(--amber)';
+        } else if (score < 80) {
+            fill.style.background = 'var(--gold)';
+            strengthTxt.textContent = 'Good';
+            strengthTxt.style.color = 'var(--gold)';
+        } else {
+            fill.style.background = 'var(--green)';
+            strengthTxt.textContent = 'Strong';
+            strengthTxt.style.color = 'var(--green)';
+        }
+    });
+
+    /* ── Password match hint ── */
+    const matchHint = document.getElementById('pw-match-hint');
+
+    pw2.addEventListener('input', function () {
+        if (!pw2.value) {
+            matchHint.style.display = 'none';
+            return;
+        }
+        matchHint.style.display = 'flex';
+        if (pw1.value === pw2.value) {
+            matchHint.innerHTML = '<i class="bi bi-check-circle-fill" style="color:var(--green); flex-shrink:0;"></i> <span style="color:var(--green);">Passwords match</span>';
+        } else {
+            matchHint.innerHTML = '<i class="bi bi-x-circle-fill" style="color:var(--red); flex-shrink:0;"></i> <span style="color:var(--red);">Passwords do not match</span>';
+        }
+    });
+
+})();
+</script>
 {% endblock %}

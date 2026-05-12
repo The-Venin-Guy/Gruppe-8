@@ -1,6 +1,7 @@
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import dj_database_url
 
 load_dotenv()
 
@@ -24,6 +25,7 @@ INSTALLED_APPS = [
     'dashboard',
     'portfolio',
     'news',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +71,7 @@ DATABASES = {
     }
 }
 
+
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -82,7 +85,7 @@ USE_I18N = True
 USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "static", 
+    BASE_DIR / "static",
 ]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

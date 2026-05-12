@@ -93,7 +93,7 @@ def analyse_sentiment(articles):
         
         a['polarity'] = round(score, 2)
     
-    overall_sentiment = total_polarity/10
+    overall_sentiment = total_polarity/10 
     if overall_sentiment > 0.1:
         overall_label = 'Bullish'
         overall_color = '#4ade80'
@@ -104,4 +104,4 @@ def analyse_sentiment(articles):
         overall_label = 'Neutral'
         overall_color = '#898989'
     
-    return top10, overall_label, overall_color
+    return top10, overall_label

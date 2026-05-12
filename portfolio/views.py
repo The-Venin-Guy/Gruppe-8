@@ -16,6 +16,7 @@ import json
 def asset_list(request):
     assets = Asset.objects.filter(user=request.user, status='active')
     sold_assets = Asset.objects.filter(user=request.user, status='sold')
+    total_assets = sum(asset.current_value for asset in assets)
 
     if assets:
         fig = go.Figure(data=[go.Pie(
@@ -39,7 +40,8 @@ def asset_list(request):
     return render(request, 'portfolio/asset_list.html', {
         'assets': assets,
         'sold_assets': sold_assets,
-        'asset_pie_json': asset_pie_json
+        'asset_pie_json': asset_pie_json,
+        'total_assets': total_assets
     })
 
 @login_required

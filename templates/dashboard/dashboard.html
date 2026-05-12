@@ -1,293 +1,405 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | GRUPPE-8</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Plotly -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    
-    <style>
-        :root {
-            --bg-dark: #121415;
-            --card-bg: #1b1e20;
-            --accent-green: #a8e63d;
-            --border-subtle: #2c3034;
-            --text-muted: #8a8d91;
-            --text-bright: #ffffff;
-        }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-bright);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-        }
-
-        .navbar {
-            background-color: rgba(18, 20, 21, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 0.75rem 2rem;
-        }
-        .navbar-brand {
-            color: var(--text-bright);
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .user-tag {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .premium-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 1.5rem;
-            position: relative;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: block;
-        }
-        .premium-card:hover {
-            border-color: var(--accent-green);
-            transform: translateY(-3px);
-        }
-
-        .accent-bar {
-            position: absolute; 
-            left: 0; 
-            top: 20%; 
-            bottom: 20%; 
-            width: 4px; 
-            background: var(--accent-green); 
-            border-radius: 0 4px 4px 0;
-        }
-
-        .welcome-section {
-            margin-top: 3rem;
-            margin-bottom: 2rem;
-        }
-        .welcome-section h2 {
-            font-weight: 700;
-            font-size: 1.75rem;
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            color: var(--text-bright);
-            font-weight: 700;
-            font-size: 1.5rem;
-            margin: 0;
-        }
-
-        .eye-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            transition: color 0.2s;
-            padding: 0;
-        }
-        .eye-btn:hover { color: var(--accent-green); }
-
-        .btn-logout {
-            border: 1px solid var(--border-subtle);
-            color: var(--text-muted);
-            padding: 0.4rem 1rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: 0.2s;
-        }
-        .btn-logout:hover {
-            border-color: #ff4d4d;
-            color: #ff4d4d;
-        }
-
-        .value-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .period-btn { background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted); border-radius: 6px; padding: 0.3rem 0.8rem; font-size: 0.8rem; text-decoration: none; transition: 0.2s; }
-        .period-btn:hover, .period-btn.active { border-color: var(--accent-green); color: var(--accent-green); }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
-    </style>
+    <!-- Design System -->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
 <body>
 
-    <nav class="navbar sticky-top">
-        <div class="container-fluid">
-            <span class="navbar-brand">GRUPPE-8</span>
-            <div class="ms-auto d-flex align-items-center gap-4">
-                <span class="user-tag"><i class="bi bi-person-circle me-2"></i>{{ user.username }}</span>
-                <a href="/users/logout/" class="btn-logout">Logout</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container">
-        <!-- 1. Header Section -->
-        <div class="welcome-section">
-            <div class="row align-items-end">
-                <div class="col-md-8">
-                    <h2 class="mb-1">Welcome back, {{ user.username }} 👋</h2>
-                    <p>Here is what's happening with your portfolio today.</p>
-                </div>
-                <div class="col-md-4 text-md-end">
-                    <p class="stat-label mb-1">Total Net Worth</p>
-                    <div class="d-flex gap-2 mb-4">
-                        <a href="?currency=USD" class="period-btn {% if display_currency == 'USD' %}active{% endif %}">$ USD</a>
-                        <a href="?currency=NGN" class="period-btn {% if display_currency == 'NGN' %}active{% endif %}">₦ NGN</a>
-                    </div>
-                    <div class="value-wrapper justify-content-md-end">
-                        <h3 class="sensitive-value mb-0 fw-bold" data-value="{{ currency_symbol }}{{net_worth|floatformat:2}}" style="color: var(--accent-green);">****</h3>
-                        <button id="toggle-visibility" class="eye-btn">
-                            <i id="eye-icon" class="bi bi-eye"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
+<!-- ─── NAVBAR ─────────────────────────────────────────────────── -->
+<nav class="g8-navbar">
+    <div class="g8-navbar__inner">
+        <div class="g8-brand">
+            <div class="g8-brand__mark">G8</div>
+            <span class="g8-brand__name"><em>GRUPPE</em>-8</span>
         </div>
 
-        <!-- 2. KPI Section -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-4">
-                <a href="/portfolio/assets/" class="premium-card">
-                    <div class="accent-bar"></div>
-                    <p class="stat-label">Total Assets</p>
-                    <h2 class="stat-value sensitive-value" data-value="{{ currency_symbol }}{{total_assets|floatformat:2}}">****</h2>
-                    <div class="mt-2" style="font-size: 0.8rem; color: var(--accent-green);">
-                        <i class="bi bi-arrow-up"></i> Live Tracking
-                    </div>
-                </a>
+        <div class="g8-nav-actions">
+            <!-- Live market badge -->
+            <span class="g8-badge g8-badge--green">
+                <span style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:dash-pulse 2s infinite;display:inline-block;"></span>
+                Markets Live
+            </span>
+
+            <!-- User pill -->
+            <div class="g8-user-pill">
+                <i class="bi bi-person-circle me-2"></i>
+                <span class="g8-user-name">{{ user.username }}</span>
             </div>
-            <div class="col-md-4">
-                <a href="/portfolio/stocks/" class="premium-card">
-                    <div class="accent-bar" style="background: #3498db;"></div> 
-                    <p class="stat-label">Stocks Value</p>
-                    <h2 class="stat-value sensitive-value" data-value="{{ currency_symbol }}{{total_stock|floatformat:2}}">****</h2>
-                    <div class="mt-2" style="font-size: 0.8rem; color: var(--text-muted);"> Market Portfolio </div>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="/portfolio/cash/" class="premium-card">
-                    <div class="accent-bar" style="background: #f1c40f;"></div> 
-                    <p class="stat-label">Available Cash</p>
-                    <h2 class="stat-value sensitive-value" data-value="{{ currency_symbol }}{{total_cash|floatformat:2}}">****</h2>
-                    <div class="mt-2" style="font-size: 0.8rem; color: var(--text-muted);"> Liquid Assets </div>
-                </a>
-            </div>
+
+            <!-- Logout -->
+            <a href="/users/logout/" class="btn-g8 btn-g8--danger btn-g8--xs">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- ─── MAIN ────────────────────────────────────────────────────── -->
+<main class="g8-main">
+
+    <!-- 1. HEADER -->
+    <div class="dash-header anim-fadeUp">
+        <div class="dash-header__greeting">
+            <h1 class="dash-header__title">
+                Welcome back, {{ user.username }} <span class="wave-emoji">👋</span>
+            </h1>
+            <p class="dash-header__sub">Here's what's happening with your portfolio today.</p>
         </div>
 
-        <!-- 3. Visualizations Row (Expandable) -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-4">
-                {% if graph_json %}
-                <div class="premium-card" style="height: 100%;">
-                    <p class="stat-label mb-3">Asset Allocation</p>
-                    <div id="my-pie-chart"></div>
-                </div>
-                {% else %}
-                <div class="premium-card" style="height: 100%;">
-                    <p class="stat-label mb-3">Asset Allocation</p>
-                    <p style="color:var(--text-muted);">Asset Pie Chart will appear after your second visit to the dashboard.</p>
-                </div>
-                {% endif %}
-            </div>
-            <div class="col-md-8">
-                {% if portfolio_line_json %}
-                <div class="card mt-0">
-                    <p class="stat-label mb-3">Portfolio Value Over Time</p>
-                    <div id="portfolio-line"></div>
-                </div>
-                <script>
-                    var lineData = JSON.parse('{{ portfolio_line_json|escapejs }}');
-                    Plotly.newPlot('portfolio-line', lineData.data, lineData.layout);
-                </script>
-                {% else %}
+        <div class="dash-networth">
+            <p class="dash-networth__label">Total Net Worth</p>
 
-                <div class="card mt-0" style="text-align:center; padding:2rem;">
-                    <p style="color:var(--text-muted);">Portfolio trend will appear after your second visit to the dashboard.</p>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- 4. Insights & News Row -->
-        <div class="row g-4">
-            <!-- AI Recommendation Column -->
-            <div class="col-lg-4">
-                <p class="stat-label">Market Intelligence</p>
-                <div class="card" style="border-left: 4px solid var(--accent-green); height: auto;">
-                    <div class="d-flex align-items-center gap-2 mb-3">
-                        <span style="background: var(--accent-green); color: #121415; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">AI ANALYSIS</span>
-                        <span style="color: var(--text-muted); font-size: 0.8rem;">Live Update</span>
-                    </div>
-                    <div style="color: #fff; font-size: 0.9rem; line-height: 1.6;">{{ ai_recommendation|safe }}</div>
-                </div>
+            <div class="dash-networth__currency-toggle">
+                <a href="?currency=USD" class="btn-g8 btn-g8--xs {% if display_currency == 'USD' %}btn-g8--gold{% else %}btn-g8--ghost{% endif %}">$ USD</a>
+                <a href="?currency=NGN" class="btn-g8 btn-g8--xs {% if display_currency == 'NGN' %}btn-g8--gold{% else %}btn-g8--ghost{% endif %}">₦ NGN</a>
             </div>
 
-            <!-- News Feed Column -->
-            <div class="col-lg-8">
-                <p class="stat-label">Today's Financial News</p>
-                <span class="stat-label color: {{overall_color}}">Overall Market Sentiment: {{overall_label}}</span>
-                <div class="row g-3">
-                    {% for article in news_articles %}
-                    <div class="col-md-6">
-                        <a href="{{ article.url }}" target="_blank" style="text-decoration:none;">
-                            <div class="premium-card" style="height:100%;">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span style="background:#2c3034; color:var(--text-muted); padding:0.2rem 0.6rem; border-radius:4px; font-size:0.7rem;">{{ article.source }}</span>
-                                    <span style="background:#2c3034; color: {{article.sentiment_color}}; padding:0.2rem 0.6rem; border-radius:4px; font-size:0.7rem;">Sentiment: {{article.sentiment_label}}</span>
-                                    <span style="color:var(--text-muted); font-size:0.7rem;">{{ article.publishedAt|slice:":10" }}</span>
-                                </div>
-                                <p style="color:#fff; font-size:0.875rem; font-weight:600; margin-bottom:0.5rem; line-height:1.4;">{{ article.title }}</p>
-                                <p style="color:var(--text-muted); font-size:0.8rem; line-height:1.4;">{{ article.description|truncatechars:100 }}</p>
-                                <div class="mt-2" style="color:var(--accent-green); font-size:0.75rem;">Read more →</div>
-                            </div>
-                        </a>
-                    </div>
-                    {% empty %}
-                    <div class="col-12">
-                        <p style="color:var(--text-muted); text-align:center;">No news available at this time.</p>
-                    </div>
-                    {% endfor %}
-                </div>
+            <div class="dash-networth__value-row">
+                <span class="dash-networth__value sensitive-value mono"
+                      data-value="{{ currency_symbol }}{{ net_worth|floatformat:2|intcomma }}">****</span>
+                <button id="toggle-visibility" class="dash-eye-btn" aria-label="Toggle visibility">
+                    <i id="eye-icon" class="bi bi-eye"></i>
+                </button>
             </div>
         </div>
     </div>
 
-    <script src="{% static 'dashboard/js/toggle.js' %}"></script>
-    <script>
-        var graphData = JSON.parse('{{ graph_json|escapejs }}');
-        // Ensure the chart fits within its new card container
-        graphData.layout.autosize = true;
-        graphData.layout.margin = {l: 20, r: 20, b: 20, t: 20};
-        graphData.layout.paper_bgcolor = 'rgba(0,0,0,0)';
-        graphData.layout.plot_bgcolor = 'rgba(0,0,0,0)';
-        Plotly.newPlot('my-pie-chart', graphData.data, graphData.layout, {responsive: true});
-    </script>
+    <!-- 2. STAT STRIP -->
+    <div class="dash-stat-strip anim-fadeUp anim-delay-1">
+        <div class="dash-stat-strip__item">
+            <span class="dash-stat-strip__label">Assets</span>
+            <span class="dash-stat-strip__value sensitive-value" data-value="{{ currency_symbol }}{{ total_assets|floatformat:2|intcomma }}">****</span>
+        </div>
+        <div class="dash-stat-strip__divider"></div>
+        <div class="dash-stat-strip__item">
+            <span class="dash-stat-strip__label">Stocks</span>
+            <span class="dash-stat-strip__value sensitive-value" data-value="{{ currency_symbol }}{{ total_stock|floatformat:2|intcomma }}">****</span>
+        </div>
+        <div class="dash-stat-strip__divider"></div>
+        <div class="dash-stat-strip__item">
+            <span class="dash-stat-strip__label">Cash</span>
+            <span class="dash-stat-strip__value sensitive-value" data-value="{{ currency_symbol }}{{ total_cash|floatformat:2|intcomma }}">****</span>
+        </div>
+        <div class="dash-stat-strip__divider"></div>
+        <div class="dash-stat-strip__item">
+            <span class="dash-stat-strip__label">Currency</span>
+            <span class="dash-stat-strip__value">{{ display_currency }}</span>
+        </div>
+    </div>
+
+    <!-- 3. KPI CARDS -->
+    <div class="dash-kpi-grid anim-fadeUp anim-delay-2">
+
+        <!-- Assets -->
+        <a href="/portfolio/assets/" class="dash-kpi-card dash-kpi-card--assets">
+            <div class="dash-kpi-card__accent"></div>
+            <div class="dash-kpi-card__header">
+                <div>
+                    <p class="dash-kpi-card__label">Total Assets</p>
+                    <h3 class="dash-kpi-card__value sensitive-value" data-value="{{ currency_symbol }}{{ total_assets|floatformat:2|intcomma }}">****</h3>
+                </div>
+                <div class="dash-kpi-card__icon icon--gold">
+                    <i class="bi bi-briefcase-fill"></i>
+                </div>
+            </div>
+            <div class="dash-kpi-card__footer">
+                <i class="bi bi-arrow-up-right-circle-fill"></i>
+                Live Tracking Active
+            </div>
+        </a>
+
+        <!-- Stocks -->
+        <a href="/portfolio/stocks/" class="dash-kpi-card dash-kpi-card--stocks">
+            <div class="dash-kpi-card__accent"></div>
+            <div class="dash-kpi-card__header">
+                <div>
+                    <p class="dash-kpi-card__label">Stocks Value</p>
+                    <h3 class="dash-kpi-card__value sensitive-value" data-value="{{ currency_symbol }}{{ total_stock|floatformat:2|intcomma }}">****</h3>
+                </div>
+                <div class="dash-kpi-card__icon icon--blue">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+            </div>
+            <div class="dash-kpi-card__footer">
+                <i class="bi bi-bar-chart-fill"></i>
+                Market Portfolio
+            </div>
+        </a>
+
+        <!-- Cash -->
+        <a href="/portfolio/cash/" class="dash-kpi-card dash-kpi-card--cash">
+            <div class="dash-kpi-card__accent"></div>
+            <div class="dash-kpi-card__header">
+                <div>
+                    <p class="dash-kpi-card__label">Available Cash</p>
+                    <h3 class="dash-kpi-card__value sensitive-value" data-value="{{ currency_symbol }}{{ total_cash|floatformat:2|intcomma }}">****</h3>
+                </div>
+                <div class="dash-kpi-card__icon icon--green">
+                    <i class="bi bi-cash-stack"></i>
+                </div>
+            </div>
+            <div class="dash-kpi-card__footer">
+                <i class="bi bi-droplet-fill"></i>
+                Liquid Assets
+            </div>
+        </a>
+
+    </div>
+
+    <!-- 4. CHARTS ROW -->
+    <p class="dash-section-label anim-fadeUp anim-delay-3">
+        <i class="bi bi-pie-chart-fill" style="color:var(--gold);"></i>
+        Visualisations
+    </p>
+
+    <div class="dash-charts-row anim-fadeUp anim-delay-3">
+
+        <!-- Pie / Allocation -->
+        <div class="dash-chart-card dash-chart-card--accented">
+            <div class="dash-chart-card__header">
+                <h4 class="dash-chart-card__title">
+                    <i class="bi bi-pie-chart" style="color:var(--gold);font-size:.8rem;"></i>
+                    Asset Allocation
+                </h4>
+                <span class="g8-badge g8-badge--gold">Live</span>
+            </div>
+
+            {% if graph_json %}
+                <div id="dash-pie-chart" style="min-height:260px;"></div>
+            {% else %}
+                <div class="dash-chart-empty">
+                    <div class="dash-chart-empty__icon"><i class="bi bi-pie-chart"></i></div>
+                    <p class="dash-chart-empty__text">Allocation chart appears after your second dashboard visit.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Line / Portfolio Value -->
+        <div class="dash-chart-card dash-chart-card--accented">
+            <div class="dash-chart-card__header">
+                <h4 class="dash-chart-card__title">
+                    <i class="bi bi-activity" style="color:var(--gold);font-size:.8rem;"></i>
+                    Portfolio Value Over Time
+                </h4>
+                <span class="g8-badge g8-badge--indigo">Historical</span>
+            </div>
+
+            {% if portfolio_line_json %}
+                <div id="dash-line-chart" style="min-height:260px;"></div>
+            {% else %}
+                <div class="dash-chart-empty">
+                    <div class="dash-chart-empty__icon"><i class="bi bi-activity"></i></div>
+                    <p class="dash-chart-empty__text">Portfolio trend appears after your second dashboard visit.</p>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- 5. INSIGHTS + NEWS ROW -->
+    <p class="dash-section-label anim-fadeUp anim-delay-4">
+        <i class="bi bi-lightning-charge-fill" style="color:var(--gold);"></i>
+        Intelligence &amp; News
+    </p>
+
+    <div class="dash-insights-row anim-fadeUp anim-delay-4">
+
+        <!-- AI Insights -->
+        <div class="dash-ai-card">
+            <div class="dash-ai-badge">
+                <span class="dash-ai-badge__dot"></span>
+                AI Analysis
+            </div>
+            <h4 class="dash-chart-card__title" style="margin-bottom:.85rem;font-size:.72rem;">
+                <i class="bi bi-stars" style="color:var(--green);"></i>
+                Market Intelligence
+            </h4>
+            <div class="dash-ai-content">
+                {{ ai_recommendation|safe }}
+            </div>
+        </div>
+
+        <!-- News Feed -->
+        <div>
+            <div class="dash-news-grid">
+                {% for article in news_articles %}
+                <a href="{{ article.url }}" target="_blank" rel="noopener" class="dash-news-card">
+                    <div class="dash-news-card__meta">
+                        <span class="dash-news-card__source">{{ article.source }}</span>
+                        <span style="background:#2c3034; color: {{ article.sentiment_color }}; padding:0.2rem 0.6rem; border-radius:4px; font-size:0.7rem;">Sentiment: {{article.sentiment_label}}</span>
+                        <span class="dash-news-card__date">{{ article.publishedAt|slice:":10" }}</span>
+                    </div>
+                    <p class="dash-news-card__title">{{ article.title }}</p>
+                    <p class="dash-news-card__desc">{{ article.description|truncatechars:100 }}</p>
+                    <span class="dash-news-card__cta">
+                        Read more <i class="bi bi-arrow-right"></i>
+                    </span>
+                </a>
+                {% empty %}
+                <div class="dash-news-empty">
+                    <i class="bi bi-newspaper me-2"></i> No news available at this time.
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<!-- ─── SCRIPTS ─────────────────────────────────────────────────── -->
+<script src="{% static 'dashboard/js/toggle.js' %}"></script>
+
+<script>
+(function () {
+    /* ── shared Plotly theme ── */
+    const FONT_FAMILY = "'DM Mono', 'DM Sans', monospace";
+    const TRANSPARENT = 'rgba(0,0,0,0)';
+    const GOLD        = '#C9A96E';
+    const GOLD_LIGHT  = '#DFC28E';
+    const BORDER      = '#2E2E2E';
+    const TEXT_MUTED  = 'rgba(255,255,255,0.38)';
+    const TEXT_SEC    = 'rgba(255,255,255,0.68)';
+
+    const COLORS = [
+        '#C9A96E', '#3B82F6', '#10B981',
+        '#F59E0B', '#818CF8', '#EF4444',
+        '#DFC28E', '#6EE7B7'
+    ];
+
+    /* ── Pie / Allocation ── */
+    {% if graph_json %}
+    try {
+        const pieRaw = JSON.parse('{{ graph_json|escapejs }}');
+
+        // Override trace
+        if (pieRaw.data && pieRaw.data[0]) {
+            Object.assign(pieRaw.data[0], {
+                type: 'pie',
+                hole: 0.55,
+                marker: {
+                    colors: COLORS,
+                    line: { color: '#1A1A1A', width: 2 }
+                },
+                textfont: { family: FONT_FAMILY, size: 11, color: '#fff' },
+                hovertemplate: '<b>%{label}</b><br>%{value:.2f}<br>%{percent}<extra></extra>',
+                insidetextorientation: 'radial'
+            });
+        }
+
+        Object.assign(pieRaw.layout, {
+            autosize: true,
+            paper_bgcolor: TRANSPARENT,
+            plot_bgcolor:  TRANSPARENT,
+            margin: { l: 10, r: 10, t: 10, b: 10 },
+            showlegend: true,
+            legend: {
+                orientation: 'v',
+                x: 1.05, y: 0.5,
+                font: { family: FONT_FAMILY, size: 11, color: TEXT_SEC },
+                bgcolor: TRANSPARENT,
+                bordercolor: TRANSPARENT
+            },
+            annotations: [{
+                text: '<b>Allocation</b>',
+                x: 0.5, y: 0.5,
+                xref: 'paper', yref: 'paper',
+                showarrow: false,
+                font: { family: FONT_FAMILY, size: 12, color: GOLD }
+            }]
+        });
+
+        Plotly.newPlot('dash-pie-chart', pieRaw.data, pieRaw.layout, {
+            responsive: true,
+            displayModeBar: false
+        });
+    } catch (e) { console.warn('Pie chart error:', e); }
+    {% endif %}
+
+    /* ── Line / Portfolio Value ── */
+    {% if portfolio_line_json %}
+    try {
+        const lineRaw = JSON.parse('{{ portfolio_line_json|escapejs }}');
+
+        if (lineRaw.data) {
+            lineRaw.data.forEach((trace, i) => {
+                const c = COLORS[i % COLORS.length];
+                Object.assign(trace, {
+                    mode: 'lines+markers',
+                    line: { color: c, width: 2.5, shape: 'spline' },
+                    marker: { color: c, size: 5, symbol: 'circle' },
+                    fill: i === 0 ? 'tozeroy' : 'none',
+                    fillcolor: i === 0 ? 'rgba(201,169,110,0.07)' : TRANSPARENT,
+                    hovertemplate: '<b>%{x}</b><br>%{y:,.2f}<extra></extra>'
+                });
+            });
+        }
+
+        Object.assign(lineRaw.layout, {
+            autosize: true,
+            paper_bgcolor: TRANSPARENT,
+            plot_bgcolor: TRANSPARENT,
+            margin: { l: 52, r: 20, t: 12, b: 44 },
+            font: { family: FONT_FAMILY, size: 11, color: TEXT_MUTED },
+            xaxis: {
+                gridcolor: BORDER,
+                linecolor: BORDER,
+                tickcolor: BORDER,
+                tickfont: { family: FONT_FAMILY, size: 10, color: TEXT_MUTED },
+                showgrid: false,
+                zeroline: false
+            },
+            yaxis: {
+                gridcolor: 'rgba(46,46,46,0.6)',
+                linecolor: BORDER,
+                tickcolor: BORDER,
+                tickfont: { family: FONT_FAMILY, size: 10, color: TEXT_MUTED },
+                showgrid: true,
+                zeroline: false,
+                tickprefix: '{{ currency_symbol }}'
+            },
+            legend: {
+                orientation: 'h',
+                x: 0, y: -0.15,
+                font: { family: FONT_FAMILY, size: 10, color: TEXT_SEC },
+                bgcolor: TRANSPARENT
+            },
+            hovermode: 'x unified',
+            hoverlabel: {
+                bgcolor: '#2A2A2A',
+                bordercolor: BORDER,
+                font: { family: FONT_FAMILY, size: 11, color: '#fff' }
+            }
+        });
+
+        Plotly.newPlot('dash-line-chart', lineRaw.data, lineRaw.layout, {
+            responsive: true,
+            displayModeBar: true,
+            modeBarButtonsToRemove: ['select2d', 'lasso2d', 'autoScale2d'],
+            displaylogo: false
+        });
+    } catch (e) { console.warn('Line chart error:', e); }
+    {% endif %}
+
+})();
+</script>
+
 </body>
 </html>

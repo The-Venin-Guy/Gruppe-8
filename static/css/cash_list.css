@@ -1,0 +1,337 @@
+/* ============================================================
+   GRUPPE-8  |  cash_list.css
+   ============================================================ */
+
+/* ─── PAGE HEADER ────────────────────────────────────────────── */
+.cash-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.cash-header__eyebrow {
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: .35rem;
+}
+
+.cash-header__title {
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -.03em;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.15;
+}
+
+.cash-header__sub {
+    font-size: .85rem;
+    color: var(--text-secondary);
+    margin: .3rem 0 0;
+}
+
+/* ─── SUMMARY STRIP ──────────────────────────────────────────── */
+.cash-strip {
+    display: flex;
+    flex-direction: row;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.cash-strip__item {
+    width: 100%;
+    background: var(--bg-surface);
+    padding: 1.1rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    transition: background var(--transition);
+}
+
+.cash-strip__item:hover { background: var(--bg-elevated); }
+
+.cash-strip__label {
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.cash-strip__value {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -.04em;
+}
+
+/* ─── SECTION LABEL ──────────────────────────────────────────── */
+.cash-section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+/* ─── ACCOUNT CARDS GRID ─────────────────────────────────────── */
+.cash-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+/* ─── ACCOUNT CARD ───────────────────────────────────────────── */
+.cash-card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.cash-card:hover {
+    border-color: rgba(16, 185, 129, .35);
+    box-shadow: 0 6px 28px rgba(16, 185, 129, .08);
+    transform: translateY(-2px);
+}
+
+
+/* ─── CARD TOP ROW ───────────────────────────────────────────── */
+.cash-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: .75rem;
+}
+
+.cash-card__name {
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: .55rem;
+}
+
+.cash-card__balance {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.65rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -.04em;
+    line-height: 1;
+}
+
+.cash-card__currency {
+    font-size: .85rem;
+    font-weight: 500;
+    color: var(--gold);
+    vertical-align: middle;
+    margin-right: 4px;
+    font-family: 'DM Mono', monospace;
+}
+
+.cash-card__updated {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: .7rem;
+    color: var(--text-muted);
+    margin-top: .5rem;
+}
+
+/* ─── CARD MENU BUTTON ───────────────────────────────────────── */
+.cash-card__menu-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: var(--radius-xs);
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: .85rem;
+    flex-shrink: 0;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.cash-card__menu-btn:hover {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    border-color: var(--border-subtle);
+}
+
+/* ─── CARD FOOTER ────────────────────────────────────────────── */
+.cash-card__footer {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 1rem;
+}
+
+.cash-card__update-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: .5rem;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: .78rem;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.cash-card__update-btn:hover {
+    background: rgba(16, 185, 129, .08);
+    border-color: rgba(16, 185, 129, .3);
+    color: var(--gold);
+}
+
+/* ─── DROPDOWN OVERRIDE ──────────────────────────────────────── */
+.cash-dropdown {
+    background: var(--bg-elevated) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-md) !important;
+    padding: .3rem !important;
+    min-width: 160px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.55) !important;
+}
+
+.cash-dropdown .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: .5rem .75rem;
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border-radius: var(--radius-xs);
+    transition: background var(--transition), color var(--transition);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+.cash-dropdown .dropdown-item:hover {
+    background: rgba(255,255,255,.05);
+    color: var(--text-primary);
+}
+
+.cash-dropdown .dropdown-item.text-danger:hover {
+    background: var(--red-dim);
+    color: var(--red) !important;
+}
+
+.cash-dropdown .dropdown-divider {
+    border-color: var(--border) !important;
+    margin: .3rem 0 !important;
+    opacity: 1;
+}
+
+/* ─── PIE CHART CARD ─────────────────────────────────────────── */
+.cash-chart-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-top: 2rem;
+}
+
+.cash-chart-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.cash-chart-card__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.cash-chart-card__body {
+    padding: 1rem 1.5rem 1.5rem;
+}
+
+/* ─── EMPTY STATE ────────────────────────────────────────────── */
+.cash-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    padding: 4.5rem 2rem;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-xl);
+    text-align: center;
+}
+
+.cash-empty__icon {
+    width: 56px; height: 56px;
+    background: var(--gold-dim);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    color: var(--gold);
+    margin-bottom: .5rem;
+}
+
+.cash-empty__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.cash-empty__sub {
+    font-size: .82rem;
+    color: var(--text-secondary);
+    margin: 0 0 .75rem;
+    max-width: 280px;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .cash-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .cash-grid { grid-template-columns: 1fr; }
+    .cash-header { flex-direction: column; align-items: flex-start; }
+    .cash-header__title { font-size: 1.5rem; }
+    .cash-card__balance { font-size: 1.35rem; }
+}

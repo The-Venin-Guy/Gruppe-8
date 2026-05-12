@@ -104,4 +104,4 @@ def analyse_sentiment(articles):
         overall_label = 'Neutral'
         overall_color = '#898989'
     
-    return top10, overall_label, overall_color
+    return top10, overall_label

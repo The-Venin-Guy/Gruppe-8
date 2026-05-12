@@ -73,17 +73,13 @@
             <span class="assets-strip__label">Total Purchase Value</span>
             <span class="assets-strip__value">
                 {{ assets.0.currency }}
-                {% with total=0 %}{{ assets|length }}{% endwith %}
+                {% with total=0 %}{{ total_assets }}{% endwith %}
                 
             </span>
         </div>
         <div class="assets-strip__item">
             <span class="assets-strip__label">Sold Assets</span>
             <span class="assets-strip__value">{{ sold_assets|length|default:"0" }}</span>
-        </div>
-        <div class="assets-strip__item">
-            <span class="assets-strip__label">Portfolio Section</span>
-            <span class="assets-strip__value" style="color:var(--gold);">Assets</span>
         </div>
     </div>
     {% endif %}

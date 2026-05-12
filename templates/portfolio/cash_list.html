@@ -44,7 +44,6 @@
 
     <div class="cash-header anim-fadeUp">
         <div class="cash-header__left">
-            <p class="cash-header__eyebrow"><i class="bi bi-cash-coin"></i> &nbsp;Liquidity</p>
             <h1 class="cash-header__title">Cash Accounts</h1>
             <p class="cash-header__sub">Monitor your liquid capital and bank balances.</p>
         </div>
@@ -69,20 +68,12 @@
             <span class="cash-strip__value">{{ accounts|length }}</span>
         </div>
         <div class="cash-strip__item">
-            <span class="cash-strip__label">Liquid Capital</span>
-            <span class="cash-strip__value" style="color:var(--gold);">—</span>
-        </div>
-        <div class="cash-strip__item">
-            <span class="cash-strip__label">Asset Type</span>
-            <span class="cash-strip__value" style="color:var(--gold); font-size:.9rem; font-family:'DM Sans',sans-serif; font-weight:600;">Cash &amp; Deposits</span>
-        </div>
-        <div class="cash-strip__item">
             <span class="cash-strip__label">Last Updated</span>
             <span class="cash-strip__value" style="font-size:.85rem; font-family:'DM Sans',sans-serif;">
-                {% with last_acc=accounts|first %}
-                    {% if last_acc %}{{ last_acc.updated_at|date:"M d, Y" }}{% else %}—{% endif %}
-                {% endwith %}
+                {% now "M d, Y" %}
             </span>
+
+
         </div>
     </div>
 

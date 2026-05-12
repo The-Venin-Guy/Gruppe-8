@@ -180,7 +180,8 @@
                     </span>
                     <span class="stock-metric__sub">total</span>
                 </div>
-
+                <div class="stock-metric_"> Predicted Price: {{predicted_price}}</div>
+                
                 <div class="stock-metric {% if item.gain_loss < 0 %}stock-metric--loss{% else %}stock-metric--gain{% endif %}">
                     <span class="stock-metric__label">P &amp; L</span>
                     <span class="stock-metric__value">
@@ -198,7 +199,7 @@
                         <span class="stock-metric__sub">{{ item.gain_loss_percent|floatformat:2 }}%</span>
                     {% endif %}
                 </div>
-
+                
             </div>
         </div>
         {% endfor %}

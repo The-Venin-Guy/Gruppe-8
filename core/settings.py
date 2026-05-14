@@ -4,13 +4,14 @@ import os
 import dj_database_url
 
 load_dotenv()
+print("DEBUG ENV VALUE:", os.getenv('DEBUG'))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 EXCHANGE_RATE_API_KEY = os.getenv('EXCHANGE_RATE_API_KEY')
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
@@ -87,6 +88,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/users/login/'

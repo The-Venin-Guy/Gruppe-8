@@ -214,9 +214,15 @@
     </div>
 
     <!-- 5. INSIGHTS + NEWS ROW -->
-    <p class="dash-section-label anim-fadeUp anim-delay-4">
-        <i class="bi bi-lightning-charge-fill" style="color:var(--gold);"></i>
-        Intelligence &amp; News
+    <p class="anim-fadeUp anim-delay-4"
+        style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 0.5rem;">
+        <span class="g8-badge g8-badge--gold me-2">
+            <i class="bi bi-lightning-charge-fill" style="color:var(--gold);"></i>
+            Intelligence &amp; News
+        </span>
+        <span style="background:#2c3034; color: {{overall_color}}; padding:0.2rem 0.6rem; border-radius:4px; font-size:0.7rem;">
+            Overall News Sentiment: {{overall_label}}
+        </span>
     </p>
 
     <div class="dash-insights-row anim-fadeUp anim-delay-4">

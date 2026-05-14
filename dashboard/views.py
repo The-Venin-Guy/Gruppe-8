@@ -16,6 +16,7 @@ from datetime import date
 @login_required
 def dashboard_view(request):
     active_assets = Asset.objects.filter(user=request.user, status='active')
+    watch_assets = Asset.objects.filter(user=request.user)
     accounts = CashAccount.objects.filter(user=request.user)
     active_stocks = Stock.objects.filter(user=request.user, status='active')
     display_currency = request.GET.get('currency', 'NGN')
@@ -101,7 +102,7 @@ def dashboard_view(request):
         news_articles = cached_data['news_articles']
         ai_recommendation = cached_data['ai_recommendation']
     else:
-        news_articles = fetch_financial_news()
+        news_articles = fetch_financial_news(watch_assets)
         ai_recommendation = get_ai_recommendations(news_articles)
         cache.set(cache_key, {
             'news_articles': news_articles,

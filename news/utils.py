@@ -3,10 +3,10 @@ from django.conf import settings
 from groq import Groq
 from textblob import TextBlob
 
-def fetch_financial_news():
+def fetch_financial_news(assets):
     url = 'https://newsapi.org/v2/everything'
     params = {
-        'q': 'stocks OR investment OR market OR inflation OR Fed OR earnings OR crypto OR bonds OR portfolio',
+        'q': f'{" OR ".join([asset.ticker for asset in assets])} stocks OR investment OR market OR inflation OR Fed OR earnings OR crypto OR bonds OR portfolio',
         'language': 'en',
         'sortBy': 'publishedAt',
         'pageSize': 10,

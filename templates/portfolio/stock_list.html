@@ -98,108 +98,72 @@
 
         <!-- Stock cards -->
         {% for item in stock_data %}
-        <div class="stock-card anim-fadeUp" style="animation-delay: {{ forloop.counter0 }}00ms;">
+        <div class="stock-card anim-fadeUp" style="animation-delay: {{ forloop.counter0 }}00ms; display: flex; align-items: center; padding: 1.5rem; gap: 2rem;">
 
-            <!-- Top row -->
-            <div class="stock-card__top">
-
-                <!-- Ticker + shares -->
-                <div class="stock-card__id">
+            <!-- 1. LEFT COLUMN: TICKER, COMPANY, ACTIONS -->
+            <div style="flex: 0 0 250px;">
+                <div class="stock-card__id" style="margin-bottom: 0.5rem;">
                     <span class="stock-card__ticker">{{ item.stock.ticker }}</span>
                     <span class="stock-card__shares-label">{{ item.stock.shares|intcomma }} shares</span>
                 </div>
-
-                <!-- Company + meta -->
-                <div class="stock-card__body">
-                    <h4 class="stock-card__company">{{ item.stock.company_name }}</h4>
-                    <div class="stock-card__meta">
-                        <span><i class="bi bi-calendar3"></i> Bought {{ item.stock.purchase_date }}</span>
-                        <span><i class="bi bi-tag"></i> ${{ item.stock.purchase_price|floatformat:2|intcomma }} / share</span>
-                    </div>
+                
+                <h4 class="stock-card__company" style="margin: 0.2rem 0; font-size: 1.1rem;">{{ item.stock.company_name }}</h4>
+                
+                <div class="stock-card__meta" style="font-size: 0.75rem; color: #888; margin-bottom: 1rem;">
+                    <span><i class="bi bi-calendar3"></i> {{ item.stock.purchase_date }}</span>
+                    <span class="ms-2"><i class="bi bi-tag"></i> ${{ item.stock.purchase_price|floatformat:2 }}</span>
                 </div>
 
-                <!-- Actions -->
-                <div class="stock-card__actions">
-                    <a href="/portfolio/stocks/{{ item.stock.pk }}/"
-                       class="btn-g8 btn-g8--outline-gold btn-g8--xs"
-                       title="View chart">
-                        <i class="bi bi-graph-up"></i> Chart
-                    </a>
-                    <a href="/portfolio/stocks/edit/{{ item.stock.pk }}/"
-                       class="btn-g8 btn-g8--ghost btn-g8--xs"
-                       title="Edit">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                    <a href="/portfolio/stocks/sell/{{ item.stock.pk }}/"
-                       class="btn-g8 btn-g8--amber btn-g8--xs"
-                       title="Sell">
-                        <i class="bi bi-tag-fill"></i> Sell
-                    </a>
-                    <form method="POST"
-                          action="/portfolio/stocks/delete/{{ item.stock.pk }}/"
-                          style="margin:0;">
+                <div class="stock-card__actions d-flex gap-1">
+                    <a href="/portfolio/stocks/{{ item.stock.pk }}/" class="btn-g8 btn-g8--outline-gold btn-g8--xs"><i class="bi bi-graph-up"></i></a>
+                    <a href="/portfolio/stocks/edit/{{ item.stock.pk }}/" class="btn-g8 btn-g8--ghost btn-g8--xs"><i class="bi bi-pencil"></i></a>
+                    <a href="/portfolio/stocks/sell/{{ item.stock.pk }}/" class="btn-g8 btn-g8--amber btn-g8--xs">Sell</a>
+                    <form method="POST" action="/portfolio/stocks/delete/{{ item.stock.pk }}/" style="margin:0;">
                         {% csrf_token %}
-                        <button type="submit"
-                                class="btn-g8 btn-g8--danger btn-g8--xs"
-                                onclick="return confirm('Delete {{ item.stock.ticker }}? This cannot be undone.')">
-                            <i class="bi bi-trash3"></i>
-                        </button>
+                        <button type="submit" class="btn-g8 btn-g8--danger btn-g8--xs" onclick="return confirm('Delete?')"><i class="bi bi-trash3"></i></button>
                     </form>
                 </div>
             </div>
 
-            <!-- Metrics -->
-            <div class="stock-card__metrics">
+            <!-- 2. RIGHT COLUMN: METRICS (Now properly spaced) -->
+            <div class="stock-card__metrics" style="flex: 1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; border-left: 1px solid #333; padding-left: 2rem;">
 
                 <div class="stock-metric">
                     <span class="stock-metric__label">Purchase Price</span>
-                    <span class="stock-metric__value">${{ item.stock.purchase_price|floatformat:2|intcomma }}</span>
+                    <span class="stock-metric__value">${{ item.stock.purchase_price|floatformat:2 }}</span>
                     <span class="stock-metric__sub">per share</span>
                 </div>
 
                 <div class="stock-metric">
                     <span class="stock-metric__label">Total Cost</span>
                     <span class="stock-metric__value">${{ item.stock.purchase_price|floatformat:2 }}</span>
-                    <span class="stock-metric__sub">{{ item.stock.shares|intcomma }} × ${{ item.stock.purchase_price|floatformat:2 }}</span>
+                    <span class="stock-metric__sub">initial</span>
                 </div>
 
                 <div class="stock-metric">
-                    <span class="stock-metric__label">
-                        <span class="live-dot"></span>Current Price
-                    </span>
-                    <span class="stock-metric__value">
-                        {% if item.current_price %}${{ item.current_price|floatformat:2|intcomma }}{% else %}—{% endif %}
-                    </span>
-                    <span class="stock-metric__sub">live</span>
+                    <span class="stock-metric__label"><span class="live-dot"></span>Current</span>
+                    <span class="stock-metric__value">{% if item.current_price %}${{ item.current_price|floatformat:2 }}{% else %}—{% endif %}</span>
+                    <span class="stock-metric__sub">live price</span>
                 </div>
 
                 <div class="stock-metric">
                     <span class="stock-metric__label">Market Value</span>
-                    <span class="stock-metric__value">
-                        {% if item.current_value %}${{ item.current_value|floatformat:2|intcomma }}{% else %}—{% endif %}
-                    </span>
-                    <span class="stock-metric__sub">total</span>
+                    <span class="stock-metric__value">{% if item.current_value %}${{ item.current_value|floatformat:2 }}{% else %}—{% endif %}</span>
+                    <span class="stock-metric__sub">current total</span>
                 </div>
-                <div class="stock-metric_"> Predicted Price: {{predicted_price}}</div>
-                
+
                 <div class="stock-metric {% if item.gain_loss < 0 %}stock-metric--loss{% else %}stock-metric--gain{% endif %}">
                     <span class="stock-metric__label">P &amp; L</span>
                     <span class="stock-metric__value">
                         {% if item.gain_loss != None %}
-                            {% if item.gain_loss >= 0 %}
-                                ▲ ${{ item.gain_loss|floatformat:2|intcomma }}
-                            {% else %}
-                                ▼ ${{ item.gain_loss|floatformat:2|cut:"-"|intcomma }}
-                            {% endif %}
-                        {% else %}
-                            N/A
-                        {% endif %}
+                            {% if item.gain_loss >= 0 %}▲{% else %}▼{% endif %} ${{ item.gain_loss|floatformat:2|cut:"-" }}
+                        {% else %}N/A{% endif %}
                     </span>
                     {% if item.gain_loss_percent != None %}
                         <span class="stock-metric__sub">{{ item.gain_loss_percent|floatformat:2 }}%</span>
                     {% endif %}
                 </div>
-                
+
             </div>
         </div>
         {% endfor %}
